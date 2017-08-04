@@ -27,6 +27,7 @@ class JobtitleController extends Controller {
         $input= $req->input();     
         $jobtitle = $this->_get_index_filter($input);        
         $this->data["jobtitle"] = $jobtitle->get();
+        $this->data["filter"] = $input;
         return view('jobtitle.index', $this->data);
     }
 
@@ -83,8 +84,8 @@ class JobtitleController extends Controller {
     
 	private function _get_index_filter($filter){
         $dbcust = DB::table("jobtitle")->where("company_id", $this->company_id);
-        if (isset($filter["nama"])){
-            $dbcust = $dbcust->where("nama", "like", "%".$filter["nama"]."%");
+        if (isset($filter["name"])){
+            $dbcust = $dbcust->where("name", "like", "%".$filter["name"]."%");
         }        
         return $dbcust;
     }

@@ -27,6 +27,7 @@ class FamilyController extends Controller {
         $input= $req->input();     
         $familydb = $this->_get_index_filter($input);
         $this->data["family"] = $familydb->get();
+        $this->data["filter"] = $input;
         return view('family.index', $this->data);
     }
 

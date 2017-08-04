@@ -1,7 +1,7 @@
  <title>Pengiriman</title>
 
-  	<meta name="description" content="Express">
-    <meta name="author" content="Express">
+  	<meta name="description" content="HRM">
+    <meta name="author" content="HRM">
     <meta property="og:image" content="">
     <meta property="og:image:type" content="image/png">
     <meta property="og:description" content="">

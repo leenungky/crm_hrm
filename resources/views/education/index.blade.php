@@ -41,15 +41,11 @@
             <br/>
         @endif        
         <div class="row">   
-            <form action="/price/list" method="get">
+            <form action="/education/list" method="get">
                 <div class="col-md-2">
-                    City<br/>
-                    <input type="text" name="city" class="form-control" value="{{isset($filter["city"]) ? $filter["city"] : ""}}">
-                </div>               
-                <div class="col-md-2">
-                    Kecamatan<br/>
-                    <input type="text" name="kecamatan" class="form-control" value="{{isset($filter["kecamatan"]) ? $filter["kecamatan"] : ""}}">
-                </div>               
+                    Name<br/>
+                    <input type="text" name="name" class="form-control" value="{{isset($filter["name"]) ? $filter["name"] : ""}}">
+                </div>                                          
                 <div class="col-md-2">
                     <br/>
                     <input type="submit" value="find" class="btn">

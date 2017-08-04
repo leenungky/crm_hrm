@@ -26,10 +26,9 @@ class DepartmentController extends Controller {
         $req = $this->data["req"];
         $input= $req->input();         
         $deptDB = $this->_get_index_filter($input);        
-        $deptDB = $this->_get_index_sort($req, $deptDB, $input);
-        // echo $req->session()->get('role');
+        $deptDB = $this->_get_index_sort($req, $deptDB, $input);        
         $deptDB = $deptDB->get();           
-        $this->data["input"] = $input;
+        $this->data["filter"] = $input;
         $this->data["deptDB"] = $deptDB;        
         return view('department.index', $this->data);
     }

@@ -16,7 +16,20 @@
  <div id="contents">
     <div class="container container-fluid">            	
 		@include('header')		
-		<br/>		
+		<br/>			
+		<div class="row">	
+			<form action="/jobtitle/list" method="get">
+				<div class="col-md-3">
+					Nama<br/>
+					<input type="text" name="name" class="form-control" value="{{isset($filter["name"]) ? $filter["name"] : ""}}">
+				</div>				
+				<div class="col-md-2">
+					<br/>
+					<input type="submit" value="find" class="btn">
+				</div>
+			</form>
+		</div>	
+		<br/>
 		<div class="row">	
 			<div class="col-md-12">
 			<a href="/jobtitle/add">Create</a>

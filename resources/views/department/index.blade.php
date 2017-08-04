@@ -18,7 +18,7 @@
 		@include('header')		
 		<br/>
 		<div class="row">	
-			<form action="/customer" method="get">
+			<form action="/department/list" method="get">
 				<div class="col-md-3">
 					Nama<br/>
 					<input type="text" name="name" class="form-control" value="{{isset($filter["name"]) ? $filter["name"] : ""}}">
