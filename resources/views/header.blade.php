@@ -70,7 +70,7 @@
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 
                                     <li>
-                                        <a href="/customer">Customer</a>
+                                        <a href="/department/list">Departmant</a>
                                     </li>
                                     @if ($req->session()->get("role")=="administrator")
                                         <li role="separator" class="divider"></li>
@@ -80,25 +80,33 @@
                                     @endif
                                     <li role="separator" class="divider"></li>
                                     <li>
-                                         <a href="/cities/list">City</a>
+                                         <a href="/jobtitle/list">Job Title</a>
                                     </li>  
                                     <li role="separator" class="divider"></li>
                                     <li>
-                                        <a href="/agent/list">Perwakilan / zona</a>
+                                        <a href="/family/list">Family Relation</a>
                                     </li>
                                     <li role="separator" class="divider"></li>
 
                                     <li>
-                                        <a href="/employ/list">Karyawan</a>
+                                        <a href="/education/list">Education</a>
                                     </li>                                    
                                     <li role="separator" class="divider"></li>
                                     <li>
-                                        <a href="/price/list">Harga</a>
-                                    </li>     
+                                        <a href="/tpl/list">Tunjangan</a>
+                                    </li>
                                     <li role="separator" class="divider"></li>
                                     <li>
-                                        <a href="/tpl/list">3pl</a>
-                                    </li>                                                          
+                                        <a href="/tpl/list">Cuti</a>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <a href="/tpl/list">Tunjangan</a>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <a href="/tpl/list">Potongan</a>
+                                    </li>                              
                                 </ul>
                             </div>                      
                         </div>   

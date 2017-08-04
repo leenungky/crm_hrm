@@ -18,8 +18,8 @@ class BusinessLogic
         $routeArray = $request->route()->getAction(); 
         $controllerAction = class_basename($routeArray["controller"]);
         list($controller, $action) = explode("@", $controllerAction);
-        $role =  $request->session()->get("role", "");
-        $strRedirect =  $this->getRedirect($controller, $action, $role);
+        $role =  $request->session()->get("role", "");                
+        $strRedirect =  $this->getRedirect($request, $controller, $action, $role);
         if ($strRedirect[0]==""){                      
             return $next($request);
         }else{
@@ -28,7 +28,7 @@ class BusinessLogic
         
     }
 
-    public function isPayment(){
+    public function isPayment($request){
         $is_payment = true;
         if (isset(\Auth::user()->company_id)){
             $company_id = \Auth::user()->company_id;
@@ -42,7 +42,7 @@ class BusinessLogic
         return $is_payment;
     }
 
-    public function getRedirect($controller, $action, $role){        
+    public function getRedirect($request, $controller, $action, $role){        
         $strRedirect = ""; 
         $message = "";      
 
@@ -74,7 +74,7 @@ class BusinessLogic
                 
         }
 
-        if (!empty($role)){    
+        if (!empty($role)){                
             $is_cek_payment = true;        
             if ($controller == "UserController"){
                 if ($action == "getLogout" || $action=="getLogin" || $action=="postLogin"){  
@@ -82,9 +82,17 @@ class BusinessLogic
                 }
             }
             if ($is_cek_payment){
-                if (!$this->isPayment()){            
+                if (!$this->isPayment($request)){            
                      $strRedirect = "/user/logout?status=payment";                                     
                 }
+            }
+        }else{       
+            if ($controller == "UserController"){
+                if ($action == "getLogout" || $action=="getLogin" || $action=="postLogin"){  
+                    $is_cek_payment = false;
+                }
+            }else{                 
+                $strRedirect = "/user/logout";                                     
             }
         }
         return array($strRedirect, $message);

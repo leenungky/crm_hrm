@@ -17,27 +17,27 @@ class DepartmentController extends Controller {
     var $data;
     var $company_id;
     public function __construct(Request $req){
-    	$this->data["type"]= "master_customer";  
-        $this->data["req"] = $req;    	
+    	$this->data["type"]= "master_department";  
+        $this->data["req"] = $req;            	
         $this->company_id = \Auth::user()->company_id;
     }
 
 	public function getList(){                               
         $req = $this->data["req"];
         $input= $req->input();         
-        $custDB = $this->_get_index_filter($input);        
-        $custDB = $this->_get_index_sort($req, $custDB, $input);           
-        $custDB = $custDB->get();           
+        $deptDB = $this->_get_index_filter($input);        
+        $deptDB = $this->_get_index_sort($req, $deptDB, $input);
         // echo $req->session()->get('role');
+        $deptDB = $deptDB->get();           
         $this->data["input"] = $input;
-        $this->data["cust"] = $custDB;
+        $this->data["deptDB"] = $deptDB;        
         return view('department.index', $this->data);
     }
 
-    public function create(){
+    public function postCreate(){
         $req = $this->data["req"];
         $validator = Validator::make($req->all(), [            
-            'name' => 'required|unique:inventory_customer|max:100'          
+            'name' => 'required'          
         ]);
 
         if ($validator->fails()) {            
@@ -47,35 +47,32 @@ class DepartmentController extends Controller {
         $arrInsert["created_at"] = date("Y-m-d h:i:s");
         $arrInsert["company_id"] = $this->company_id;
         unset($arrInsert["_token"]);        
-        DB::table("inventory_customer")->insert($arrInsert);        
-        return redirect('/customer')->with('message', "Successfull create");
+        DB::table("department")->insert($arrInsert);        
+        return redirect('/department/list')->with('message', "Successfull create");
     }
 
-    public function edit($id){
-        $customer = DB::table("inventory_customer")->where("id", $id)->first();        
-        $this->data["customer"] = $customer;
-        return view('customer.edit', $this->data);        
+    public function getEdit($id){
+        $customer = DB::table("department")->where("id", $id)->where("company_id", $this->company_id)->first();        
+        $this->data["department"] = $customer;
+        return view('department.edit', $this->data);        
     }
 
-    public function delete($id){
+    public function getDelete($id){
         $req = $this->data["req"];
-        DB::table("inventory_customer")->where("id", $id)->delete();        
-        DB::table("inventory_transaction")->where("sender_id", $id)->delete();        
-        DB::table("inventory_customer_total_parcel")->where("customer_id", $id)->delete();        
-        return redirect('/customer')->with('message', "Successfull delete");
+        DB::table("department")->where("id", $id)->where("company_id", $this->company_id)->delete();                
+        return redirect('/department/list')->with('message', "Successfull delete");
     }
 
-    public function newcustomer(){
-        return view('customer.new', $this->data);
+    public function getNew(){
+        return view('department.new', $this->data);
     }
 
-    public function update($id){
+    public function postUpdate($id){
         $req = $this->data["req"];
         $arrInsert = $req->input();        
         unset($arrInsert["_token"]);        
-        $customer = DB::table("inventory_customer")->where("id", $id)->update($arrInsert);
-        $this->data["customer"] = $customer;
-        return redirect('/customer')->with('message', "Successfull update");
+        $customer = DB::table("department")->where("id", $id)->update($arrInsert);        
+        return redirect('/department/list')->with('message', "Successfull update");
     }
 
     private function _get_index_filter($filter){

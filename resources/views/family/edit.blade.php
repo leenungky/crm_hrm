@@ -5,7 +5,7 @@
      @include('head')
      <style type="text/css" media="print">
      	   @media print {
-			    @page { margin: 0px 6px; }
+		    @page { margin: 0px 6px; }
   				body  { margin: 0px 6px; }   					  
 			}
      </style>
@@ -17,41 +17,40 @@
     <div class="container container-fluid">       
 		@include('header')		
 		<br/>
+		<br/>
 		@if (count($errors))     
 			<div class="row">				
 				<div class="col-md-12 alert alert-danger">		
 				    <ul>
 				        @foreach($errors->all() as $error) 		            				            
-				            <li>{{str_replace("name","Nama toko",$error)}}</li>
+				            <li>{{$error}}</li>
 				        @endforeach 
 				    </ul>
 			    </div>
 		    </div>
 		@endif 
-		<br/>
-		<div class="row">				
+		<div class="row">	
 			<div class="col-md-12">		
-				<form method="post" action="/cities/create" class="formsubmit">
+				<form method="post" action="/family/update/{{$family->id}}" class="formsubmit">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">					
 					<div class="form-group">
-					    <label for="email">Kode Kota</label>
-						 <input type="text" class="form-control" id="code" name="code" placeholder="input nama" value="{{ old('code') }}" required>
-					</div>					
+					    <label for="email">name</label>
+						 <input type="text" class="form-control" name="name" value="{{$family->name}}" placeholder="input nama" required>
+					</div>											
 					<div class="form-group">
-					    <label for="email">Nama Kota</label>
-						 <input type="text" class="form-control" id="city_name" name="name" placeholder="input kota" value="{{ old('name') }}" required>
-					</div>										
+					    <label for="email">Description</label>
+					    <textarea name="description" cols="3" class="form-control" placeholder="input description" required>{{$family->description}}</textarea>						 
+					</div>					
 					<button type="submit" class="btn">Submit</button>
 				</form>
 			</div>
 		</div>
-	</div>	    	
+	 </div>	    	
 </div>
 </body>
 </html>
-
 <script type="text/javascript">
-	$(document).ready(function(){	
-		$( "input[name=name]" ).focus();
-	});
+	// $(document.ready(function(){
+		
+	// }))
 </script>

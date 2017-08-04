@@ -22,20 +22,24 @@
 				<div class="col-md-12 alert alert-danger">		
 				    <ul>
 				        @foreach($errors->all() as $error) 		            				            
-				            <li>{{str_replace("name","Nama toko",$error)}}</li>
+				            <li>{{$error}}</li>
 				        @endforeach 
 				    </ul>
 			    </div>
 		    </div>
-		@endif 		 
+		@endif 
 		<br/>
 		<div class="row">				
 			<div class="col-md-12">		
-				<form method="post" action="/department/create" class="formsubmit">
+				<form method="post" action="/family/create" class="formsubmit">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">					
 					<div class="form-group">
-					    <label for="email">Nama</label>
-						 <input type="text" class="form-control" id="name" name="name" placeholder="input nama department" value="{{ old('name') }}" required>
+					    <label for="email">Name</label>
+						 <input type="text" class="form-control" id="name" name="name" placeholder="input name" value="{{ old('name') }}" required>
+					</div>					
+					<div class="form-group">
+					    <label for="email">Description</label>
+					    <textarea name="description" cols="3" class="form-control" placeholder="input description" required>{{ old('description') }}</textarea>						 
 					</div>										
 					<button type="submit" class="btn">Submit</button>
 				</form>

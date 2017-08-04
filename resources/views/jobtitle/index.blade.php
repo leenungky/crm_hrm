@@ -19,10 +19,20 @@
 		<br/>		
 		<div class="row">	
 			<div class="col-md-12">
-			<a href="/cities/add">Create</a>
+			<a href="/jobtitle/add">Create</a>
 			</div>
 		</div>
 		<br/>
+		 @if(Session::has('message'))
+            <div class="row">               
+                <div class="col-md-12 alert alert-warning">      
+                    <ul>
+                        <li>{!! Session::get('message') !!}</li>                      
+                    </ul>
+                </div>
+            </div>
+            <br/>
+        @endif  
 		<div class="row">	
 			<div class="col-md-12">
 				<table class="table">
@@ -38,30 +48,25 @@
 						}
 					?>
 					<thead>
-						<th>Code</th>
-			    		<th>City name</th>			    		
+						<th>Name</th>
+			    		<th>Description</th>			    		
 						<th>Action</th>
 					</thead>
 					<tbody>		
-						@foreach ($cities as $key => $value)
+						@foreach ($jobtitle as $key => $value)
 							<tr>
-								<td>{{$value->code}}</td><td>{{$value->name}}</td>
+								<td>{{$value->name}}</td><td>{{$value->description}}</td>
 								<td>
-									<a href="/cities/edit/{{$value->id}}">
+									<a href="/jobtitle/edit/{{$value->id}}">
 										<span class="edit"> 
 					    					<span class="glyphicon glyphicon-pencil"  rel="tooltip" title="delete"></span>
 					    				</span>
 				    				</a> | 
-				    				<a href="/cities/delete/{{$value->id}}" class="confirmation">
+				    				<a href="/jobtitle/delete/{{$value->id}}" class="confirmation">
 					    				<span class="delete">
 				    						<span class="glyphicon glyphicon-remove"  rel="tooltip" title="delete"></span>
 				    					</span>
-				    				</a> |
-				    				<a href="/cities/setcitykecamatan/{{$value->id}}">
-					    				<span class="delete">
-				    						<span class="glyphicon glyphicon-random"  rel="tooltip" title="Set Kecamatan City"></span>
-				    					</span>
-				    				</a>
+				    				</a> 
 								</td>
 							</tr>
 						@endforeach						

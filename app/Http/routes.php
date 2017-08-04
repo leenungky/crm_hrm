@@ -26,11 +26,12 @@ Route::group(['middleware' => 'logic'], function(){
 	Route::controller('/user', 'UserController');
 	Route::controller('/role', 'RoleController');
 	Route::controller('/department', 'DepartmentController');
-	Route::controller('/agent', 'AgentController');
+	Route::controller('/jobtitle', 'JobtitleController');
+	Route::controller('/family', 'FamilyController');		
 	Route::controller('/collect', 'CollectController');	
-	Route::controller('/price', 'PriceController');	
+	Route::controller('/education', 'EducationController');	
 	Route::controller('/employ', 'EmployeeController');		
-	Route::controller('/tpl', 'TreeplController');		
+	
 });
 
 Route::group(['prefix' => 'auth'], function(){

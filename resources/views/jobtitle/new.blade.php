@@ -27,22 +27,25 @@
 				    </ul>
 			    </div>
 		    </div>
-		@endif 		 
+		@endif 
 		<br/>
 		<div class="row">				
 			<div class="col-md-12">		
-				<form method="post" action="/department/create" class="formsubmit">
+				<form method="post" action="/jobtitle/create" class="formsubmit">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">					
 					<div class="form-group">
 					    <label for="email">Nama</label>
-						 <input type="text" class="form-control" id="name" name="name" placeholder="input nama department" value="{{ old('name') }}" required>
+						 <input type="text" class="form-control" id="nama" name="name" placeholder="input nama" value="{{ old('code') }}" required>
+					</div>					
+					<div class="form-group">
+					    <label for="email">Description</label>
+					    <textarea class="form-control" name="description" placeholder="Input description">{{ old('description') }}</textarea>						 
 					</div>										
 					<button type="submit" class="btn">Submit</button>
 				</form>
 			</div>
 		</div>
 	</div>	    	
-
 </div>
 </body>
 </html>

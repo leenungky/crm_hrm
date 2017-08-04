@@ -31,15 +31,15 @@
 		@endif 
 		<div class="row">	
 			<div class="col-md-12">		
-				<form method="post" action="/cities/update/{{$city->id}}" class="formsubmit">
+				<form method="post" action="/jobtitle/update/{{$jobtitle->id}}" class="formsubmit">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">					
 					<div class="form-group">
 					    <label for="email">Code</label>
-						 <input type="text" class="form-control" name="code" value="{{$city->code}}" placeholder="input nama" required>
+						 <input type="text" class="form-control" name="name" value="{{$jobtitle->name}}" placeholder="input nama" required>
 					</div>				
 					<div class="form-group">
-					    <label for="email">Nama</label>
-						 <input type="text" class="form-control" id="city_name" name="name" value="{{$city->name}}" placeholder="input pemilik" required>
+					    <label for="email">Description</label>
+					    <textarea class="form-control" name="description" placeholder="Input description">{{$jobtitle->description}}</textarea>					 
 					</div>					
 					<button type="submit" class="btn">Submit</button>
 				</form>

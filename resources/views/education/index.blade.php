@@ -58,49 +58,30 @@
         </div><br/>
         <div class="row">               
             <div class="col-md-12">
-                <a href="#" data-toggle="modal" data-target="#upload_price">Upload</a>
+                <a href="/education/new">Create</a>
             </div>
         </div>
         <br/>
         <div class="row">   
             <div class="col-md-12">
-                <table class="table">
-                    <?php 
-                        $str_parameter = "";
-                        if (isset($order_by)){
-                            if ($order_by=="asc"){
-                                $str_parameter = "&order_by=desc";
-                            }
-                            else if ($order_by=="desc"){
-                                $str_parameter = "&order_by=asc";
-                            }   
-                        }
-                    ?>
+                <table class="table">                   
                     <thead>
-                        <th>Code</th>
-                        <th>City</th>                      
-                        <th>Kecamatan</th>
-                        <th>Regular</th>
-                        <th>Regular estimasi</th>
-                        <th>one day</th>          
+                        <th>Name</th>
+                        <th>Description</th>                                              
                         <th>Action</th>
                     </thead>
                     <tbody>     
-                        @foreach ($price as $key => $value)
+                        @foreach ($education as $key => $value)
                             <tr>
-                                <td>{{$value->area_code}}</td>
-                                <td>{{$value->city}}</td>
-                                <td>{{$value->kecamatan}}</td>
-                                <td>{{$value->regular_price}}</td>
-                                <td>{{$value->est_delivery}}</td>
-                                <td>{{$value->oneday_price}}</td>
+                                <td>{{$value->name}}</td>
+                                <td>{{$value->description}}</td>                                
                                 <td>
-                                    <a href="/price/edit/{{$value->id}}">
+                                    <a href="/education/edit/{{$value->id}}">
                                         <span class="edit"> 
                                             <span class="glyphicon glyphicon-pencil"  rel="tooltip" title="delete"></span>
                                         </span>
                                     </a> | 
-                                    <a href="/price/delete/{{$value->id}}" class="confirmation">
+                                    <a href="/education/delete/{{$value->id}}" class="confirmation">
                                         <span class="delete">
                                             <span class="glyphicon glyphicon-remove"  rel="tooltip" title="delete"></span>
                                         </span>
@@ -116,37 +97,15 @@
             <div class="col-md-12">   
             <?php 
                 if (isset($filter)){
-                    $price->appends($filter);
+                    $education->appends($filter);
                 }
             ?>
-            {!! $price->render() !!}
+            {!! $education->render() !!}
             </div>
         </div>
      </div>         
 </div>
 
-<div id="upload_price" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Upload</h4>
-      </div>
-      <div class="modal-body">
-        <p>Untuk contoh upload klik disini >><a href="/upload/price.xls">Download</a></p>
-        <form action="/price/upload" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">  
-            Select image to upload:
-            <input type="file" name="fileupload" id="fileupload" class="form-control"><br/>
-            <input type="submit" value="Upload" class="btn" name="submit">
-        </form>
-      </div>     
-    </div>
-
-  </div>
-</div>
 
 </body>
 </html>
