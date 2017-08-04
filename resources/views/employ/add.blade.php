@@ -34,17 +34,37 @@
 				<form method="post" action="/employ/create" class="formsubmit">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">					
 					<div class="form-group">
-					    <label for="email">Nama</label>
-						 <input type="text" class="form-control" id="nama" name="nama" placeholder="input nama" value="{{ old('nama') }}" required>
+					    <label for="email">NIK *</label>
+						 <input type="text" class="form-control" id="nik" name="nik" placeholder="input nik" value="{{ old('nik') }}" required>
 					</div>					
 					<div class="form-group">
-					    <label for="email">Posisi</label>
-						 <select name="position" class="form-control" required>
-						 	<option>Pilih Posisi</option>
-						 	<option value="sales">Sales</option>
-						 	<option value="finance">Finance</option>
-						 	<option value="admin_operational">Admin Operasional</option>
-						 	<option value="kurir">Kurir</option>
+					    <label for="email">Nama</label>
+						 <input type="text" class="form-control" id="nama" name="name" placeholder="input nama" value="{{ old('name') }}" required>
+					</div>					
+					<div class="form-group">
+					    <label for="email">Tempat Lahir</label>
+						 <input type="text" class="form-control" id="birth_place" name="birth_place" placeholder="input tempat lahir" value="{{ old('birth_place') }}" required>
+					</div>					
+					<div class="form-group">
+					    <label for="email">Tempat Lahir</label>
+						 <input type="text" class="form-control" id="birth_date" name="birth_date" placeholder="input tempat lahir" value="{{ old('birth_date') }}" required>
+					</div>					
+					<div class="form-group">
+					    <label for="email">Jenis Kelamin</label>
+						 <select name="sex" class="form-control" required>
+						 	<option>Pilih Jenis Kelamin</option>
+						 	@if (old("sex")=="L")
+						 		<option value="L" selected=>Laki-Laki</option>
+						 	@else
+						 		<option value="L">Laki-Laki</option>
+						 	@endif
+
+						 	@if (old("sex")=="P")
+						 		<option value="P" selected>Perempuan</option>						 	
+						 	@else
+						 		<option value="P">Perempuan</option>						 	
+						 	@endif
+						 	
 						 </select>
 					</div>						
 					<div class="form-group">

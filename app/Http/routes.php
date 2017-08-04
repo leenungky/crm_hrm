@@ -28,9 +28,11 @@ Route::group(['middleware' => 'logic'], function(){
 	Route::controller('/department', 'DepartmentController');
 	Route::controller('/jobtitle', 'JobtitleController');
 	Route::controller('/family', 'FamilyController');		
-	Route::controller('/collect', 'CollectController');	
+	Route::controller('/cuti', 'CutiController');	
 	Route::controller('/education', 'EducationController');	
 	Route::controller('/employ', 'EmployeeController');		
+	Route::controller('/branch', 'BranchController');		
+	
 	
 });
 

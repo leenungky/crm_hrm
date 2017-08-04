@@ -17,6 +17,12 @@
     <div class="container container-fluid">            	
 		@include('header')		
 		<br/>		
+		<div class="row">	
+			<div class="col-md-12">
+			<a href="/cuti/add">Create</a>
+			</div>
+		</div>
+		<br/>
 		 @if(Session::has('message'))
             <div class="row">               
                 <div class="col-md-12 alert alert-warning">      
@@ -29,46 +35,31 @@
         @endif  
 		<div class="row">	
 			<div class="col-md-12">
-			<a href="/employ/add">Create</a>
-			</div>
-		</div>
-		<br/>
-		<div class="row">	
-			<div class="col-md-12">
-				<table class="table">
-					<?php 
-						$str_parameter = "";
-						if (isset($order_by)){
-							if ($order_by=="asc"){
-								$str_parameter = "&order_by=desc";
-							}
-							else if ($order_by=="desc"){
-								$str_parameter = "&order_by=asc";
-							}	
-						}
-					?>
+				<table class="table">					
 					<thead>
-						<th>Nik</th>
 						<th>Nama</th>
-			    		<th>Department</th>			    		
-						<th>Branch</th>
-						<th>Phone</th>
+			    		<th>Total hari</th>			    		
+			    		<th>Mengurangi cuci?</th>			    		
 						<th>Action</th>
 					</thead>
 					<tbody>		
-						@foreach ($employes as $key => $value)
+						@foreach ($cuti as $key => $value)
 							<tr>
-								<td>{{$value->nama}}</td><td>
-								{{ucwords(str_replace("_"," ",$value->position))}}
-								</td>
-								<td>{{$value->phone}}</td><td>{{$value->address}}</td>
+								<td>{{$value->name}}</td><td>{{$value->days}}</td>
 								<td>
-									<a href="/employ/edit/{{$value->id}}">
+									@if ($value->isdeduction==1)
+										Yes
+									@else
+										No
+									@endif
+									</td>
+								<td>
+									<a href="/cuti/edit/{{$value->id}}">
 										<span class="edit"> 
 					    					<span class="glyphicon glyphicon-pencil"  rel="tooltip" title="delete"></span>
 					    				</span>
 				    				</a> | 
-				    				<a href="/employ/delete/{{$value->id}}" class="confirmation">
+				    				<a href="/cuti/delete/{{$value->id}}" class="confirmation">
 					    				<span class="delete">
 				    						<span class="glyphicon glyphicon-remove"  rel="tooltip" title="delete"></span>
 				    					</span>

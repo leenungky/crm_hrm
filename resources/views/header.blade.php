@@ -19,19 +19,13 @@
                     <div class="col-md-2 col-top-menu1">
                         <div class="dropdown">
                             <a class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    Transaction
+                                    Karyawan
                                     <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                 <li>
-                                     <a href="/transaction">Create Transaction</a>
-                                </li>                                                                  
-                                @if ($req->session()->get("role")!="staff")
-                                    <li role="separator" class="divider"></li>
-                                    <li>
-                                        <a href="/collect/list">Gabungan</a>
-                                    </li>  
-                                @endif
+                                     <a href="/employ/list">Data</a>
+                                </li>                                                                                                  
                                 <li role="separator" class="divider"></li>
                                 <li>
                                     <a href="/transaction/taken">Customer Taken</a>
@@ -93,11 +87,11 @@
                                     </li>                                    
                                     <li role="separator" class="divider"></li>
                                     <li>
-                                        <a href="/tpl/list">Tunjangan</a>
+                                        <a href="/branch/list">Cabang</a>
                                     </li>
                                     <li role="separator" class="divider"></li>
                                     <li>
-                                        <a href="/tpl/list">Cuti</a>
+                                        <a href="/cuti/list">Cuti</a>
                                     </li>
                                     <li role="separator" class="divider"></li>
                                     <li>

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Redirect;
 use \URL;
 use \PHPExcel_IOFactory, \PHPExcel_Style_Fill, \PHPExcel_Cell, \PHPExcel_Cell_DataType, \SiteHelpers;
 
-class JobtitleController extends Controller {
+class BranchController extends Controller {
     
     var $data;
     var $company_id;
@@ -25,26 +25,27 @@ class JobtitleController extends Controller {
 	public function getList(){  
 		$req = $this->data["req"];      
         $input= $req->input();     
-        $jobtitle = $this->_get_index_filter($input);        
-        $this->data["jobtitle"] = $jobtitle->get();
-        return view('jobtitle.index', $this->data);
+        $branch = $this->_get_index_filter($input);        
+        $this->data["branch"] = $branch->get();
+        $this->data["filter"] = $input;
+        return view('branch.index', $this->data);
     }
 
     public function getAdd(){		
-		return view('jobtitle.new', $this->data);  
+		return view('branch.new', $this->data);  
 	}
 
      public function getDelete($id){
         $req = $this->data["req"];
-        DB::table("jobtitle")->where("id", $id)->where("company_id", $this->company_id)->delete();                
-        return redirect('/jobtitle/list')->with('message', "Successfull delete");
+        DB::table("branch")->where("id", $id)->where("company_id", $this->company_id)->delete();                
+        return redirect('/branch/list')->with('message', "Successfull delete");
     }
 
 
     public function getEdit($id){
-		$jobtitle = DB::table("jobtitle")->where("id", $id)->where("company_id", $this->company_id)->first();
-		$this->data["jobtitle"] = $jobtitle;
-		return view('jobtitle.edit', $this->data);
+		$branch = DB::table("branch")->where("id", $id)->where("company_id", $this->company_id)->first();
+		$this->data["branch"] = $branch;
+		return view('branch.edit', $this->data);
 	}
 
 	public function postCreate(){	
@@ -60,8 +61,8 @@ class JobtitleController extends Controller {
         $arrInsert["created_at"] = date("Y-m-d h:i:s");
         $arrInsert["company_id"] = $this->company_id;
         unset($arrInsert["_token"]);        
-        DB::table("jobtitle")->insert($arrInsert);        
-        return redirect('/jobtitle/list')->with('message', "Successfull create");			
+        DB::table("branch")->insert($arrInsert);        
+        return redirect('/branch/list')->with('message', "Successfull create");			
 	}
 
      public function postUpdate($id){	
@@ -76,15 +77,15 @@ class JobtitleController extends Controller {
         $arrUpdate = $req->input();
         
         unset($arrUpdate["_token"]);        
-        DB::table("jobtitle")->where("id", $id)->where("company_id", $this->company_id)->update($arrUpdate);        
-        return redirect('/jobtitle/list')->with('message', "Successfull update");			
+        DB::table("branch")->where("id", $id)->where("company_id", $this->company_id)->update($arrUpdate);        
+        return redirect('/branch/list')->with('message', "Successfull update");			
 	}
 
     
 	private function _get_index_filter($filter){
-        $dbcust = DB::table("jobtitle")->where("company_id", $this->company_id);
-        if (isset($filter["nama"])){
-            $dbcust = $dbcust->where("nama", "like", "%".$filter["nama"]."%");
+        $dbcust = DB::table("branch")->where("company_id", $this->company_id);
+        if (isset($filter["name"])){
+            $dbcust = $dbcust->where("name", "like", "%".$filter["name"]."%");
         }        
         return $dbcust;
     }

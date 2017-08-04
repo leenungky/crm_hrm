@@ -17,6 +17,24 @@
     <div class="container container-fluid">            	
 		@include('header')		
 		<br/>		
+		<div class="row">   
+            <form action="/branch/list" method="get">
+                <div class="col-md-2">
+                    Name<br/>
+                    <input type="text" name="name" class="form-control" value="{{isset($filter["name"]) ? $filter["name"] : ""}}">
+                </div>                                           
+                <div class="col-md-2">
+                    <br/>
+                    <input type="submit" value="find" class="btn">
+                </div>
+            </form>
+        </div><br/>
+		<div class="row">	
+			<div class="col-md-12">
+			<a href="/branch/add">Create</a>
+			</div>
+		</div>
+		<br/>
 		 @if(Session::has('message'))
             <div class="row">               
                 <div class="col-md-12 alert alert-warning">      
@@ -27,12 +45,7 @@
             </div>
             <br/>
         @endif  
-		<div class="row">	
-			<div class="col-md-12">
-			<a href="/employ/add">Create</a>
-			</div>
-		</div>
-		<br/>
+
 		<div class="row">	
 			<div class="col-md-12">
 				<table class="table">
@@ -48,27 +61,21 @@
 						}
 					?>
 					<thead>
-						<th>Nik</th>
-						<th>Nama</th>
-			    		<th>Department</th>			    		
-						<th>Branch</th>
-						<th>Phone</th>
+						<th>Name</th>
+			    		<th>Address</th>			    		
 						<th>Action</th>
 					</thead>
 					<tbody>		
-						@foreach ($employes as $key => $value)
+						@foreach ($branch as $key => $value)
 							<tr>
-								<td>{{$value->nama}}</td><td>
-								{{ucwords(str_replace("_"," ",$value->position))}}
-								</td>
-								<td>{{$value->phone}}</td><td>{{$value->address}}</td>
+								<td>{{$value->name}}</td><td>{{$value->address}}</td>
 								<td>
-									<a href="/employ/edit/{{$value->id}}">
+									<a href="/branch/edit/{{$value->id}}">
 										<span class="edit"> 
-					    					<span class="glyphicon glyphicon-pencil"  rel="tooltip" title="delete"></span>
+					    					<span class="glyphicon glyphicon-pencil"  rel="tooltip" title="edit"></span>
 					    				</span>
 				    				</a> | 
-				    				<a href="/employ/delete/{{$value->id}}" class="confirmation">
+				    				<a href="/branch/delete/{{$value->id}}" class="confirmation">
 					    				<span class="delete">
 				    						<span class="glyphicon glyphicon-remove"  rel="tooltip" title="delete"></span>
 				    					</span>

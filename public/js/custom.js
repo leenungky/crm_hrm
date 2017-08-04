@@ -45,8 +45,8 @@ $( document ).ready(function() {
 			$(".origin-address").show();
 			$(".origin-loker").hide();
 		}else if (type=="loker"){
-			$(".origin-address").hide();
-			$(".origin-loker").show();
+			$(".origin-address").hide()
+;			$(".origin-loker").show();
 		}
 	})
 
@@ -275,6 +275,8 @@ $( document ).ready(function() {
     $("input[name=menit]" ).numeric();
     $("input[name=oneday_price]" ).numeric();
     $("input[name=regular_price]" ).numeric();
+    $("input[name=days]" ).numeric();
+    
 
     $('.confirmation').on('click', function () {
         return confirm('Are you sure?');
