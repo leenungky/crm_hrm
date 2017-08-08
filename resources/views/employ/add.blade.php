@@ -69,21 +69,13 @@
 					</div>		
 					<div class="form-group">
 					    <label for="email">Department</label>
-						 <select name="department_id" class="form-control">
-						 	<option>Pilih department</option>
-						 	@if (old("sex")=="L")
-						 		<option value="L" selected=>Laki-Laki</option>
-						 	@else
-						 		<option value="L">Laki-Laki</option>
-						 	@endif
-
-						 	@if (old("sex")=="P")
-						 		<option value="P" selected>Perempuan</option>						 	
-						 	@else
-						 		<option value="P">Perempuan</option>						 	
-						 	@endif
-						 	
-						 </select>
+						<div class="input-group">
+					      <input type="text" name="department" class="form-control" placeholder="Search for...">
+					      <input type="hidden" name="department_id" class="form-control">
+					      <span class="input-group-btn">
+					        <button class="btn browse-department" type="button">Browse</button>
+					      </span>
+					    </div>
 					</div>
 					<div class="form-group">
 					    <label for="email">Job Titile</label>
@@ -143,11 +135,13 @@
 		</div>
 	</div>	    	
 </div>
+@include('footer')
 </body>
 </html>
 
 <script type="text/javascript">
 	$(document).ready(function(){	
 		$( "input[name=name]" ).focus();
+
 	});
 </script>

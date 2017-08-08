@@ -25,3 +25,10 @@
 <script type="text/javascript" src="{{ URL::asset('js/tree.js') }}"></script>	
 </body>
 </html>
+<script type="text/javascript">
+	$( ".right-click" ).dblclick(function() {
+		$("input[name='department']").val($(this).text());
+		$("input[name='department_id']").val($(this).attr("id"));	  	
+	  	$('#myModal').modal('hide');
+	});
+</script>
