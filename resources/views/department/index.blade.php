@@ -43,7 +43,8 @@
 				else  if (key=="delete"){	
 					var conf = confirm('Are you sure?');
 					if (conf){
-						$.get(base_url + "/department/delete/" + $(this).attr("id"));
+                        var url = base_url + "/department/delete/" + $(this).attr("id");                                    
+						$.get(url);
 						location.reload();
 					}
 				}				

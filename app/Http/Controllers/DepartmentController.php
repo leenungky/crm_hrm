@@ -66,9 +66,22 @@ class DepartmentController extends Controller {
     }
 
     public function getDelete($id){
-        $req = $this->data["req"];
-        DB::table("department")->where("parent_id", $id)->where("company_id", $this->company_id)->delete();                
-        DB::table("department")->where("id", $id)->where("company_id", $this->company_id)->delete();                
+        $req = $this->data["req"]; 
+        if ($id=="root"){
+            DB::table("department")->where("company_id", $this->company_id)->delete();                
+        }else{            
+            $department = DB::table("department")->where("company_id", $this->company_id)->where("id", $id)->first();
+            $department_child = DB::table("department")
+                ->where("company_id", $this->company_id)
+                ->where("parent_id", $department->parent_id)
+                ->where("id","<>", $id)
+                ->get();            
+            if (empty($department_child)){                
+                DB::table("department")->where("company_id", $this->company_id)->where("id", $department->parent_id)->update(array("is_group"=>0));              
+            }
+            DB::table("department")->where("parent_id", $id)->where("company_id", $this->company_id)->delete();                
+            DB::table("department")->where("id", $id)->where("company_id", $this->company_id)->delete();                    
+        }        
         return redirect('/department/list')->with('message', "Successfull delete");
     }
 
