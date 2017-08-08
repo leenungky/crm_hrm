@@ -27,8 +27,7 @@ $( document ).ready(function() {
 			url: url,
 			dataType: 'json',
 			success: function(result) {			  	
-			   	console.log(result.response.code);
-			   	// console.log(result.data);
+			   	console.log(result.response.code);			   	
 			   	if (result.response.code == 200){			   		
 			   		$("select[name='courier']").empty();
 			   		$.each(result.data, function(index,value){
@@ -261,8 +260,8 @@ $( document ).ready(function() {
     });
 
 
-
-    $("input[name='city']").bind("keydown", function(event) {
+ 
+   $("input[name='city']").bind("keydown", function(event) {
         if (event.keyCode==13){
             return false;
         }
@@ -283,8 +282,8 @@ $( document ).ready(function() {
     });
 
 
-    $( ".datepicker" ).datepicker({
-    	dateFormat: "yy-mm-dd"
+    $( ".datepicker" ).datepicker(
+{    	dateFormat: "yy-mm-dd"
     });
 
     $('.email').tokenfield();

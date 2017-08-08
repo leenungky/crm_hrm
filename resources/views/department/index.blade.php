@@ -16,71 +16,48 @@
  <div id="contents">
     <div class="container container-fluid">            	
 		@include('header')		
-		<br/>
-		<div class="row">	
-			<form action="/department/list" method="get">
-				<div class="col-md-3">
-					Nama<br/>
-					<input type="text" name="name" class="form-control" value="{{isset($filter["name"]) ? $filter["name"] : ""}}">
-				</div>				
-				<div class="col-md-2">
-					<br/>
-					<input type="submit" value="find" class="btn">
-				</div>
-			</form>
-		</div>
-		<br/>
-		<div class="row">	
-			<div class="col-md-12">
-			<a href="/department/new">Create</a>
-			</div>
-		</div>
-		<br/>
-		 @if(Session::has('message'))
-            <div class="row">
-                <div class="col-md-12 alert alert-warning">      
-                    <ul>
-                        <li>{!! Session::get('message') !!}</li>                      
-                    </ul>
-                </div>
-            </div>
-            <br/>
-        @endif               
-		
-		<div class="row">	
-			<div class="col-md-12">
-				<table class="table">					
-					<thead>
-						<th>No</th>
-						<th>Nama</th>			    																				
-						<th>Created At</th>			    																				
-						<th>Action</th>
-					</thead>
-					<tbody>
-						@foreach ($deptDB as $key => $value)
-							<tr>
-								<td>{{($key+1)}}</td>
-								<td>{{$value->name}}</td>								
-								<td>{{$value->created_at}}</td>								
-								<td>
-									<a href="/department/edit/{{$value->id}}">
-										<span class="edit"> 
-					    					<span class="glyphicon glyphicon-pencil"></span>
-					    				</span>
-				    				</a> | 
-				    				<a href="/department/delete/{{$value->id}}" class="confirmation">
-					    				<span class="delete">
-				    						<span class="glyphicon glyphicon-remove"></span>
-				    					</span> 
-			    					</a>
-								</td>
-							</tr>																							
-						@endforeach
-					</tbody>
-				</table>
-			</div>
+		<div class="load-tree">						
 		</div>
 	 </div>	    	
 </div>
+
+@include('footer')			
 </body>
 </html>
+
+<script type="text/javascript">	
+	
+
+	 $.contextMenu({
+            selector: '.right-click', 
+            callback: function(key, options) {
+                var m = "clicked: " + key;
+                $(".modal-title").text(key + " Department " + $(this).text());
+                if (key=="add"){	
+					$(".modal-body").load(base_url + "/department/new?id=" + $(this).attr("id"));
+					$('#myModal').modal('show'); 
+				}else  if (key=="edit"){	
+					$(".modal-body").load(base_url + "/department/edit/" + $(this).attr("id"));
+					$('#myModal').modal('show'); 
+				}				
+				else  if (key=="delete"){	
+					var conf = confirm('Are you sure?');
+					if (conf){
+						$.get(base_url + "/department/delete/" + $(this).attr("id"));
+						location.reload();
+					}
+				}				
+            },
+            items: {
+            	"add": {name: "Add", icon: "add"},
+                "edit": {name: "Edit", icon: "edit"},                
+                "delete": {name: "Delete", icon: "delete"},
+                "sep1": "---------",
+                "quit": {name: "Quit", icon: function(){
+                    return 'context-menu-icon context-menu-icon-quit';
+                }}
+            }
+        });
+
+       
+</script>

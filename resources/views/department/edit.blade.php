@@ -13,10 +13,7 @@
 <body >
     <?php use App\Http\Helpers\Helpdesk; ?>
  
- <div id="contents">
-    <div class="container container-fluid">       
-		@include('header')		
-		<br/>
+ 
 		<div class="row">	
 			<div class="col-md-12">		
 				<form method="post" action="/department/update/{{$department->id}}" class="formsubmit">
@@ -29,8 +26,7 @@
 				</form>
 			</div>
 		</div>
-	 </div>	    	
-</div>
+
 </body>
 </html>
 <script type="text/javascript">

@@ -13,10 +13,7 @@
 <body >
     <?php use App\Http\Helpers\Helpdesk; ?>
  
- <div id="contents">
-    <div class="container container-fluid">       
-		@include('header')		
-		<br/>
+ 		
 		@if (count($errors))     
 			<div class="row">				
 				<div class="col-md-12 alert alert-danger">		
@@ -31,7 +28,7 @@
 		<br/>
 		<div class="row">				
 			<div class="col-md-12">		
-				<form method="post" action="/department/create" class="formsubmit">
+				<form method="post" action="/department/create/{{$parent_id}}" class="formsubmit">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">					
 					<div class="form-group">
 					    <label for="email">Nama</label>
@@ -41,9 +38,7 @@
 				</form>
 			</div>
 		</div>
-	</div>	    	
 
-</div>
 </body>
 </html>
 

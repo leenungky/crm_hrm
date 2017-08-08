@@ -38,21 +38,21 @@
 						 <input type="text" class="form-control" id="nik" name="nik" placeholder="input nik" value="{{ old('nik') }}" required>
 					</div>					
 					<div class="form-group">
-					    <label for="email">Nama</label>
+					    <label for="email">Nama *</label>
 						 <input type="text" class="form-control" id="nama" name="name" placeholder="input nama" value="{{ old('name') }}" required>
 					</div>					
 					<div class="form-group">
-					    <label for="email">Tempat Lahir</label>
+					    <label for="email">Birth place *</label>
 						 <input type="text" class="form-control" id="birth_place" name="birth_place" placeholder="input tempat lahir" value="{{ old('birth_place') }}" required>
 					</div>					
 					<div class="form-group">
-					    <label for="email">Tempat Lahir</label>
+					    <label for="email">Birth date *</label>
 						 <input type="text" class="form-control" id="birth_date" name="birth_date" placeholder="input tempat lahir" value="{{ old('birth_date') }}" required>
 					</div>					
 					<div class="form-group">
-					    <label for="email">Jenis Kelamin</label>
+					    <label for="email">Gender *</label>
 						 <select name="sex" class="form-control" required>
-						 	<option>Pilih Jenis Kelamin</option>
+						 	<option>Pilih Gender</option>
 						 	@if (old("sex")=="L")
 						 		<option value="L" selected=>Laki-Laki</option>
 						 	@else
@@ -66,15 +66,77 @@
 						 	@endif
 						 	
 						 </select>
-					</div>						
+					</div>		
 					<div class="form-group">
-					    <label for="email">Phone</label>
+					    <label for="email">Department</label>
+						 <select name="department_id" class="form-control">
+						 	<option>Pilih department</option>
+						 	@if (old("sex")=="L")
+						 		<option value="L" selected=>Laki-Laki</option>
+						 	@else
+						 		<option value="L">Laki-Laki</option>
+						 	@endif
+
+						 	@if (old("sex")=="P")
+						 		<option value="P" selected>Perempuan</option>						 	
+						 	@else
+						 		<option value="P">Perempuan</option>						 	
+						 	@endif
+						 	
+						 </select>
+					</div>
+					<div class="form-group">
+					    <label for="email">Job Titile</label>
+						 <select name="jobtitle_id" class="form-control">
+						 	<option>Pilih Job Title</option>
+						 	@if (old("sex")=="L")
+						 		<option value="L" selected=>Laki-Laki</option>
+						 	@else
+						 		<option value="L">Laki-Laki</option>
+						 	@endif
+
+						 	@if (old("sex")=="P")
+						 		<option value="P" selected>Perempuan</option>						 	
+						 	@else
+						 		<option value="P">Perempuan</option>						 	
+						 	@endif
+						 	
+						 </select>
+					</div>		
+					<div class="form-group">
+					    <label for="email">Branch</label>
+						 <select name="branch_id" class="form-control">
+						 	<option>Pilih Branch</option>
+						 	@if (old("sex")=="L")
+						 		<option value="L" selected=>Laki-Laki</option>
+						 	@else
+						 		<option value="L">Laki-Laki</option>
+						 	@endif
+
+						 	@if (old("sex")=="P")
+						 		<option value="P" selected>Perempuan</option>						 	
+						 	@else
+						 		<option value="P">Perempuan</option>						 	
+						 	@endif
+						 	
+						 </select>
+					</div>										
+					<div class="form-group">
+					    <label for="email">Phone *</label>
 						 <input type="text" class="form-control" id="phone" name="phone" placeholder="input phone" value="{{ old('phone') }}" required>
 					</div>						
 					<div class="form-group">
-					    <label for="email">Alamat</label>
-						 <textarea name="address" class="form-control" placeholder="input alamat" required>{{ old('address') }}</textarea>
-					</div>										
+					    <label for="email">Address *</label>
+						 <textarea name="address" class="form-control" placeholder="input address" required>{{ old('address') }}</textarea>
+					</div>						
+					<div class="form-group">
+					    <label for="email">Email</label>
+					    <input type="text" class="form-control" id="email" name="email" placeholder="input email" value="{{ old('email') }}">
+					</div>
+					<div class="form-group">
+					    <label for="email">Nationality</label>
+					    <input type="text" class="form-control" id="nationality" name="nationality" placeholder="input nationality" value="{{ old('nationality') }}">						 
+					</div>
 					<button type="submit" class="btn">Submit</button>
 				</form>
 			</div>

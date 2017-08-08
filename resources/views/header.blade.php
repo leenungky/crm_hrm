@@ -1,4 +1,4 @@
-<script type="text/javascript">
+ <script type="text/javascript">
     var base_url = "{{config('config.url')}}";
     $(document).ready(function(){
         $(document).idleTimeout({
@@ -10,129 +10,61 @@
     });
 </script>
 
-<div class="row">
-    		<div class="col-md-8">
-    			<div class="row row-top-menu">
-    				<div class="col-md-2 col-top-logo">	
-    					<!-- <img src="{{URL::asset('img/logo-bks.png')}}" class="logo"> -->
-    				</div>    				
-                    <div class="col-md-2 col-top-menu1">
-                        <div class="dropdown">
-                            <a class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    Karyawan
-                                    <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <li>
-                                     <a href="/employ/list">Data</a>
-                                </li>                                                                                                  
-                                <li role="separator" class="divider"></li>
-                                <li>
-                                    <a href="/transaction/taken">Customer Taken</a>
-                                </li>                                                                
-                            </ul>
-                        </div>                      
-                    </div>
-                    
-                    @if ( ($req->session()->get("role")=="administrator") || ($req->session()->get("role")=="admin") )   
-                        <div class="col-md-2 col-top-menu1">
-                            <div class="dropdown">
-                                <a class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                        Laporan
-                                        <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li>
-                                         <a href="/report/biaya">Laporan Pelanggan</a>
-                                    </li>  
-                                    <li role="separator" class="divider"></li>
-                                    <li>
-                                        <a href="/report/pengiriman">Laporan Pengiriman</a>
-                                    </li>                                                          
-                                </ul>
-                            </div>                      
-                        </div>
-                    @endif
-
-                    @if ( ($req->session()->get("role")=="administrator") || ($req->session()->get("role")=="admin") ) 
-                        <div class="col-md-2 col-top-menu1">
-                            <div class="dropdown">
-                                <a class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                        Master Data
-                                        <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-
-                                    <li>
-                                        <a href="/department/list">Departmant</a>
-                                    </li>
-                                    @if ($req->session()->get("role")=="administrator")
-                                        <li role="separator" class="divider"></li>
-                                        <li>
-                                             <a href="/user/list">User</a>
-                                        </li>  
-                                    @endif
-                                    <li role="separator" class="divider"></li>
-                                    <li>
-                                         <a href="/jobtitle/list">Job Title</a>
-                                    </li>  
-                                    <li role="separator" class="divider"></li>
-                                    <li>
-                                        <a href="/family/list">Family Relation</a>
-                                    </li>
-                                    <li role="separator" class="divider"></li>
-
-                                    <li>
-                                        <a href="/education/list">Education</a>
-                                    </li>                                    
-                                    <li role="separator" class="divider"></li>
-                                    <li>
-                                        <a href="/branch/list">Cabang</a>
-                                    </li>
-                                    <li role="separator" class="divider"></li>
-                                    <li>
-                                        <a href="/cuti/list">Cuti</a>
-                                    </li>
-                                    <li role="separator" class="divider"></li>
-                                    <li>
-                                        <a href="/tpl/list">Tunjangan</a>
-                                    </li>
-                                    <li role="separator" class="divider"></li>
-                                    <li>
-                                        <a href="/tpl/list">Potongan</a>
-                                    </li>                              
-                                </ul>
-                            </div>                      
-                        </div>   
-                    @endif               
-    			</div>
-    		</div>
-    	<div class="col-md-4">
-    	<div class="row">
-    		<div class="col-md-11 col-top-menu-user">
-    			<div class="dropdown">
-					<button class="btn dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-						    {{\Auth::user()->first_name}} {{\Auth::user()->lasts_name}}
-						    <span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
- 					    <!-- <li><a href="/user/list">User</a></li>	
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">WebSiteName</a>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">        
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Employee
+          <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/employ/list">Data</a></li>                          
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Master Data
+          <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+                <li class="dropdown-submenu">
+                    <a tabindex="-1" href="#">Karyawan Attribute<i class="glyphicon glyphicon-chevron-right"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a tabindex="-1" href="/department/list">Department</a></li>                           
                         <li role="separator" class="divider"></li>
-                        <li><a href="/role/list">Role</a></li>  					    
-					    <li role="separator" class="divider"></li> -->
-				        <li><a href="/user/logout">logout</a></li>
-		  		    </ul>
-				</div>    					
-    		</div>
-    		<div class="col-md-1 col-top-menu-user">
-    			<img src="{{URL::asset('img/user.png')}}" class="user" />
-        	</div>
-    	</div>
- 	</div>
-</div>
+                        <li><a href="/jobtitle/list">Job Title</a></li> 
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/family/list">Family Relation</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/education/list">Education</a></li>                                    
+                    </ul>
+                </li>                         
+                <li role="separator" class="divider"></li>  
+                <li class="dropdown-submenu">
+                    <a tabindex="-1" href="#">Payroll<i class="glyphicon glyphicon-chevron-right"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Tunjangan</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Potongan</a></li>                              
+                    </ul>
+                </li>   
+          </ul>
+        </li>        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> {{\Auth::user()->first_name}} {{\Auth::user()->lasts_name}} <img src="{{URL::asset('img/user.png')}}" class="user" /><span  class="glyphicon glyphicon-log-in"></span></a>
+            <ul class="dropdown-menu">
+            <li><a href="/user/logout">logout</a></li>            
+        </ul>          
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
 <div class="row">
         <div class="col-md-12">
             <div class="status-barang">{{ucwords(str_replace("_"," ",$type))}}</strong></div>
         </div>          
-    </div>
+    </div> 

@@ -20,20 +20,23 @@ class DepartmentController extends Controller {
     	$this->data["type"]= "master_department";  
         $this->data["req"] = $req;            	
         $this->company_id = \Auth::user()->company_id;
+        $this->data["helper"] = new Helpers();
+        $this->data["ctrl"] = $this;
     }
 
-	public function getList(){                               
-        $req = $this->data["req"];
-        $input= $req->input();         
-        $deptDB = $this->_get_index_filter($input);        
-        $deptDB = $this->_get_index_sort($req, $deptDB, $input);        
-        $deptDB = $deptDB->get();           
-        $this->data["filter"] = $input;
-        $this->data["deptDB"] = $deptDB;        
+	public function getList(){                                       
         return view('department.index', $this->data);
     }
 
-    public function postCreate(){
+    public function getTree(){           
+        $deptDB = $this->_get_index_filter();                                  
+        $deptDB = $deptDB->where("parent_id", 0);    
+        $deptDB = $deptDB->get();                
+        $this->data["deptDB"] = $deptDB;           
+        return view('department.tree', $this->data);
+    }
+
+    public function postCreate($id){        
         $req = $this->data["req"];
         $validator = Validator::make($req->all(), [            
             'name' => 'required'          
@@ -43,10 +46,16 @@ class DepartmentController extends Controller {
             return Redirect::to(URL::previous())->withInput(Input::all())->withErrors($validator);            
         }
         $arrInsert = $req->input();
+        if ($id!="root"){
+            $arrInsert["parent_id"] = $id;    
+        }        
         $arrInsert["created_at"] = date("Y-m-d h:i:s");
         $arrInsert["company_id"] = $this->company_id;
         unset($arrInsert["_token"]);        
-        DB::table("department")->insert($arrInsert);        
+        DB::table("department")->insert($arrInsert); 
+        if ($id!="root"){
+            DB::table("department")->where("id", $id)->update(array("is_group" =>1));       
+        }
         return redirect('/department/list')->with('message', "Successfull create");
     }
 
@@ -58,11 +67,14 @@ class DepartmentController extends Controller {
 
     public function getDelete($id){
         $req = $this->data["req"];
+        DB::table("department")->where("parent_id", $id)->where("company_id", $this->company_id)->delete();                
         DB::table("department")->where("id", $id)->where("company_id", $this->company_id)->delete();                
         return redirect('/department/list')->with('message', "Successfull delete");
     }
 
     public function getNew(){
+        $req= $this->data["req"];
+        $this->data["parent_id"] = $req->get("id");                
         return view('department.new', $this->data);
     }
 
@@ -74,7 +86,7 @@ class DepartmentController extends Controller {
         return redirect('/department/list')->with('message', "Successfull update");
     }
 
-    private function _get_index_filter($filter){
+    public function _get_index_filter($filter = null){
         $dbcust = DB::table("department")->where("company_id", $this->company_id);
         if (isset($filter["name"])){
             $dbcust = $dbcust->where("name", "like", "%".$filter["name"]."%");

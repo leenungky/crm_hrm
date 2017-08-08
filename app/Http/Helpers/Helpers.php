@@ -296,6 +296,42 @@
 			}
 		}
 
+		public function getDbTreeDepartment($ctrl, $value){
+			if ($value->is_group==1){
+                $deptGroupDB = $ctrl->_get_index_filter();   
+                $deptGroupDB = $deptGroupDB->where("parent_id", $value->id);
+                $deptGroupDB = $deptGroupDB->get();
+                $value->child = $deptGroupDB;                              
+                echo "<ul>";
+                foreach ($deptGroupDB as $keychild => $valuechild) {                    	
+                	echo "<li><a href='#' id='".$valuechild->id."' class='right-click'>".$valuechild->name."</a>";
+                	$this->getDbTreeDepartment($ctrl, $valuechild);
+                	echo "</li>";
+                }   
+                echo "</ul>";                             
+            }
+            return $value;
+		}
+
+		// public function getTree($value, $strdata){			
+		// 		echo $value->id."<br/>";
+		// 		foreach ($value->child as $keychild => $valuechild){
+		// 			echo "<pre>";
+		// 			print_r($value->child);
+		// 			$strdata = $strdata."<ul>";
+		// 				$strdata = $strdata."<li><a href='#''>".$valuechild->name."</a></li>";						
+		// 				if ($value->is_group==1){
+		// 					$this->getTree($valuechild, $strdata);						
+		// 				}
+		// 			$strdata = $strdata."</ul>";
+		// 		}
+		// 	// }else{
+		// 	// 	echo $value->id."<br/>";	
+		// 	// }
+			
+		// 	return $strdata;
+		// }
+
 		
 	}
 ?>

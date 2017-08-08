@@ -282,9 +282,9 @@ class UserController extends Controller {
 							return response()->json(['status' => 'success', 'url' => url('')]);
 						} else {							
 							if ($role->name == "staff"){
-								return Redirect::to('transaction');
+								return Redirect::to('/employ/list');
 							}else{
-								return Redirect::to('customer');
+								return Redirect::to('/employ/list');
 							}
 						}					
 					}		
