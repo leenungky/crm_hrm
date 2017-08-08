@@ -47,7 +47,7 @@
 					</div>					
 					<div class="form-group">
 					    <label for="email">Birth date *</label>
-						 <input type="text" class="form-control" id="birth_date" name="birth_date" placeholder="input tempat lahir" value="{{ old('birth_date') }}" required>
+						 <input type="text" class="form-control datepicker" id="birth_date" name="birth_date" placeholder="input tanggal lahir" value="{{ old('birth_date') }}" required>
 					</div>					
 					<div class="form-group">
 					    <label for="email">Gender *</label>
@@ -70,8 +70,8 @@
 					<div class="form-group">
 					    <label for="email">Department</label>
 						<div class="input-group">
-					      <input type="text" name="department" class="form-control" placeholder="Search for...">
-					      <input type="hidden" name="department_id" class="form-control">
+					      <input type="text" name="department" class="form-control" placeholder="Search for..." value="{{old("department")}}">
+					      <input type="hidden" name="department_id" class="form-control" value="{{old("department_id")}}">
 					      <span class="input-group-btn">
 					        <button class="btn browse-department" type="button">Browse</button>
 					      </span>
@@ -81,35 +81,26 @@
 					    <label for="email">Job Titile</label>
 						 <select name="jobtitle_id" class="form-control">
 						 	<option>Pilih Job Title</option>
-						 	@if (old("sex")=="L")
-						 		<option value="L" selected=>Laki-Laki</option>
-						 	@else
-						 		<option value="L">Laki-Laki</option>
-						 	@endif
-
-						 	@if (old("sex")=="P")
-						 		<option value="P" selected>Perempuan</option>						 	
-						 	@else
-						 		<option value="P">Perempuan</option>						 	
-						 	@endif
-						 	
+						 	@foreach ($jobtitle as $key => $value)
+						 		@if (old("jobtitle_id")=="$value->id")
+						 			<option value="{{$value->id}}" selected>{{$value->name}}</option>
+						 		@else
+						 			<option value="{{$value->id}}">{{$value->name}}</option>
+						 		@endif						 		
+						 	@endforeach						 	
 						 </select>
 					</div>		
 					<div class="form-group">
 					    <label for="email">Branch</label>
 						 <select name="branch_id" class="form-control">
 						 	<option>Pilih Branch</option>
-						 	@if (old("sex")=="L")
-						 		<option value="L" selected=>Laki-Laki</option>
-						 	@else
-						 		<option value="L">Laki-Laki</option>
-						 	@endif
-
-						 	@if (old("sex")=="P")
-						 		<option value="P" selected>Perempuan</option>						 	
-						 	@else
-						 		<option value="P">Perempuan</option>						 	
-						 	@endif
+						 	@foreach ($branch as $key => $value)
+						 		@if (old("branch_id")=="$value->id")
+						 			<option value="{{$value->id}}" selected>{{$value->name}}</option>
+						 		@else
+						 			<option value="{{$value->id}}">{{$value->name}}</option>
+						 		@endif						 		
+						 	@endforeach	
 						 	
 						 </select>
 					</div>										

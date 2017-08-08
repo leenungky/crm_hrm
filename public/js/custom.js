@@ -129,8 +129,8 @@ $( document ).ready(function() {
 		insertAjax(true);
 	})
 
-	$(".btn-rwb").click(function(e){
-		var isValidate = false;		
+	$(".btn-rwb").click(function(e){	
+	var isValidate = false;		
 		isValidate = validate("oweight", 'required', isValidate);	
 		isValidate =  validateSelect("courier", 'required', isValidate);
 		isValidate =  validateSelect("delivery_type", 'required', isValidate);

@@ -71,10 +71,13 @@
 					<tbody>		
 						@foreach ($employes as $key => $value)
 							<tr>
-								<td>{{$value->nama}}</td><td>
-								{{ucwords(str_replace("_"," ",$value->position))}}
+								<td>{{$value->nik}}</td>
+								<td>{{$value->name}}</td>
+								<td>
+								{{$value->department_name}}
 								</td>
-								<td>{{$value->phone}}</td><td>{{$value->address}}</td>
+								<td>{{$value->branch_name}}</td>
+								<td>{{$value->phone}}</td>
 								<td>
 									<a href="/employ/edit/{{$value->id}}">
 										<span class="edit"> 

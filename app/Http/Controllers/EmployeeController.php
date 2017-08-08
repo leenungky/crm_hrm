@@ -30,7 +30,11 @@ class EmployeeController extends Controller {
         return view('employ.index', $this->data);
     }
 
-    public function getAdd(){		
+    public function getAdd(){	
+        $jobtitle = DB::table("jobtitle")->where("company_id", $this->company_id)->get();
+        $branch = DB::table("branch")->where("company_id", $this->company_id)->get();
+        $this->data["jobtitle"] = $jobtitle;	
+        $this->data["branch"] = $branch;    
 		return view('employ.add', $this->data);  
 	}
 
@@ -48,8 +52,8 @@ class EmployeeController extends Controller {
 	public function postCreate(){	
 		$req = $this->data["req"];
 	 	$validator = Validator::make($req->all(), [            
-            'nama' => 'required',
-            'position' => 'required',
+            'name' => 'required',
+            'department_id' => 'required',
             'phone' => 'required',
             'address' => 'required'
         ]);
@@ -62,6 +66,7 @@ class EmployeeController extends Controller {
         $arrInsert["company_id"] = $this->company_id;
         $arrInsert["created_at"] = date("Y-m-d h:i:s");
         unset($arrInsert["_token"]);        
+        unset($arrInsert["department"]);        
         DB::table("employee")->insert($arrInsert);        
         return redirect('/employ/list')->with('message', "Successfull create");			
 	}
@@ -70,7 +75,7 @@ class EmployeeController extends Controller {
 		$req = $this->data["req"];
         $validator = Validator::make($req->all(), [            
             'nama' => 'required',
-            'position' => 'required',
+            'department_id' => 'required',
             'phone' => 'required',
             'address' => 'required'
         ]);
@@ -86,9 +91,12 @@ class EmployeeController extends Controller {
 	}    
 
 	private function _get_index_filter($filter){
-        $dbemploy = DB::table("employee")->where("company_id", $this->company_id);
+        $dbemploy = DB::table("employee")->where("employee.company_id", $this->company_id)   
+                    ->select(DB::raw("employee.*, department.name as department_name, branch.name as branch_name")) 
+                    ->join("department", "department.id", "=", "employee.department_id", "left")
+                    ->join("branch", "branch.id", "=", "employee.branch_id", "left");
         if (isset($filter["nama"])){
-            $dbemploy = $dbemploy->where("nama", "like", "%".$filter["nama"]."%");
+            $dbemploy = $dbemploy->where("employee.nama", "like", "%".$filter["nama"]."%");
         }
         return $dbemploy;
     }

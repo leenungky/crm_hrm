@@ -37,7 +37,9 @@
                         <li role="separator" class="divider"></li>
                         <li><a href="/family/list">Family Relation</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="/education/list">Education</a></li>                                    
+                        <li><a href="/education/list">Education</a></li>   
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/branch/list">Cabang</a></li>                                    
                     </ul>
                 </li>                         
                 <li role="separator" class="divider"></li>  
