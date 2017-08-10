@@ -16,6 +16,23 @@
  <div id="contents">
     <div class="container container-fluid">       
 		@include('header')		
+		<div class="tab">
+		  <button class="tablinks active" onclick="openCity(event, 'Karyawan')">Karyawan</button>
+		  <button class="tablinks" onclick="openCity(event, 'Family')">Family</button>
+		  <button class="tablinks" onclick="openCity(event, 'Education')">Pendidikan</button>
+		</div>		
+		<div id="Karyawan" class="tabcontent" style="display: block;">
+		  <h3>Karyawan</h3>
+		  @include("employ._addkaryawan")
+		</div>
+		<div id="Family" class="tabcontent">
+		  <h3>Family</h3>
+		  @include("employ._addfamily")		  
+		</div>
+		<div id="Education" class="tabcontent">
+		  <h3>Pendidikan</h3>
+		  @include("employ._addeducation")			  
+		</div>				
 		<br/>
 		@if (count($errors))     
 			<div class="row">				
@@ -31,97 +48,7 @@
 		<br/>
 		<div class="row">				
 			<div class="col-md-12">		
-				<form method="post" action="/employ/create" class="formsubmit">
-					<input type="hidden" name="_token" value="{{ csrf_token() }}">					
-					<div class="form-group">
-					    <label for="email">NIK *</label>
-						 <input type="text" class="form-control" id="nik" name="nik" placeholder="input nik" value="{{ old('nik') }}" required>
-					</div>					
-					<div class="form-group">
-					    <label for="email">Nama *</label>
-						 <input type="text" class="form-control" id="nama" name="name" placeholder="input nama" value="{{ old('name') }}" required>
-					</div>					
-					<div class="form-group">
-					    <label for="email">Birth place *</label>
-						 <input type="text" class="form-control" id="birth_place" name="birth_place" placeholder="input tempat lahir" value="{{ old('birth_place') }}" required>
-					</div>					
-					<div class="form-group">
-					    <label for="email">Birth date *</label>
-						 <input type="text" class="form-control datepicker" id="birth_date" name="birth_date" placeholder="input tanggal lahir" value="{{ old('birth_date') }}" required>
-					</div>					
-					<div class="form-group">
-					    <label for="email">Gender *</label>
-						 <select name="sex" class="form-control" required>
-						 	<option>Pilih Gender</option>
-						 	@if (old("sex")=="L")
-						 		<option value="L" selected=>Laki-Laki</option>
-						 	@else
-						 		<option value="L">Laki-Laki</option>
-						 	@endif
-
-						 	@if (old("sex")=="P")
-						 		<option value="P" selected>Perempuan</option>						 	
-						 	@else
-						 		<option value="P">Perempuan</option>						 	
-						 	@endif
-						 	
-						 </select>
-					</div>		
-					<div class="form-group">
-					    <label for="email">Department</label>
-						<div class="input-group">
-					      <input type="text" name="department" class="form-control" placeholder="Search for..." value="{{old("department")}}">
-					      <input type="hidden" name="department_id" class="form-control" value="{{old("department_id")}}">
-					      <span class="input-group-btn">
-					        <button class="btn browse-department" type="button">Browse</button>
-					      </span>
-					    </div>
-					</div>
-					<div class="form-group">
-					    <label for="email">Job Titile</label>
-						 <select name="jobtitle_id" class="form-control">
-						 	<option>Pilih Job Title</option>
-						 	@foreach ($jobtitle as $key => $value)
-						 		@if (old("jobtitle_id")=="$value->id")
-						 			<option value="{{$value->id}}" selected>{{$value->name}}</option>
-						 		@else
-						 			<option value="{{$value->id}}">{{$value->name}}</option>
-						 		@endif						 		
-						 	@endforeach						 	
-						 </select>
-					</div>		
-					<div class="form-group">
-					    <label for="email">Branch</label>
-						 <select name="branch_id" class="form-control">
-						 	<option>Pilih Branch</option>
-						 	@foreach ($branch as $key => $value)
-						 		@if (old("branch_id")=="$value->id")
-						 			<option value="{{$value->id}}" selected>{{$value->name}}</option>
-						 		@else
-						 			<option value="{{$value->id}}">{{$value->name}}</option>
-						 		@endif						 		
-						 	@endforeach	
-						 	
-						 </select>
-					</div>										
-					<div class="form-group">
-					    <label for="email">Phone *</label>
-						 <input type="text" class="form-control" id="phone" name="phone" placeholder="input phone" value="{{ old('phone') }}" required>
-					</div>						
-					<div class="form-group">
-					    <label for="email">Address *</label>
-						 <textarea name="address" class="form-control" placeholder="input address" required>{{ old('address') }}</textarea>
-					</div>						
-					<div class="form-group">
-					    <label for="email">Email</label>
-					    <input type="text" class="form-control" id="email" name="email" placeholder="input email" value="{{ old('email') }}">
-					</div>
-					<div class="form-group">
-					    <label for="email">Nationality</label>
-					    <input type="text" class="form-control" id="nationality" name="nationality" placeholder="input nationality" value="{{ old('nationality') }}">						 
-					</div>
-					<button type="submit" class="btn">Submit</button>
-				</form>
+				
 			</div>
 		</div>
 	</div>	    	
@@ -131,8 +58,51 @@
 </html>
 
 <script type="text/javascript">
-	$(document).ready(function(){	
-		$( "input[name=name]" ).focus();
-
+	$(document).ready(function(){		
+		var arrFamily = [];			 
+		$( "input[name=nik]" ).focus();
+		$(".btn-addkaryawan").click(function(){
+			$('.body-family tr').each(function(index, tr) {
+			    var lines = $('td', tr).map(function(index, td) {			    	
+			        return $(td).text();
+			    });	
+			    var arrData = [lines[0], lines[1]];			    
+			    arrFamily.push(arrData);			    
+			});
+			var strFamily = JSON.stringify(arrFamily);
+			console.log(strFamily);
+			var postdata = { 
+				_token : "{{ csrf_token() }}",
+				nik: $("input[name='nik']").val(), 
+				name: $("input[name='name']").val(),
+				family: strFamily
+			}
+				
+			$.post( base_url + "/employ/create", postdata).done(function( data ) {
+		    	console.log(data)
+		  	});
+		})
 	});
+	
+
+	function openCity(evt, cityName) {
+	    // Declare all variables
+	    var i, tabcontent, tablinks;
+
+	    // Get all elements with class="tabcontent" and hide them
+	    tabcontent = document.getElementsByClassName("tabcontent");
+	    for (i = 0; i < tabcontent.length; i++) {
+	        tabcontent[i].style.display = "none";
+	    }
+
+	    // Get all elements with class="tablinks" and remove the class "active"
+	    tablinks = document.getElementsByClassName("tablinks");
+	    for (i = 0; i < tablinks.length; i++) {
+	        tablinks[i].className = tablinks[i].className.replace(" active", "");
+	    }
+
+	    // Show the current tab, and add an "active" class to the button that opened the tab
+	    document.getElementById(cityName).style.display = "block";
+	    evt.currentTarget.className += " active";
+	}
 </script>

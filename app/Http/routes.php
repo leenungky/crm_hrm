@@ -26,6 +26,7 @@ Route::group(['middleware' => 'logic'], function(){
 	Route::controller('/user', 'UserController');
 	Route::controller('/role', 'RoleController');
 	Route::controller('/department', 'DepartmentController');
+	Route::controller('/payroll', 'PayrollController');
 	Route::controller('/jobtitle', 'JobtitleController');
 	Route::controller('/family', 'FamilyController');		
 	Route::controller('/cuti', 'CutiController');	

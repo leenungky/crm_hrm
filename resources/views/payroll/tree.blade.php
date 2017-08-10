@@ -3,7 +3,6 @@
 		<link rel="stylesheet" href="{{ URL::asset('css/jquerysctipttop.css') }}" />	
 		<link rel="stylesheet" href="{{ URL::asset('font-awesome/css/font-awesome.min.css') }}" />		
 		<link rel="stylesheet" href="{{ URL::asset('css/bootstrap-dialog.min.css') }}" />	
-		
 	</head>
 <body>
 <div class="tree">
@@ -11,7 +10,7 @@
 		<ul>
 			<li><a href="#" id="root" class="right-click">root</a>								
 				<ul>
-					@foreach ($deptDB as $key => $value)				
+					@foreach ($payrollDB as $key => $value)				
 						<li><a href="#" id="{{$value->id}}" class="right-click">{{$value->name}}</a>	
 						<?php 					
 							$helper->getDbTreeDepartment($ctrl, $value);										

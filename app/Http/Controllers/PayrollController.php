@@ -12,28 +12,28 @@ use Illuminate\Support\Facades\Redirect;
 use \URL;
 use \PHPExcel_IOFactory, \PHPExcel_Style_Fill, \PHPExcel_Cell, \PHPExcel_Cell_DataType, \SiteHelpers;
 
-class DepartmentController extends Controller {
+class PayrollController extends Controller {
     
     var $data;
     var $company_id;
     public function __construct(Request $req){
-    	$this->data["type"]= "master_department";  
-        $this->data["req"] = $req;            	
+        $this->data["type"]= "master_payroll";  
+        $this->data["req"] = $req;              
         $this->company_id = \Auth::user()->company_id;
         $this->data["helper"] = new Helpers();
         $this->data["ctrl"] = $this;
     }
 
-	public function getList(){                                       
-        return view('department.index', $this->data);
+    public function getList(){                                                   
+        return view('payroll.index', $this->data);
     }
 
     public function getTree(){           
-        $deptDB = $this->_get_index_filter();                                  
-        $deptDB = $deptDB->where("parent_id", 0);    
-        $deptDB = $deptDB->get();                
-        $this->data["deptDB"] = $deptDB;           
-        return view('department.tree', $this->data);
+        $payrollDB = $this->_get_index_filter();                                  
+        $payrollDB = $payrollDB->where("parent_id", 0);    
+        $payrollDB = $payrollDB->get();                        
+        $this->data["payrollDB"] = $payrollDB;           
+        return view('payroll.tree', $this->data);
     }
 
     public function postCreate($id){        
@@ -52,55 +52,55 @@ class DepartmentController extends Controller {
         $arrInsert["created_at"] = date("Y-m-d h:i:s");
         $arrInsert["company_id"] = $this->company_id;
         unset($arrInsert["_token"]);        
-        DB::table("department")->insert($arrInsert); 
+        DB::table("payroll")->insert($arrInsert); 
         if ($id!="root"){
-            DB::table("department")->where("id", $id)->update(array("is_group" =>1));       
+            DB::table("payroll")->where("id", $id)->update(array("is_group" =>1));       
         }
-        return redirect('/department/list')->with('message', "Successfull create");
+        return redirect('/payroll/list')->with('message', "Successfull create");
     }
 
     public function getEdit($id){
-        $customer = DB::table("department")->where("id", $id)->where("company_id", $this->company_id)->first();        
-        $this->data["department"] = $customer;
-        return view('department.edit', $this->data);        
+        $payroll = DB::table("payroll")->where("id", $id)->where("company_id", $this->company_id)->first();        
+        $this->data["payroll"] = $payroll;
+        return view('payroll.edit', $this->data);        
     }
 
     public function getDelete($id){
         $req = $this->data["req"]; 
         if ($id=="root"){
-            DB::table("department")->where("company_id", $this->company_id)->delete();                
+            DB::table("payroll")->where("company_id", $this->company_id)->delete();                
         }else{            
-            $department = DB::table("department")->where("company_id", $this->company_id)->where("id", $id)->first();
-            $department_child = DB::table("department")
+            $department = DB::table("payroll")->where("company_id", $this->company_id)->where("id", $id)->first();
+            $department_child = DB::table("payroll")
                 ->where("company_id", $this->company_id)
                 ->where("parent_id", $department->parent_id)
                 ->where("id","<>", $id)
                 ->get();            
             if (empty($department_child)){                
-                DB::table("department")->where("company_id", $this->company_id)->where("id", $department->parent_id)->update(array("is_group"=>0));              
+                DB::table("payroll")->where("company_id", $this->company_id)->where("id", $department->parent_id)->update(array("is_group"=>0));              
             }
-            DB::table("department")->where("parent_id", $id)->where("company_id", $this->company_id)->delete();                
-            DB::table("department")->where("id", $id)->where("company_id", $this->company_id)->delete();                    
+            DB::table("payroll")->where("parent_id", $id)->where("company_id", $this->company_id)->delete();                
+            DB::table("payroll")->where("id", $id)->where("company_id", $this->company_id)->delete();                    
         }        
-        return redirect('/department/list')->with('message', "Successfull delete");
+        return redirect('/payroll/list')->with('message', "Successfull delete");
     }
 
     public function getNew(){
         $req= $this->data["req"];
         $this->data["parent_id"] = $req->get("id");                
-        return view('department.new', $this->data);
+        return view('payroll.new', $this->data);
     }
 
     public function postUpdate($id){
         $req = $this->data["req"];
         $arrInsert = $req->input();        
         unset($arrInsert["_token"]);        
-        $customer = DB::table("department")->where("id", $id)->update($arrInsert);        
-        return redirect('/department/list')->with('message', "Successfull update");
+        $customer = DB::table("payroll")->where("id", $id)->update($arrInsert);        
+        return redirect('/payroll/list')->with('message', "Successfull update");
     }
 
     public function _get_index_filter($filter = null){
-        $dbcust = DB::table("department")->where("company_id", $this->company_id);        
+        $dbcust = DB::table("payroll")->where("company_id", $this->company_id);        
         return $dbcust;
     }
 

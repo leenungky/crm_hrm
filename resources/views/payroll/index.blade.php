@@ -26,32 +26,33 @@
 </html>
 
 <script type="text/javascript">	
-	$('.load-tree').load(base_url + "/department/tree");
+	
+    $('.load-tree').load(base_url + "/payroll/tree");
 	 $.contextMenu({
             selector: '.right-click', 
             callback: function(key, options) {
                 var m = "clicked: " + key;
-                $(".modal-title").text(key + " Department " + $(this).text());
+                $(".modal-title").text(key + " payroll " + $(this).text());
                 if (key=="add"){	
-					$(".modal-body").load(base_url + "/department/new?id=" + $(this).attr("id"));
+					$(".modal-body").load(base_url + "/payroll/new?id=" + $(this).attr("id"));
 					$('#myModal').modal('show'); 
 				}else  if (key=="edit"){	
-					$(".modal-body").load(base_url + "/department/edit/" + $(this).attr("id"));
-					$('#myModal').\('show'); 
+					$(".modal-body").load(base_url + "/payroll/edit/" + $(this).attr("id"));
+					$('#myModal').modal('show'); 
 				}				
 				else  if (key=="delete"){	
 					var conf = confirm('Are you sure?');
 					if (conf){
-                        var url = base_url + "/department/delete/" + $(this).attr("id");                                    
+                        var url = base_url + "/payroll/delete/" + $(this).attr("id");                                    
 						$.get(url);
 						location.reload();
 					}
 				}				
             },
             items: {
-            	"add": {name: "Add", icon: "add"},
-                "edit": {name: "Edit", icon: "edit"},                
-                "delete": {name: "Delete", icon: "delete"},
+            	"add": {name: "Add"},
+                "edit": {name: "Edit" },                
+                "delete": {name: "Delete"},
                 "sep1": "---------",
                 "quit": {name: "Quit", icon: function(){
                     return 'context-menu-icon context-menu-icon-quit';

@@ -46,9 +46,8 @@
                 <li class="dropdown-submenu">
                     <a tabindex="-1" href="#">Payroll<i class="glyphicon glyphicon-chevron-right"></i></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Tunjangan</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Potongan</a></li>                              
+                        <li><a href="/payroll/list">Payroll Component</a></li>
+                        <li role="separator" class="divider"></li>                                             
                     </ul>
                 </li>   
           </ul>

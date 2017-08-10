@@ -39,30 +39,43 @@ class EmployeeController extends Controller {
 	}
 
    	public function getEdit($id){
-		$employ = DB::table("employee")->where("id", $id)->first();       
+		$employ = DB::table("employee")
+            ->select(DB::raw("employee.*, department.id as department_id, department.name as department_name")) 
+                    ->join("department", "department.id", "=", "employee.department_id", "left")
+            ->where("employee.company_id", $this->company_id)
+            ->where("employee.id", $id)->first(); 
+        $jobtitle = DB::table("jobtitle")->where("company_id", $this->company_id)->get();
+        $branch = DB::table("branch")->where("company_id", $this->company_id)->get();
+        $this->data["jobtitle"] = $jobtitle;    
+        $this->data["branch"] = $branch;          
 		$this->data["employ"] = $employ;
 		return view('employ.edit', $this->data);  
 	}
 
     public function getDelete($id){
-        $employ = DB::table("employee")->where("id", $id)->delete();       
+        $employ = DB::table("employee")->where("company_id", $this->company_id)->where("id", $id)->delete();       
         return redirect('/employ/list')->with('message', "Successfull delete");
     }
 
 	public function postCreate(){	
-		$req = $this->data["req"];
+		$req = $this->data["req"];  
+        print_r($req->input());
+        $family = $req->input("family");
+        $arrFamily = json_decode($family);
+        print_r($arrFamily);
+        die();      
 	 	$validator = Validator::make($req->all(), [            
-            'name' => 'required',
+            'nik' => 'required',
+            'name_karyawan' => 'required',
             'department_id' => 'required',
             'phone' => 'required',
             'address' => 'required'
         ]);
 
-        if ($validator->fails()) {            
-            return Redirect::to(URL::previous())->withInput(Input::all())->withErrors($validator);            
-        }
+        if ($validator->fails()) {                        
+            return $validator->messages()->toJson();            
+        }        
         $arrInsert = $req->input();
-
         $arrInsert["company_id"] = $this->company_id;
         $arrInsert["created_at"] = date("Y-m-d h:i:s");
         unset($arrInsert["_token"]);        
@@ -74,7 +87,7 @@ class EmployeeController extends Controller {
 	public function postUpdate($id){	
 		$req = $this->data["req"];
         $validator = Validator::make($req->all(), [            
-            'nama' => 'required',
+            'name' => 'required',
             'department_id' => 'required',
             'phone' => 'required',
             'address' => 'required'
@@ -85,7 +98,8 @@ class EmployeeController extends Controller {
         }
         $arrUpdate = $req->input();
         
-        unset($arrUpdate["_token"]);        
+        unset($arrUpdate["_token"]); 
+        unset($arrUpdate["department"]);               
         DB::table("employee")->where("id", $id)->update($arrUpdate);        
         return redirect('/employ/list')->with('message', "Successfull update");			
 	}    
@@ -95,8 +109,8 @@ class EmployeeController extends Controller {
                     ->select(DB::raw("employee.*, department.name as department_name, branch.name as branch_name")) 
                     ->join("department", "department.id", "=", "employee.department_id", "left")
                     ->join("branch", "branch.id", "=", "employee.branch_id", "left");
-        if (isset($filter["nama"])){
-            $dbemploy = $dbemploy->where("employee.nama", "like", "%".$filter["nama"]."%");
+        if (isset($filter["name"])){
+            $dbemploy = $dbemploy->where("employee.name", "like", "%".$filter["name"]."%");
         }
         return $dbemploy;
     }

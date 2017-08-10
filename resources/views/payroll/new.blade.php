@@ -28,11 +28,11 @@
 		<br/>
 		<div class="row">				
 			<div class="col-md-12">		
-				<form method="post" action="/department/create/{{$parent_id}}" class="formsubmit">
+				<form method="post" action="/payroll/create/{{$parent_id}}" class="formsubmit">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">					
 					<div class="form-group">
 					    <label for="email">Nama</label>
-						 <input type="text" class="form-control" id="name" name="name" placeholder="input nama department" value="{{ old('name') }}" required>
+						 <input type="text" class="form-control" id="name" name="name" placeholder="input nama component" value="{{ old('name') }}" required>
 					</div>										
 					<button type="submit" class="btn">Submit</button>
 				</form>
