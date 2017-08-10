@@ -33,8 +33,10 @@ class EmployeeController extends Controller {
     public function getAdd(){	
         $jobtitle = DB::table("jobtitle")->where("company_id", $this->company_id)->get();
         $branch = DB::table("branch")->where("company_id", $this->company_id)->get();
+        $family_relation = DB::table("family_relation")->where("company_id", $this->company_id)->get();
         $this->data["jobtitle"] = $jobtitle;	
         $this->data["branch"] = $branch;    
+        $this->data["family_relation"] = $family_relation;    
 		return view('employ.add', $this->data);  
 	}
 

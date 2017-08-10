@@ -62,6 +62,18 @@
 		var arrFamily = [];			 
 		$( "input[name=nik]" ).focus();
 		$(".btn-addkaryawan").click(function(){
+			var isValidate = false;
+			isValidate = validateArea("address", "required", isValidate);
+			isValidate = validate("phone", "required", isValidate);
+			isValidate = validateSelect("sex", "required", isValidate);
+			isValidate = validate("birth_date", 'required', isValidate);
+			isValidate = validate("birth_place", 'required', isValidate);
+			isValidate = validate("name_karyawan", 'required', isValidate);
+			isValidate = validate("nik", 'required', isValidate);
+
+			if (isValidate){	
+				return;
+			}
 			$('.body-family tr').each(function(index, tr) {
 			    var lines = $('td', tr).map(function(index, td) {			    	
 			        return $(td).text();
@@ -74,7 +86,13 @@
 			var postdata = { 
 				_token : "{{ csrf_token() }}",
 				nik: $("input[name='nik']").val(), 
-				name: $("input[name='name']").val(),
+				name: $("input[name='name_karyawan']").val(),
+				birth_place: $("input[name='birth_place']").val(),
+				birth_date: $("input[name='birth_date']").val(),
+				department_id: $("input[name='department_id']").val(),
+				jobtitle_id: $("select[name='jobtitle_id']").val(),			
+				branch_id:	$("select[name='jobtitle_id']").val(),
+				sex: $("select[name='sex']").val(),
 				family: strFamily
 			}
 				

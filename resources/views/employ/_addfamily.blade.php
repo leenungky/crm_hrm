@@ -1,10 +1,20 @@
 	<div class="form-group">
 	    <label for="email">Relation</label>
-		<select name="relation_id" class="form-control">						 	
-		</select>
+		<select name="family_id" class="form-control">
+						 	<option>Pilih Family Relation</option>
+						 	@foreach ($family_relation as $key => $value)
+						 		@if (old("family_id")=="$value->id")
+						 			<option value="{{$value->id}}" selected>{{$value->name}}</option>
+						 		@else
+						 			<option value="{{$value->id}}">{{$value->name}}</option>
+						 		@endif						 		
+						 	@endforeach	
+						 	
+						 </select>
 	</div>					
 					<div class="form-group">
 					    <label for="email">Nama</label>
+
 						 <input type="text" class="form-control" id="nama" name="name_family" placeholder="input nama" value="{{ old('name') }}" required>
 					</div>					
 					<div class="form-group">

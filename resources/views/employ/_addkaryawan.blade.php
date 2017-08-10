@@ -19,7 +19,7 @@
 					<div class="form-group">
 					    <label for="email">Gender *</label>
 						 <select name="sex" class="form-control" required>
-						 	<option>Pilih Gender</option>
+						 	<option value="">Pilih Gender</option>
 						 	@if (old("sex")=="L")
 						 		<option value="L" selected=>Laki-Laki</option>
 						 	@else
@@ -35,7 +35,7 @@
 						 </select>
 					</div>		
 					<div class="form-group">
-					    <label for="email">Department</label>
+					    <label for="email">Department *</label>
 						<div class="input-group">
 					      <input type="text" name="department" class="form-control" placeholder="Search for..." value="{{old("department")}}">
 					      <input type="hidden" name="department_id" class="form-control" value="{{old("department_id")}}">
@@ -67,8 +67,7 @@
 						 		@else
 						 			<option value="{{$value->id}}">{{$value->name}}</option>
 						 		@endif						 		
-						 	@endforeach	
-						 	
+						 	@endforeach							 	
 						 </select>
 					</div>										
 					<div class="form-group">
