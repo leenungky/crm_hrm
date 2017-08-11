@@ -1,14 +1,12 @@
-
-					
-					<div class="form-group">
-					    <label for="email">NIK *</label>
-						 <input type="text" class="form-control" id="nik" name="nik" placeholder="input nik" value="{{ old('nik') }}" required>
-					</div>					
-					<div class="form-group">
-					    <label for="email">Nama *</label>
-						 <input type="text" class="form-control" id="nama" name="name_karyawan" placeholder="input nama" value="{{ old('name_karyawan') }}" required>
-					</div>					
-					<div class="form-group">
+<div class="form-group">
+	<label for="email">NIK *</label>
+	<input type="text" class="form-control" id="nik" name="nik" placeholder="input nik" value="{{ old('nik') }}" required>
+</div>					
+<div class="form-group">
+	<label for="email">Name *</label>
+	<input type="text" class="form-control" id="nama" name="name_karyawan" placeholder="input nama" value="{{ old('name_karyawan') }}" required>
+</div>					
+<div class="form-group">
 					    <label for="email">Birth place *</label>
 						 <input type="text" class="form-control" id="birth_place" name="birth_place" placeholder="input tempat lahir" value="{{ old('birth_place') }}" required>
 					</div>					
@@ -37,7 +35,7 @@
 					<div class="form-group">
 					    <label for="email">Department *</label>
 						<div class="input-group">
-					      <input type="text" name="department" class="form-control" placeholder="Search for..." value="{{old("department")}}">
+					      <input type="text" name="department" class="form-control" placeholder="Search for..." style="z-index: 0;" value="{{old("department")}}">
 					      <input type="hidden" name="department_id" class="form-control" value="{{old("department_id")}}">
 					      <span class="input-group-btn">
 					        <button class="btn browse-department" type="button">Browse</button>
@@ -45,7 +43,7 @@
 					    </div>
 					</div>
 					<div class="form-group">
-					    <label for="email">Job Titile</label>
+					    <label for="email">Job Title</label>
 						 <select name="jobtitle_id" class="form-control">
 						 	<option>Pilih Job Title</option>
 						 	@foreach ($jobtitle as $key => $value)
@@ -69,10 +67,10 @@
 						 		@endif						 		
 						 	@endforeach							 	
 						 </select>
-					</div>										
+					</div>
 					<div class="form-group">
 					    <label for="email">Phone *</label>
-						 <input type="text" class="form-control" id="phone" name="phone" placeholder="input phone" value="{{ old('phone') }}" required>
+						 <input type="text" class="form-control" id="phone" name="phone" placeholder="input phone" value="{{ old('phone') }}">
 					</div>						
 					<div class="form-group">
 					    <label for="email">Address *</label>
@@ -86,5 +84,5 @@
 					    <label for="email">Nationality</label>
 					    <input type="text" class="form-control" id="nationality" name="nationality" placeholder="input nationality" value="{{ old('nationality') }}">						 
 					</div>
-					<button type="button" class="btn btn-addkaryawan">Submit</button>
+					
 				

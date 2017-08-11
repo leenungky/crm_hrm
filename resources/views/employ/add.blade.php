@@ -21,7 +21,19 @@
 		  <button class="tablinks" onclick="openCity(event, 'Family')">Family</button>
 		  <button class="tablinks" onclick="openCity(event, 'Education')">Pendidikan</button>
 		</div>		
-		<div id="Karyawan" class="tabcontent" style="display: block;">
+		<div id="Karyawan" class="tabcontent" style="display: block;"
+			@if (count($errors))     
+				<div class="row">				
+					<div class="col-md-12 alert alert-danger">		
+					    <ul>
+					        @foreach($errors->all() as $error) 		            				            
+					            <li>{{$error}}</li>
+					        @endforeach 
+					    </ul>
+				    </div>
+			    </div>
+			@endif 
+			<br/>
 		  <h3>Karyawan</h3>
 		  @include("employ._addkaryawan")
 		</div>
@@ -33,22 +45,10 @@
 		  <h3>Pendidikan</h3>
 		  @include("employ._addeducation")			  
 		</div>				
-		<br/>
-		@if (count($errors))     
-			<div class="row">				
-				<div class="col-md-12 alert alert-danger">		
-				    <ul>
-				        @foreach($errors->all() as $error) 		            				            
-				            <li>{{$error}}</li>
-				        @endforeach 
-				    </ul>
-			    </div>
-		    </div>
-		@endif 
-		<br/>
+		
 		<div class="row">				
 			<div class="col-md-12">		
-				
+				<button type="button" class="btn btn-addkaryawan">Submit</button>	
 			</div>
 		</div>
 	</div>	    	
@@ -60,6 +60,7 @@
 <script type="text/javascript">
 	$(document).ready(function(){		
 		var arrFamily = [];			 
+		var arrEduction = [];
 		$( "input[name=nik]" ).focus();
 		$(".btn-addkaryawan").click(function(){
 			var isValidate = false;
@@ -68,7 +69,7 @@
 			isValidate = validateSelect("sex", "required", isValidate);
 			isValidate = validate("birth_date", 'required', isValidate);
 			isValidate = validate("birth_place", 'required', isValidate);
-			isValidate = validate("name_karyawan", 'required', isValidate);
+			isValidate = validate("name_karyawan", 'required', isValidate, "name");
 			isValidate = validate("nik", 'required', isValidate);
 
 			if (isValidate){	
@@ -78,11 +79,20 @@
 			    var lines = $('td', tr).map(function(index, td) {			    	
 			        return $(td).text();
 			    });	
-			    var arrData = [lines[0], lines[1]];			    
+			    var arrData = [lines[0], lines[1], lines[2], lines[3], lines[4], lines[5], lines[6]];
 			    arrFamily.push(arrData);			    
 			});
 			var strFamily = JSON.stringify(arrFamily);
-			console.log(strFamily);
+
+			$('.body-education tr').each(function(index, tr) {
+			    var lines = $('td', tr).map(function(index, td) {			    	
+			        return $(td).text();
+			    });	
+			    var arrData = [lines[0], lines[1], lines[2], lines[3], lines[4], lines[5], lines[6]];
+			    arrEduction.push(arrData);			    
+			});
+			var strEducation = JSON.stringify(arrEduction);
+			
 			var postdata = { 
 				_token : "{{ csrf_token() }}",
 				nik: $("input[name='nik']").val(), 
@@ -93,7 +103,8 @@
 				jobtitle_id: $("select[name='jobtitle_id']").val(),			
 				branch_id:	$("select[name='jobtitle_id']").val(),
 				sex: $("select[name='sex']").val(),
-				family: strFamily
+				family: strFamily,
+				education: strEducation
 			}
 				
 			$.post( base_url + "/employ/create", postdata).done(function( data ) {

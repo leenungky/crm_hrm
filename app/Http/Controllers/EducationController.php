@@ -34,7 +34,7 @@ class EducationController extends Controller {
 
     public function getEdit($id){
         $req = $this->data["req"];
-        $price = DB::table("education")->where("id", $id)->where("company_id", $this->company_id)->first();
+        $price = DB::table("education_relation")->where("id", $id)->where("company_id", $this->company_id)->first();
         $this->data["education"] = $price;
         return view('education.edit', $this->data);
     }
@@ -58,7 +58,7 @@ class EducationController extends Controller {
         $arrInsert["created_at"] = date("Y-m-d h:i:s");        
         $arrInsert["company_id"] = $this->company_id;
         unset($arrInsert["_token"]);        
-        DB::table("education")->insert($arrInsert);        
+        DB::table("education_relation")->insert($arrInsert);        
         return redirect('/education/list')->with('message', "Successfull create");         
     }
 
@@ -74,13 +74,13 @@ class EducationController extends Controller {
         
         $arrInsert = $req->input();        
         unset($arrInsert["_token"]);        
-        DB::table("education")->where("id", $id)->where("company_id", $this->company_id)->update($arrInsert);        
+        DB::table("education_relation")->where("id", $id)->where("company_id", $this->company_id)->update($arrInsert);        
         return redirect('/education/list')->with('message', "Successfull update");
     }
 
     private function _get_index_filter($filter){                
         $req = $this->data["req"];
-        $eduDB = DB::table("education")->where("company_id", $this->company_id);    
+        $eduDB = DB::table("education_relation")->where("company_id", $this->company_id);    
         if (isset($filter["name"])){
             $eduDB = $eduDB->where("name", "like", "%".$filter["name"]."%");
         }         

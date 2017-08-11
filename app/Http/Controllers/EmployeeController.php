@@ -62,17 +62,17 @@ class EmployeeController extends Controller {
 	public function postCreate(){	
 		$req = $this->data["req"];  
         print_r($req->input());
-        $family = $req->input("family");
-        $arrFamily = json_decode($family);
-        print_r($arrFamily);
+        // $family = $req->input("family");
+        // $arrFamily = json_decode($family);
+        // print_r($arrFamily);
         die();      
-	 	$validator = Validator::make($req->all(), [            
-            'nik' => 'required',
-            'name_karyawan' => 'required',
-            'department_id' => 'required',
-            'phone' => 'required',
-            'address' => 'required'
-        ]);
+	 	// $validator = Validator::make($req->all(), [            
+   //          'nik' => 'required',
+   //          'name_karyawan' => 'required',
+   //          'department_id' => 'required',
+   //          'phone' => 'required',
+   //          'address' => 'required'
+   //      ]);
 
         if ($validator->fails()) {                        
             return $validator->messages()->toJson();            

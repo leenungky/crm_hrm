@@ -1,34 +1,44 @@
-	<div class="form-group">
+<div id="modal-family" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">        
+
+      	<div class="form-group">
 	    <label for="email">Relation</label>
-		<select name="family_id" class="form-control">
-						 	<option>Pilih Family Relation</option>
-						 	@foreach ($family_relation as $key => $value)
-						 		@if (old("family_id")=="$value->id")
-						 			<option value="{{$value->id}}" selected>{{$value->name}}</option>
-						 		@else
-						 			<option value="{{$value->id}}">{{$value->name}}</option>
-						 		@endif						 		
-						 	@endforeach	
-						 	
-						 </select>
+		<select name="family_relation_id" class="form-control">
+			<option value="">Pilih Family Relation</option>
+			@foreach ($family_relation as $key => $value)
+				@if (old("family_id")=="$value->id")
+					<option value="{{$value->id}}" selected>{{$value->name}}</option>
+				@else
+					<option value="{{$value->id}}">{{$value->name}}</option>
+				@endif						 		
+			@endforeach							 	
+		</select>
 	</div>					
 					<div class="form-group">
-					    <label for="email">Nama</label>
+					    <label for="email">Nama *</label>
 
-						 <input type="text" class="form-control" id="nama" name="name_family" placeholder="input nama" value="{{ old('name') }}" required>
+						 <input type="text" class="form-control" id="nama" name="f_name" placeholder="input nama" value="{{ old('f_name') }}" required>
 					</div>					
 					<div class="form-group">
-					    <label for="email">Birth place</label>
-						 <input type="text" class="form-control" id="birth_place" name="f_birth_place" placeholder="input tempat lahir" value="{{ old('birth_place') }}" required>
+					    <label for="email">Birth place *</label>
+						 <input type="text" class="form-control" id="birth_place" name="f_birth_place" placeholder="input tempat lahir" value="{{ old('f_birth_place') }}" required>
 					</div>					
 					<div class="form-group">
-					    <label for="email">Birth date</label>
-						 <input type="text" class="form-control datepicker" id="f_birth_date" name="birth_date" placeholder="input tanggal lahir" value="{{ old('birth_date') }}" required>
+					    <label for="email">Birth date *</label>
+						 <input type="text" class="form-control datepicker" id="f_birth_date" name="f_birth_date" placeholder="input tanggal lahir" value="{{ old('f_birth_date') }}" required>
 					</div>					
 					<div class="form-group">
-					    <label for="email">Gender</label>
-						 <select name="sex" class="form-control" required>
-						 	<option>Pilih Gender</option>
+					    <label for="email">Gender *</label>
+						 <select name="f_sex" class="form-control" required>
+						 	<option value="">Pilih Gender</option>
 						 	@if (old("sex")=="L")
 						 		<option value="L" selected=>Laki-Laki</option>
 						 	@else
@@ -44,29 +54,74 @@
 						 </select>
 					</div>							
 					<div class="form-group">
-					    <label for="email">Education</label>
-						 <input type="text" class="form-control" id="education" name="education" placeholder="input phone" value="{{ old('phone') }}" required>
+					    <label for="email">Education *</label>
+						 <input type="text" class="form-control" id="education" name="f_education" placeholder="input last education" value="{{ old('phone') }}" required>
 					</div>						
 					<div class="form-group">
-					    <label for="email">Description</label>
-						 <textarea name="description" class="form-control" placeholder="input description" required>{{ old('description') }}</textarea>
+					    <label for="email">Description *</label>
+						 <textarea name="f_description" class="form-control" placeholder="input description" required>{{ old('f_description') }}</textarea>
 					</div>	
 					<div class="form-group">
-						<button class="btn btn-family">aa</button>
+						<button class="btn btn-family">Save</button>
 					</div>
-					<br/>
 					
+
+      </div>
+      <div class="modal-footer">        
+        <button type="button"  class="btn" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<button class="btn btn-add-family">Add</button>
+	</div>
+</div>
+<div class="row">	
+	<div class="col-md-12">		
 						<table class="table tbl-family">
 							<thead>
 								<th>Relation</th>
-								<th>Nama</th>
+								<th>Name</th>
+								<th>Birth place</th>
+								<th>Birth date</th>
+								<th>Jenis Kelamin</th>
+								<th>Education</th>
+								<th>Description</th>
 								<th>Action</th>
 							</thead>
 							<tbody class="body-family">
-								<tr class="anak_1">
-									<td>Anak1</td><td>Nungky</td><td>
+								<tr class="family_0"><td>ibu</td>
+									<td>a</td>
+									<td>b</td>
+									<td>2015-12-12</td>
+									<td>Perempuan</td>
+									<td>SD</td>
+									<td>aa</td>
+									<td>
 										<a href="javascript:void(0)">
-										<span class="edit"> 
+										<span class="f_edit" attr-id="0"> 
+					    					<span class="glyphicon glyphicon-pencil"  rel="tooltip" title="edit"></span>
+					    				</span>
+				    				</a> | 
+				    				<a href="javascript:void(0)" class="confirmation">
+					    				<span class="f_delete" attr-id="0">
+				    						<span class="glyphicon glyphicon-remove"  rel="tooltip" title="delete"></span>
+				    					</span>
+				    				</a> 
+									</td>
+								</tr>
+								<tr class="family_1"><td>Bapak</td>
+									<td>a</td>
+									<td>b</td>
+									<td>2015-12-12</td>
+									<td>Laki-Laki</td>
+									<td>SD</td>
+									<td>aa</td>
+									<td>
+										<a href="javascript:void(0)">
+										<span class="f_edit" attr-id="1"> 
 					    					<span class="glyphicon glyphicon-pencil"  rel="tooltip" title="edit"></span>
 					    				</span>
 				    				</a> | 
@@ -76,48 +131,109 @@
 				    					</span>
 				    				</a> 
 									</td>
-								</tr>								
-								<tr class="anak_2">
-									<td>Anak2</td><td>Asep</td><td>
-										<a href="javascript:void(0)">
-										<span class="edit"> 
-					    					<span class="glyphicon glyphicon-pencil"  rel="tooltip" title="edit"></span>
-					    				</span>
-				    				</a> | 
-				    				<a href="javascript:void(0)" class="confirmation">
-					    				<span class="f_delete" attr-id="2">
-				    						<span class="glyphicon glyphicon-remove"  rel="tooltip" title="delete"></span>
-				    					</span>
-				    				</a> 
-									</td>
 								</tr>
 							</tbody>
 						</table>
+</div>
+</div>	
 					
 <script type="text/javascript">
-	$(document).ready(function(){
+	$(document).ready(function(){		
 		var arrFamily = [[]];
 		$(document).on("click", ".f_delete", function(){
-			var val = $(this).attr("attr-id");
-			alert(val);
-			$(".anak_" + val).remove();
+			var val = $(this).attr("attr-id");			
+			$(".family_" + val).remove();
 		});
 
-		$(".btn-family").click(function(){		
+		$(document).on("click", ".f_edit", function(){
+			console.log("edit");
+			$(".btn-family").addClass("btn-update-family");
+			$(".btn-family").removeClass("btn-new-family");			
+
+			var val = $(this).attr("attr-id");			
+			$(".btn-family").attr("attr-id", val);
+			$('.family_' + val).each(function(){  
+				jselected("family_relation_id", $(this).find('td').eq(0).text());
+				$("input[name='f_name']").val($(this).find('td').eq(1).text());
+				$("input[name='f_birth_place']").val($(this).find('td').eq(2).text());
+				$("input[name='f_birth_date']").val($(this).find('td').eq(3).text());
+				$("input[name='f_sex']").val($(this).find('td').eq(4).text());
+				$("input[name='f_education']").val($(this).find('td').eq(5).text());
+				$("input[name='f_description']").val($(this).find('td').eq(6).text());	
+				jselected("f_sex", $(this).find('td').eq(4).text());			
+				$('#modal-family').modal('show'); 		    	
+		    });			
+		});
+
+		$(document).on("click", ".btn-update-family",  function(){	
+			var val = $(this).attr("attr-id");	
+			var isValidate = false;						
+			isValidate = validate("f_education", 'required', isValidate, "education");
+			isValidate = validateSelect("f_sex", "required", isValidate, "jenis kelamin");						
+			isValidate = validate("f_birth_place", 'required', isValidate, "birth place");
+			isValidate = validate("f_birth_date", 'required', isValidate, "birth date");
+			isValidate = validate("f_name", "required", isValidate, "name");
+			isValidate = validateSelect("family_relation_id", "required", isValidate, "family");
+			isValidate = validate("f_name", 'required', isValidate);
+			if (isValidate){	
+				console.log("======masuk validate");
+				return;
+			}	
+			var strHtmlToTable = onSetHtml(val);			
+			$(".family_" + val).html(strHtmlToTable);
+			$('#modal-family').modal('hide');
+
+		});
+
+		$(document).on("click", ".btn-new-family",  function(){		
+			var isValidate = false;						
+			isValidate = validate("f_education", 'required', isValidate, "education");
+			isValidate = validateSelect("f_sex", "required", isValidate, "jenis kelamin");						
+			isValidate = validate("f_birth_place", 'required', isValidate, "birth place");
+			isValidate = validate("f_birth_date", 'required', isValidate, "birth date");
+			isValidate = validate("f_name", "required", isValidate, "name");
+			isValidate = validateSelect("family_relation_id", "required", isValidate, "family");
+			isValidate = validate("f_name", 'required', isValidate);
+			if (isValidate){	
+				console.log("======masuk validate");
+				return;
+			}
 			var rowCount = $('.tbl-family tr').length;
-			var strHtmlToTable = '<tr class="anak_' + (rowCount) + '">';
-				strHtmlToTable = strHtmlToTable  + 	'<td>Anak2</td><td>Asep</td><td>';
-				strHtmlToTable = strHtmlToTable  + 	'<a href="javascript:void(0)">';
-				strHtmlToTable = strHtmlToTable  + 	'<span class="edit">';
-				strHtmlToTable = strHtmlToTable  + 	'<span class="glyphicon glyphicon-pencil"  rel="tooltip" title="edit"></span>';
+			console.log(rowCount);
+			var sex = "";			
+			var strHtmlToTable = '<tr class="family_' + (rowCount) + '">';	
+			var strHtmlToTable = strHtmlToTable + onSetHtml(rowCount);
+			var strHtmlToTable = strHtmlToTable + '</tr>';
+			$('.tbl-family > tbody:last-child').append(strHtmlToTable);		
+			$('#modal-family').modal('hide');
+		})
+
+		$(".btn-add-family").click(function(){
+			$(".btn-family").addClass("btn-new-family");
+			$(".btn-family").removeClass("btn-update-family");
+			$('#modal-family').modal('show'); 
+		});
+	})	
+
+	function onSetHtml(rowCount){					
+				var strHtmlToTable  = '<td>'+ $("select[name='family_relation_id'] option:selected").text() +'</td>';
+				strHtmlToTable = strHtmlToTable  + 	'<td>'+ $("input[name='f_name']").val() +'</td>';
+				strHtmlToTable = strHtmlToTable  + 	'<td>'+ $("input[name='f_birth_place']").val() +'</td>';
+				strHtmlToTable = strHtmlToTable  + 	'<td>'+ $("input[name='f_birth_date']").val() +'</td>';
+				strHtmlToTable = strHtmlToTable  + 	'<td>'+ $("select[name='f_sex'] option:selected").text()+'</td>';
+				strHtmlToTable = strHtmlToTable  + 	'<td>'+ $("input[name='f_education']").val() +'</td>';
+				strHtmlToTable = strHtmlToTable  + 	'<td>'+ $("textarea[name='f_description']").val() +'</td>';
+				strHtmlToTable = strHtmlToTable  + 	'<td><a href="javascript:void(0)">';
+				strHtmlToTable = strHtmlToTable  + 	'<span class="f_edit" attr-id="'+ rowCount +'">';
+				strHtmlToTable = strHtmlToTable  + 	'<span class="glyphicon glyphicon-pencil" rel="tooltip" title="edit"></span>';
 				strHtmlToTable = strHtmlToTable  + 	'</span>';
 				strHtmlToTable = strHtmlToTable  + 	'</a> | ';
 				strHtmlToTable = strHtmlToTable  + 	'<a href="javascript:void(0)" class="confirmation"> ';
 				strHtmlToTable = strHtmlToTable  + 	'<span class="f_delete" attr-id="'+ rowCount +'">';
 				strHtmlToTable = strHtmlToTable  + 	'<span class="glyphicon glyphicon-remove"  rel="tooltip" title="delete"></span>';
 				strHtmlToTable = strHtmlToTable  + 	'</span></a> </td>';
-				strHtmlToTable = strHtmlToTable  + 	'</tr>';				    				
-			$('.tbl-family > tbody:last-child').append(strHtmlToTable);			
-		})
-	})
+				
+				return 	strHtmlToTable;		    				
+							
+	}
 </script>				

@@ -299,6 +299,16 @@ $( document ).ready(function() {
 	});
 });
 
+function jselected(field, value){
+	var f_relation =  value;
+	$("select[name='" + field + "']").find('option').removeAttr("selected");				
+	$("select[name='" + field + "'] option").filter(function(index) {					
+		console.log($.trim(this.text) + "==" + $.trim(f_relation));
+	    return $.trim(this.text) == $.trim(f_relation); 
+	}).prop('selected', true);
+
+}
+
 function printDivIcon(divName) {			
 	var printContents = document.getElementById(divName).innerHTML;
 	var originalContents = document.body.innerHTML;
@@ -513,11 +523,14 @@ function insertAjax(isPrint){
 	});	
 }
 
-function validate(input, type, isValidate){
+function validate(input, type, isValidate, define_field=""){
 	var inputName = $("input[name='" + input + "']").val();
 	if (type=="required"){
 		if (inputName==""){
-			$("input[name='"+ input +"']").attr("placeholder", input + " tidak boleh kosong");
+			if (define_field==""){
+				define_field = input;
+			}
+			$("input[name='"+ input +"']").attr("placeholder", define_field + " tidak boleh kosong");
 			$("input[name='"+ input +"']").css("color", "red");	
 			$("input[name='"+ input +"']").css("border", "3px solid red");
 			$("input[name='"+ input +"']").focus();
@@ -532,11 +545,14 @@ function validate(input, type, isValidate){
 		return false;
 }
 
-function validateArea(input, type, isValidate){
+function validateArea(input, type, isValidate, define_field=""){
 	var inputName = $("textarea[name='" + input + "']").val();
 	if (type=="required"){
 		if (inputName==""){
-			$("textarea[name='"+ input +"']").attr("placeholder", input + " tidak boleh kosong");
+			if (define_field==""){
+				define_field = input;
+			}
+			$("textarea[name='"+ input +"']").attr("placeholder", define_field + " tidak boleh kosong");
 			$("textarea[name='"+ input +"']").css("color", "red");	
 			$("textarea[name='"+ input +"']").css("border", "3px solid red");
 			$("textarea[name='"+ input +"']").focus();
@@ -551,12 +567,15 @@ function validateArea(input, type, isValidate){
 		return false;
 }
 
-function validateSelect(name, type, isValidate){
+function validateSelect(name, type, isValidate,  define_field=""){
 	var inputName = $("select[name='" + name + "']").val();		
 	console.log("======= " + type + " ====== " + inputName)	;
 	if (type=="required"){
 		if (inputName==null || inputName==""){
-			$("select[name='"+ name +"']").attr("placeholder", name + " tidak boleh kosong");
+			if (define_field==""){
+				define_field = name;
+			}
+			$("select[name='"+ name +"']").attr("placeholder", define_field + " tidak boleh kosong");
 			$("select[name='"+ name +"']").css("color", "red");	
 			$("select[name='"+ name +"']").css("border", "3px solid red");
 			$("select[name='"+ name +"']").focus();
