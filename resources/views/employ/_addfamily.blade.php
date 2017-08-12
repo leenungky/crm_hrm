@@ -1,43 +1,40 @@
 <div id="modal-family" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
+  <div class="modal-dialog"> <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
-      </div>
-      <div class="modal-body">        
-
-      	<div class="form-group">
-	    <label for="email">Relation</label>
-		<select name="family_relation_id" class="form-control">
-			<option value="">Pilih Family Relation</option>
-			@foreach ($family_relation as $key => $value)
-				@if (old("family_id")=="$value->id")
-					<option value="{{$value->id}}" selected>{{$value->name}}</option>
-				@else
-					<option value="{{$value->id}}">{{$value->name}}</option>
-				@endif						 		
-			@endforeach							 	
-		</select>
-	</div>					
-					<div class="form-group">
-					    <label for="email">Nama *</label>
-
-						 <input type="text" class="form-control" id="nama" name="f_name" placeholder="input nama" value="{{ old('f_name') }}" required>
-					</div>					
-					<div class="form-group">
-					    <label for="email">Birth place *</label>
-						 <input type="text" class="form-control" id="birth_place" name="f_birth_place" placeholder="input tempat lahir" value="{{ old('f_birth_place') }}" required>
-					</div>					
-					<div class="form-group">
-					    <label for="email">Birth date *</label>
-						 <input type="text" class="form-control datepicker" id="f_birth_date" name="f_birth_date" placeholder="input tanggal lahir" value="{{ old('f_birth_date') }}" required>
-					</div>					
-					<div class="form-group">
-					    <label for="email">Gender *</label>
-						 <select name="f_sex" class="form-control" required>
+      	<div class="modal-header">
+        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+        	<h4 class="modal-title">Modal Family</h4>
+      	</div>
+      	<div class="modal-body-family">        
+			<div class="container">
+		      	<div class="form-group">
+				    <label for="email">Relation</label>
+					<select name="family_relation_id" class="form-control">
+						<option value="">Pilih Family Relation</option>
+						@foreach ($family_relation as $key => $value)
+							@if (old("family_id")=="$value->id")
+								<option value="{{$value->id}}" selected>{{$value->name}}</option>
+							@else
+								<option value="{{$value->id}}">{{$value->name}}</option>
+							@endif						 		
+						@endforeach							 	
+					</select>
+				</div>					
+				<div class="form-group">
+				    <label for="email">Nama *</label>
+					<input type="text" class="form-control" id="nama" name="f_name" placeholder="input nama" value="{{ old('f_name') }}" required>
+				</div>					
+				<div class="form-group">
+				    <label for="email">Birth place *</label>
+					 <input type="text" class="form-control" id="birth_place" name="f_birth_place" placeholder="input tempat lahir" value="{{ old('f_birth_place') }}" required>
+				</div>					
+				<div class="form-group">
+				    <label for="email">Birth date *</label>
+					 <input type="text" class="form-control datepicker" id="f_birth_date" name="f_birth_date" placeholder="input tanggal lahir" value="{{ old('f_birth_date') }}" required>
+				</div>					
+				<div class="form-group">
+				    <label for="email">Gender *</label>
+						<select name="f_sex" class="form-control" required>
 						 	<option value="">Pilih Gender</option>
 						 	@if (old("sex")=="L")
 						 		<option value="L" selected=>Laki-Laki</option>
@@ -51,25 +48,24 @@
 						 		<option value="P">Perempuan</option>						 	
 						 	@endif
 						 	
-						 </select>
-					</div>							
-					<div class="form-group">
-					    <label for="email">Education *</label>
-						 <input type="text" class="form-control" id="education" name="f_education" placeholder="input last education" value="{{ old('phone') }}" required>
-					</div>						
-					<div class="form-group">
-					    <label for="email">Description *</label>
-						 <textarea name="f_description" class="form-control" placeholder="input description" required>{{ old('f_description') }}</textarea>
-					</div>	
-					<div class="form-group">
-						<button class="btn btn-family">Save</button>
-					</div>
-					
-
-      </div>
-      <div class="modal-footer">        
-        <button type="button"  class="btn" data-dismiss="modal">Close</button>
-      </div>
+						</select>
+				</div>							
+				<div class="form-group">
+				    <label for="email">Education *</label>
+						<input type="text" class="form-control" id="education" name="f_education" placeholder="input last education" value="{{ old('phone') }}" required>
+				</div>						
+				<div class="form-group">
+				    <label for="email">Description *</label>
+					<textarea name="f_description" class="form-control" placeholder="input description" required>{{ old('f_description') }}</textarea>
+				</div>	
+				<div class="form-group">
+					<button class="btn btn-family">Save</button>
+				</div>					
+			</div>		
+      	</div>
+      	<div class="modal-footer">        
+        	<button type="button"  class="btn" data-dismiss="modal">Close</button>
+      	</div>
     </div>
   </div>
 </div>
@@ -105,7 +101,7 @@
 					    					<span class="glyphicon glyphicon-pencil"  rel="tooltip" title="edit"></span>
 					    				</span>
 				    				</a> | 
-				    				<a href="javascript:void(0)" class="confirmation">
+				    				<a href="javascript:void(0)">
 					    				<span class="f_delete" attr-id="0">
 				    						<span class="glyphicon glyphicon-remove"  rel="tooltip" title="delete"></span>
 				    					</span>
@@ -125,7 +121,7 @@
 					    					<span class="glyphicon glyphicon-pencil"  rel="tooltip" title="edit"></span>
 					    				</span>
 				    				</a> | 
-				    				<a href="javascript:void(0)" class="confirmation">
+				    				<a href="javascript:void(0)">
 					    				<span class="f_delete" attr-id="1">
 				    						<span class="glyphicon glyphicon-remove"  rel="tooltip" title="delete"></span>
 				    					</span>
@@ -141,11 +137,14 @@
 	$(document).ready(function(){		
 		var arrFamily = [[]];
 		$(document).on("click", ".f_delete", function(){
-			var val = $(this).attr("attr-id");			
-			$(".family_" + val).remove();
+			var conf = confirm('Are you sure?'); 
+			if (conf){
+				var val = $(this).attr("attr-id");			
+				$(".family_" + val).remove();
+			}
 		});
 
-		$(document).on("click", ".f_edit", function(){
+		$(document).on("click", ".f_edit" ,function(){
 			console.log("edit");
 			$(".btn-family").addClass("btn-update-family");
 			$(".btn-family").removeClass("btn-new-family");			
@@ -179,7 +178,7 @@
 				console.log("======masuk validate");
 				return;
 			}	
-			var strHtmlToTable = onSetHtml(val);			
+			var strHtmlToTable = onSetHtmlFamily(val);			
 			$(".family_" + val).html(strHtmlToTable);
 			$('#modal-family').modal('hide');
 
@@ -202,7 +201,7 @@
 			console.log(rowCount);
 			var sex = "";			
 			var strHtmlToTable = '<tr class="family_' + (rowCount) + '">';	
-			var strHtmlToTable = strHtmlToTable + onSetHtml(rowCount);
+			var strHtmlToTable = strHtmlToTable + onSetHtmlFamily(rowCount);
 			var strHtmlToTable = strHtmlToTable + '</tr>';
 			$('.tbl-family > tbody:last-child').append(strHtmlToTable);		
 			$('#modal-family').modal('hide');
@@ -211,11 +210,19 @@
 		$(".btn-add-family").click(function(){
 			$(".btn-family").addClass("btn-new-family");
 			$(".btn-family").removeClass("btn-update-family");
+			jselected("family_relation_id", "");
+				$("input[name='f_name']").val("");
+				$("input[name='f_birth_place']").val("");
+				$("input[name='f_birth_date']").val("");
+				$("input[name='f_sex']").val("");
+				$("input[name='f_education']").val("");
+				$("input[name='f_description']").val("");	
+				jselected("f_sex", "");	
 			$('#modal-family').modal('show'); 
 		});
 	})	
 
-	function onSetHtml(rowCount){					
+	function onSetHtmlFamily(rowCount){					
 				var strHtmlToTable  = '<td>'+ $("select[name='family_relation_id'] option:selected").text() +'</td>';
 				strHtmlToTable = strHtmlToTable  + 	'<td>'+ $("input[name='f_name']").val() +'</td>';
 				strHtmlToTable = strHtmlToTable  + 	'<td>'+ $("input[name='f_birth_place']").val() +'</td>';

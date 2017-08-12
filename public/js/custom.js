@@ -267,14 +267,10 @@ $( document ).ready(function() {
         }
     });
 
-    $("input[name='weight']").numeric();
-    $("input[name='total']").numeric();
-    $("input[name='discount']").numeric();
-    $("input[name=jam]" ).numeric();
-    $("input[name=menit]" ).numeric();
-    $("input[name=oneday_price]" ).numeric();
-    $("input[name=regular_price]" ).numeric();
+    
     $("input[name=days]" ).numeric();
+    $("input[name='e_from']").numeric();    
+    $("input[name='e_to']").numeric();
     
 
     $('.confirmation').on('click', function () {

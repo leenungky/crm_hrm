@@ -58,9 +58,7 @@
 </html>
 
 <script type="text/javascript">
-	$(document).ready(function(){		
-		var arrFamily = [];			 
-		var arrEduction = [];
+	$(document).ready(function(){				
 		$( "input[name=nik]" ).focus();
 		$(".btn-addkaryawan").click(function(){
 			var isValidate = false;
@@ -75,6 +73,7 @@
 			if (isValidate){	
 				return;
 			}
+			var arrFamily = [];			 			
 			$('.body-family tr').each(function(index, tr) {
 			    var lines = $('td', tr).map(function(index, td) {			    	
 			        return $(td).text();
@@ -83,7 +82,9 @@
 			    arrFamily.push(arrData);			    
 			});
 			var strFamily = JSON.stringify(arrFamily);
-
+			console.log(strFamily);
+			
+			var arrEduction = [];
 			$('.body-education tr').each(function(index, tr) {
 			    var lines = $('td', tr).map(function(index, td) {			    	
 			        return $(td).text();
@@ -103,6 +104,8 @@
 				jobtitle_id: $("select[name='jobtitle_id']").val(),			
 				branch_id:	$("select[name='jobtitle_id']").val(),
 				sex: $("select[name='sex']").val(),
+				phone: $("input[name='phone']").val(),
+				address: $("textarea[name='address']").val(),
 				family: strFamily,
 				education: strEducation
 			}

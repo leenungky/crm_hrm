@@ -30,7 +30,7 @@ class EmployeeController extends Controller {
         return view('employ.index', $this->data);
     }
 
-    public function getAdd(){	
+    public function getAdd(){
         $jobtitle = DB::table("jobtitle")->where("company_id", $this->company_id)->get();
         $branch = DB::table("branch")->where("company_id", $this->company_id)->get();
         $family_relation = DB::table("family_relation")->where("company_id", $this->company_id)->get();
@@ -61,29 +61,36 @@ class EmployeeController extends Controller {
 
 	public function postCreate(){	
 		$req = $this->data["req"];  
-        print_r($req->input());
-        // $family = $req->input("family");
-        // $arrFamily = json_decode($family);
-        // print_r($arrFamily);
-        die();      
-	 	// $validator = Validator::make($req->all(), [            
-   //          'nik' => 'required',
-   //          'name_karyawan' => 'required',
-   //          'department_id' => 'required',
-   //          'phone' => 'required',
-   //          'address' => 'required'
-   //      ]);
+        $family = $req->input("family");
+        $arrFamily = json_decode($family);
+        $education = $req->input("education");
+        $arrEducation = json_decode($education);         
+	 	$validator = Validator::make($req->all(), [            
+            'nik' => 'required',
+            'name' => 'required',
+            'department_id' => 'required',
+            'phone' => 'required',
+            'address' => 'required'
+        ]);
 
         if ($validator->fails()) {                        
             return $validator->messages()->toJson();            
         }        
         $arrInsert = $req->input();
-        $arrInsert["company_id"] = $this->company_id;
-        $arrInsert["created_at"] = date("Y-m-d h:i:s");
-        unset($arrInsert["_token"]);        
-        unset($arrInsert["department"]);        
-        DB::table("employee")->insert($arrInsert);        
-        return redirect('/employ/list')->with('message', "Successfull create");			
+        $arrInsert["company_id"] = $this->company_id;        
+        $arrInsert["created_at"] = date("Y-m-d h:i:s");        
+
+        unset($arrInsert["_token"]);                    
+        unset($arrInsert["family"]);
+        unset($arrInsert["education"]);                   
+        $id = DB::table("employee")->insertGetId($arrInsert);                
+        $this->insert_education($id, $arrEducation);
+        $this->insert_family($id, $arrFamily);        
+
+        return response()->json([
+            'code' => '200',
+            'message' => 'success'
+        ]);	
 	}
 	
 	public function postUpdate($id){	
@@ -116,6 +123,51 @@ class EmployeeController extends Controller {
         }
         return $dbemploy;
     }
+
+    private function insert_family($id, $arrFamily){        
+        if (isset($id)){
+            $insFamily = array();
+            foreach ($arrFamily as $key => $value) {
+                $insFamily[$key]["company_id"] = $this->company_id;
+                $familyDB= DB::table("family_relation")->select("id")->where("name", $value[0])->first();                
+                $sex = ($value[4]=="Laki-Laki") ? "L" : "P";                
+                $insFamily[$key]["employee_id"] = $id;
+                $insFamily[$key]["relation_id"] = $familyDB->id;
+                $insFamily[$key]["nama"] = $value[1];
+                $insFamily[$key]["birth_place"] = $value[2];
+                $insFamily[$key]["birth_date"] = $value[3];
+                $insFamily[$key]["sex"] = $sex;
+                $insFamily[$key]["education"] = $value[5];
+                $insFamily[$key]["description"] = $value[6];
+                $insFamily[$key]["created_at"] = date("Y-m-d h:i:s");
+            }
+            if (count($insFamily)>0){
+                DB::table("family")->insert($insFamily);
+            }
+        }
+    }
+
+    private function insert_education($id, $arrEducation){        
+        if (isset($id)){
+            $insEducation = array();
+            foreach ($arrEducation as $key => $value) {
+                $insEducation[$key]["company_id"] = $this->company_id;                
+                $insEducation[$key]["employee_id"] = $id;
+                $insEducation[$key]["nama"] = $value[0];
+                $insEducation[$key]["grade"] = $value[1];
+                $insEducation[$key]["major_study"] = $value[2];
+                $insEducation[$key]["from"] = $value[3];
+                $insEducation[$key]["to"] = $value[4];
+                $insEducation[$key]["gpa"] = $value[5];
+                $insEducation[$key]["description"] = $value[6];
+                $insEducation[$key]["created_at"] = date("Y-m-d h:i:s") ;            
+            }
+            if (count($insEducation)>0){
+                DB::table("education")->insert($insEducation);
+            }
+        }
+    }
+
 
 }
     
