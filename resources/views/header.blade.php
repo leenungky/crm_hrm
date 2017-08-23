@@ -21,7 +21,9 @@
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">Employee
           <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="/employ/list">Data</a></li>                          
+            <li><a href="/employ/list">Data</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="/empermition/list">Permition</a></li>
           </ul>
         </li>
         <li class="dropdown">
@@ -46,10 +48,18 @@
                 <li class="dropdown-submenu">
                     <a tabindex="-1" href="#">Payroll<i class="glyphicon glyphicon-chevron-right"></i></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/payroll/list">Payroll Component</a></li>
-                        <li role="separator" class="divider"></li>                                             
+                        <li><a href="/payroll/list">Payroll Component</a></li>                                                          
                     </ul>
                 </li>   
+          </ul>
+        </li>        
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Setting
+          <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+                <li class="dropdown-submenu">
+                    <li><a href="/pcat/list">Payroll Category</a></li>
+                </li>                                   
           </ul>
         </li>        
       </ul>

@@ -33,6 +33,9 @@ Route::group(['middleware' => 'logic'], function(){
 	Route::controller('/education', 'EducationController');	
 	Route::controller('/employ', 'EmployeeController');		
 	Route::controller('/branch', 'BranchController');		
+	Route::controller('/pcat', 'PayrollCategoryController');	
+	Route::controller('/empermition', 'PermitionController');	
+	
 	
 	
 });

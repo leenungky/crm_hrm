@@ -37,7 +37,7 @@
 					$('#myModal').modal('show'); 
 				}else  if (key=="edit"){	
 					$(".modal-body").load(base_url + "/department/edit/" + $(this).attr("id"));
-					$('#myModal').\('show'); 
+					$('#myModal').modal('show'); 
 				}				
 				else  if (key=="delete"){	
 					var conf = confirm('Are you sure?');

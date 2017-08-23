@@ -735,7 +735,7 @@ function rounded(){
 		var lebar = $("input[name='lebar']").val();
 		var tinggi = $("input[name='tinggi']").val();		
 		var volume = (panjang * lebar * tinggi) / 6000;
-		str_volume = volume.toLocaleString();
+		str_volume = volume.toLocaelString();
 		var arr_value = str_volume.split(".");
 		if (arr_value.length>0){
 			if (arr_value[1]!=null){

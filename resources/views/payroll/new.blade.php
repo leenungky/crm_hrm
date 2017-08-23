@@ -27,7 +27,7 @@
 		@endif 		 
 		<br/>
 		<div class="row">				
-			<div class="col-md-12">		
+			<div class="col-md-12">
 				<form method="post" action="/payroll/create/{{$parent_id}}" class="formsubmit">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">					
 					<div class="form-group">
@@ -44,6 +44,6 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){	
-		$( "input[name=name]" ).focus();
+		$("input[name=name]").focus();
 	});
 </script>

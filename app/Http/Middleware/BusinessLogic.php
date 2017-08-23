@@ -14,18 +14,17 @@ class BusinessLogic
      * @return mixed
      */
     public function handle($request, Closure $next)
-    {   
+    {           
         $routeArray = $request->route()->getAction(); 
         $controllerAction = class_basename($routeArray["controller"]);
         list($controller, $action) = explode("@", $controllerAction);
         $role =  $request->session()->get("role", "");                
         $strRedirect =  $this->getRedirect($request, $controller, $action, $role);
-        if ($strRedirect[0]==""){                      
+        if ($strRedirect[0]==""){  
             return $next($request);
         }else{
             return redirect($strRedirect[0]);
-        }       
-        
+        }        
     }
 
     public function isPayment($request){

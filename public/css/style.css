@@ -407,3 +407,15 @@ div.tab button.active {
     from {opacity: 0;}
     to {opacity: 1;}
 }
+
+.tree-active{
+	background: black;
+    padding: 6px;
+}
+
+.ui-autocomplete > li {
+    background-color: yellow;
+}
+.ui-autocomplete > li.red {
+    background-color: red;
+}

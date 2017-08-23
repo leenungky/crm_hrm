@@ -67,7 +67,7 @@ class UserController extends Controller {
 		return redirect('/user/list')->with('message', "Successfull delete");
 	}
 
-	public function postUpdate($id){	
+	public function postUpdate($id)	{
 		$req = $this->data["req"];
 		$rules = array(
 			'firstname'=>'required|alpha_num|min:2',
@@ -169,10 +169,7 @@ class UserController extends Controller {
 			'password'=>'required|between:6,12|confirmed',
 			'password_confirmation'=>'required|between:6,12'			
 		);	 
-		if ($request->input("role")=="3"){
-			$rules["agent"] = "required";
-		}
-
+		
 		$validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {            
@@ -218,9 +215,8 @@ class UserController extends Controller {
 
 	public function getLogin() {
 	
-		if(\Auth::check())
-		{			
-			return Redirect::to('/')->with('message','Youre already login');
+		if(\Auth::check()){			
+			return Redirect::to('/employ/list')->with('message','Youre already login');
 		} else {			
 			return View('auth.login',$this->data);
 			
@@ -240,27 +236,19 @@ class UserController extends Controller {
 			$remember = (!is_null($request->get('remember')) ? 'true' : 'false' );				
 			if (\Auth::attempt(array('email'=>$request->input('email'), 'password'=> $request->input('password') ), $remember )) {	
 
-				if(\Auth::check())	
-				{	
-
+				if(\Auth::check()){	
 					$row = User::find(\Auth::user()->id); 
-
-					if($row->active =='0')
-					{
+					if($row->active =='0'){
 						// inactive 
-						if($request->ajax() == true )
-						{
+						if($request->ajax() == true ){
 							return response()->json(['status' => 'error', 'message' => 'Your Account is not active']);
 						} else {
 							\Auth::logout();
 							return Redirect::to('user/login')->with('message', SiteHelpers::alert('error','Your Account is not active'));
 						}
 						
-					} else if($row->active=='2')
-					{
-
-						if($request->ajax() == true )
-						{
+					} else if($row->active=='2'){
+						if($request->ajax() == true ){
 							return response()->json(['status' => 'error', 'message' => 'Your Account is BLocked']);
 						} else {
 							// BLocked users
@@ -575,8 +563,8 @@ class UserController extends Controller {
         ->join("tb_role", "tb_role.id", "=", "tb_users.role_id", "left")
         ->join("agent", "agent.id", "=", "tb_users.agent_id", "left")
         ->join("tb_cities", "tb_cities.id", "=", "agent.city_id", "left");
-        if (isset($filter["email"])){
-            $dbuser = $dbuser->where("email", "like", "%".$filter["email"]."%");
+        if (isset($filter["email"])){ 
+           $dbuser = $dbuser->where("email", "like", "%".$filter["email"]."%");
         }        
         return $dbuser;
     }

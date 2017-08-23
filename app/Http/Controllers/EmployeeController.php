@@ -48,9 +48,20 @@ class EmployeeController extends Controller {
             ->where("employee.id", $id)->first(); 
         $jobtitle = DB::table("jobtitle")->where("company_id", $this->company_id)->get();
         $branch = DB::table("branch")->where("company_id", $this->company_id)->get();
+        $family_relation = DB::table("family_relation")->where("company_id", $this->company_id)->get();
+
+        $family = DB::table("family")
+            ->select(DB::raw("family.*, family_relation.name as relation_name"))
+            ->leftjoin("family_relation","family_relation.id", "=" ,"family.relation_id")
+            ->where("family.company_id", $this->company_id)->where("family.employee_id", $id)->get();
+        $education = DB::table("education")->where("company_id", $this->company_id)->where("employee_id", $id)->get();
+
         $this->data["jobtitle"] = $jobtitle;    
         $this->data["branch"] = $branch;          
 		$this->data["employ"] = $employ;
+        $this->data["family_relation"] = $family_relation;
+        $this->data["family"] = $family;
+        $this->data["education"] = $education;
 		return view('employ.edit', $this->data);  
 	}
 
@@ -64,7 +75,7 @@ class EmployeeController extends Controller {
         $family = $req->input("family");
         $arrFamily = json_decode($family);
         $education = $req->input("education");
-        $arrEducation = json_decode($education);         
+        $arrEducation = josn_decode($education);         
 	 	$validator = Validator::make($req->all(), [            
             'nik' => 'required',
             'name' => 'required',
@@ -75,8 +86,14 @@ class EmployeeController extends Controller {
 
         if ($validator->fails()) {                        
             return $validator->messages()->toJson();            
-        }        
+        }                
         $arrInsert = $req->input();
+        $employee = DB::table("employee")->where("company_id", $this->company_id)->where("nik", $arrInsert["nik"])->first();
+        
+        if (isset($employee)){
+            return response()->json(array("response" => array('code' => '301', 'message' => 'Nik sudah digunakan'), "data"=> array()));            
+        }
+
         $arrInsert["company_id"] = $this->company_id;        
         $arrInsert["created_at"] = date("Y-m-d h:i:s");        
 
@@ -87,30 +104,40 @@ class EmployeeController extends Controller {
         $this->insert_education($id, $arrEducation);
         $this->insert_family($id, $arrFamily);        
 
-        return response()->json([
-            'code' => '200',
-            'message' => 'success'
-        ]);	
+        return response()->json(array("response"=> array('code' => '200', 'message' => 'Successfull created'), "data"=> array()));	
 	}
 	
 	public function postUpdate($id){	
-		$req = $this->data["req"];
+		$req = $this->data["req"];  
+        $family = $req->input("family");
+        $arrFamily = json_decode($family);
+        $education = $req->input("education");
+        $arrEducation = json_decode($education);         
         $validator = Validator::make($req->all(), [            
+            'nik' => 'required',
             'name' => 'required',
             'department_id' => 'required',
             'phone' => 'required',
             'address' => 'required'
         ]);
 
-        if ($validator->fails()) {            
-            return Redirect::to(URL::previous())->withInput(Input::all())->withErrors($validator);            
-        }
-        $arrUpdate = $req->input();
+        if ($validator->fails()) {                        
+            return $validator->messages()->toJson();            
+        }                
+        $arrUpdate = $req->input();        
+
+        $arrUpdate["company_id"] = $this->company_id;
+        $arrUpdate["created_at"] = date("Y-m-d h:i:s");
+
+        unset($arrUpdate["_token"]);
+        unset($arrUpdate["family"]);
+        unset($arrUpdate["education"]);
         
-        unset($arrUpdate["_token"]); 
-        unset($arrUpdate["department"]);               
-        DB::table("employee")->where("id", $id)->update($arrUpdate);        
-        return redirect('/employ/list')->with('message', "Successfull update");			
+        $id = DB::table("employee")->where("company_id", $this->company_id)->where("id", $id)->update($arrUpdate);
+        $this->insert_education($id, $arrEducation);
+        $this->insert_family($id, $arrFamily);
+
+        return response()->json(array("response"=> array('code' => '200', 'message' => 'Successfull update'), "data"=> array()));  
 	}    
 
 	private function _get_index_filter($filter){
@@ -141,6 +168,7 @@ class EmployeeController extends Controller {
                 $insFamily[$key]["description"] = $value[6];
                 $insFamily[$key]["created_at"] = date("Y-m-d h:i:s");
             }
+            DB::table("family")->where("company_id", $this->company_id)->where("employee_id", $id)->delete();
             if (count($insFamily)>0){
                 DB::table("family")->insert($insFamily);
             }
@@ -162,6 +190,7 @@ class EmployeeController extends Controller {
                 $insEducation[$key]["description"] = $value[6];
                 $insEducation[$key]["created_at"] = date("Y-m-d h:i:s") ;            
             }
+            DB::table("education")->where("company_id", $this->company_id)->where("employee_id", $id)->delete();
             if (count($insEducation)>0){
                 DB::table("education")->insert($insEducation);
             }

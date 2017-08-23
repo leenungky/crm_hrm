@@ -11,13 +11,6 @@
  <div id="contents">
         <div class="login-container container-fluid">            
             
-            @if (Session::has('error'))
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="err-msg">{!!session('error')!!}</div>
-                    </div>
-                </div>                    
-            @endif
 
               @if (Session::has('message'))
                 <div class="row">

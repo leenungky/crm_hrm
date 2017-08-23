@@ -10,112 +10,38 @@
  <div id="contents">
     <div class="container container-fluid">       
 		@include('header')		
-		<br/>
-		@if (count($errors))     
-			<div class="row">				
-				<div class="col-md-12 alert alert-danger">		
-				    <ul>
-				        @foreach($errors->all() as $error) 		            				            
-				            <li>{{$error}}</li>
-				        @endforeach 
-				    </ul>
+		<div class="tab">
+		  <button class="tablinks active" onclick="openCity(event, 'Karyawan')">Karyawan</button>
+		  <button class="tablinks" onclick="openCity(event, 'Family')">Family</button>
+		  <button class="tablinks" onclick="openCity(event, 'Education')">Pendidikan</button>
+		</div>		
+		<div id="Karyawan" class="tabcontent" style="display: block;"
+			@if (count($errors))     
+				<div class="row">				
+					<div class="col-md-12 alert alert-danger">		
+					    <ul>
+					        @foreach($errors->all() as $error) 		            				            
+					            <li>{{$error}}</li>
+					        @endforeach 
+					    </ul>
+				    </div>
 			    </div>
-		    </div>
-		@endif 
-		<br/>
+			@endif 
+			<br/>
+		  <h3>Karyawan</h3>
+		  @include("employ._editkaryawan")
+		</div>
+		<div id="Family" class="tabcontent">
+		  <h3>Family</h3>
+		  @include("employ._editfamily")
+		</div>
+		<div id="Education" class="tabcontent">
+		  <h3>Pendidikan</h3>
+		  @include("employ._editeducation")
+		</div>		
 		<div class="row">				
 			<div class="col-md-12">		
-				<form method="post" action="/employ/update/{{$employ->id}}" class="formsubmit">
-					<input type="hidden" name="_token" value="{{ csrf_token() }}">					
-					<div class="form-group">
-					    <label for="email">NIK *</label>
-						 <input type="text" class="form-control" id="nik" name="nik" placeholder="input nik" value="{{$employ->nik}}" required>
-					</div>					
-					<div class="form-group">
-					    <label for="email">Nama *</label>
-						 <input type="text" class="form-control" id="nama" name="name" placeholder="input nama" value="{{$employ->name}}" required>
-					</div>					
-					<div class="form-group">
-					    <label for="email">Birth place *</label>
-						 <input type="text" class="form-control" id="birth_place" name="birth_place" placeholder="input tempat lahir" value="{{$employ->birth_place}}" required>
-					</div>					
-					<div class="form-group">
-					    <label for="email">Birth date *</label>
-						 <input type="text" class="form-control datepicker" id="birth_date" name="birth_date" placeholder="input tanggal lahir" value="{{$employ->birth_date}}" required>
-					</div>					
-					<div class="form-group">
-					    <label for="email">Gender *</label>
-						 <select name="sex" class="form-control" required>
-						 	<option>Pilih Gender</option>
-						 	@if ($employ->sex=="L")
-						 		<option value="L" selected=>Laki-Laki</option>
-						 	@else
-						 		<option value="L">Laki-Laki</option>
-						 	@endif
-
-						 	@if ($employ->sex=="P")
-						 		<option value="P" selected>Perempuan</option>						 	
-						 	@else
-						 		<option value="P">Perempuan</option>						 	
-						 	@endif
-						 	
-						 </select>
-					</div>		
-					<div class="form-group">
-					    <label for="email">Department</label>
-						<div class="input-group">
-					      <input type="text" name="department" class="form-control" placeholder="Search for..." value="{{$employ->department_name}}">
-					      <input type="hidden" name="department_id" class="form-control" value="{{$employ->department_id}}">
-					      <span class="input-group-btn">
-					        <button class="btn browse-department" type="button">Browse</button>
-					      </span>
-					    </div>
-					</div>
-					<div class="form-group">
-					    <label for="email">Job Titile</label>
-						 <select name="jobtitle_id" class="form-control">
-						 	<option>Pilih Job Title</option>
-						 	@foreach ($jobtitle as $key => $value)
-						 		@if ($employ->jobtitle_id=="$value->id")
-						 			<option value="{{$value->id}}" selected>{{$value->name}}</option>
-						 		@else
-						 			<option value="{{$value->id}}">{{$value->name}}</option>
-						 		@endif						 		
-						 	@endforeach						 	
-						 </select>
-					</div>		
-					<div class="form-group">
-					    <label for="email">Branch</label>
-						 <select name="branch_id" class="form-control">
-						 	<option>Pilih Branch</option>
-						 	@foreach ($branch as $key => $value)
-						 		@if ($employ->branch_id=="$value->id")
-						 			<option value="{{$value->id}}" selected>{{$value->name}}</option>
-						 		@else
-						 			<option value="{{$value->id}}">{{$value->name}}</option>
-						 		@endif						 		
-						 	@endforeach	
-						 	
-						 </select>
-					</div>										
-					<div class="form-group">
-					    <label for="email">Phone *</label>
-						 <input type="text" class="form-control" id="phone" name="phone" placeholder="input phone" value="{{$employ->phone}}" required>
-					</div>						
-					<div class="form-group">
-					    <label for="email">Address *</label>
-						 <textarea name="address" class="form-control" placeholder="input address" required>{{$employ->address}}</textarea>
-					</div>						
-					<div class="form-group">
-					    <label for="email">Email</label>
-					    <input type="text" class="form-control" id="email" name="email" placeholder="input email" value="{{$employ->email}}">
-					</div>
-					<div class="form-group">
-					    <label for="email">Nationality</label>
-					    <input type="text" class="form-control" id="nationality" name="nationality" placeholder="input nationality" value="{{$employ->nationality}}">						 
-					</div>
-					<button type="submit" class="btn">Submit</button>
-				</form>
+				<button type="button" class="btn btn-editkaryawan">Submit</button>	
 			</div>
 		</div>
 	</div>	    	
@@ -124,9 +50,78 @@
 </body>
 </html>
 
-<script type="text/javascript">
-	$(document).ready(function(){	
-		$( "input[name=name]" ).focus();
 
+<script type="text/javascript">
+	$(document).ready(function(){				
+		$( "input[name=nik]" ).focus();
+		$(".btn-editkaryawan").click(function(){
+			var isValidate = false;
+			isValidate = validateArea("address", "required", isValidate);
+			isValidate = validate("phone", "required", isValidate);
+			isValidate = validateSelect("sex", "required", isValidate);
+			isValidate = validate("birth_date", 'required', isValidate);
+			isValidate = validate("birth_place", 'required', isValidate);
+			isValidate = validate("name_karyawan", 'required', isValidate, "name");
+			isValidate = validate("nik", 'required', isValidate);
+
+			if (isValidate){	
+				return;
+			}
+			var arrFamily = [];			 			
+			$('.body-family tr').each(function(index, tr) {
+			    var lines = $('td', tr).map(function(index, td) {			    	
+			        return $(td).text();
+			    });	
+			    var arrData = [lines[0], lines[1], lines[2], lines[3], lines[4], lines[5], lines[6]];
+			    arrFamily.push(arrData);			    
+			});
+			var strFamily = JSON.stringify(arrFamily);
+			console.log(strFamily);
+			
+			var arrEduction = [];
+			$('.body-education tr').each(function(index, tr) {
+			    var lines = $('td', tr).map(function(index, td) {			    	
+			        return $(td).text();
+			    });	
+			    var arrData = [lines[0], lines[1], lines[2], lines[3], lines[4], lines[5], lines[6]];
+			    arrEduction.push(arrData);			    
+			});
+			var strEducation = JSON.stringify(arrEduction);
+			
+			var postdata = { 
+				_token : "{{ csrf_token() }}",
+				nik: $("input[name='nik']").val(), 
+				name: $("input[name='name_karyawan']").val(),
+				birth_place: $("input[name='birth_place']").val(),
+				birth_date: $("input[name='birth_date']").val(),
+				department_id: $("input[name='department_id']").val(),
+				jobtitle_id: $("select[name='jobtitle_id']").val(),			
+				branch_id:	$("select[name='branch_id']").val(),
+				sex: $("select[name='sex']").val(),
+				phone: $("input[name='phone']").val(),
+				address: $("textarea[name='address']").val(),
+				email: $("input[name='email']").val(),
+				nationality: $("input[name='nationality']").val(),
+				family: strFamily,
+				education: strEducation
+			}
+				
+			$.post( base_url + "/employ/update/{{$employ->id}}", postdata).done(function( data ) {
+				if (data.response.code==200){
+					$(".info-notify-add-karyawan").html(data.response.message);
+					$(".info-notify-add-karyawan").show();
+					location.href="/employ/list";
+
+				}else{
+					$(".info-notify-add-karyawan").hide();
+					$(".error-notify-add-karyawan").html(data.response.message);
+					$(".error-notify-add-karyawan").show();
+				}
+		    	console.log(data)
+		  	});
+		})
 	});
+	
+
+
 </script>

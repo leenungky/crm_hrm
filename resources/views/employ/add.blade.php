@@ -102,39 +102,32 @@
 				birth_date: $("input[name='birth_date']").val(),
 				department_id: $("input[name='department_id']").val(),
 				jobtitle_id: $("select[name='jobtitle_id']").val(),			
-				branch_id:	$("select[name='jobtitle_id']").val(),
+				branch_id:	$("select[name='branch_id']").val(),
 				sex: $("select[name='sex']").val(),
 				phone: $("input[name='phone']").val(),
 				address: $("textarea[name='address']").val(),
+				email: $("input[name='email']").val(),
+				nationality: $("input[name='nationality']").val(),
 				family: strFamily,
 				education: strEducation
 			}
 				
 			$.post( base_url + "/employ/create", postdata).done(function( data ) {
+				if (data.response.code==200){
+					$(".info-notify-add-karyawan").html(data.response.message);
+					$(".info-notify-add-karyawan").show();
+					location.href="/employ/list";
+
+				}else{
+					$(".info-notify-add-karyawan").hide();
+					$(".error-notify-add-karyawan").html(data.response.message);
+					$(".error-notify-add-karyawan").show();
+				}
 		    	console.log(data)
 		  	});
 		})
 	});
 	
 
-	function openCity(evt, cityName) {
-	    // Declare all variables
-	    var i, tabcontent, tablinks;
 
-	    // Get all elements with class="tabcontent" and hide them
-	    tabcontent = document.getElementsByClassName("tabcontent");
-	    for (i = 0; i < tabcontent.length; i++) {
-	        tabcontent[i].style.display = "none";
-	    }
-
-	    // Get all elements with class="tablinks" and remove the class "active"
-	    tablinks = document.getElementsByClassName("tablinks");
-	    for (i = 0; i < tablinks.length; i++) {
-	        tablinks[i].className = tablinks[i].className.replace(" active", "");
-	    }
-
-	    // Show the current tab, and add an "active" class to the button that opened the tab
-	    document.getElementById(cityName).style.display = "block";
-	    evt.currentTarget.className += " active";
-	}
 </script>

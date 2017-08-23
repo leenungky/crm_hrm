@@ -304,7 +304,7 @@
                 $value->child = $deptGroupDB;                              
                 echo "<ul>";
                 foreach ($deptGroupDB as $keychild => $valuechild) {                    	
-                	echo "<li><a href='#' id='".$valuechild->id."' class='right-click'>".$valuechild->name."</a>";
+                	echo "<li><a href='javascript:void(0)' id='".$valuechild->id."' class='right-click'>".$valuechild->name."</a>";
                 	$this->getDbTreeDepartment($ctrl, $valuechild);
                 	echo "</li>";
                 }   

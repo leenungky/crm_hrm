@@ -24,7 +24,8 @@ class CutiController extends Controller {
 
     public function getList(){  
         $req = $this->data["req"];      
-        $input= $req->input();     
+        $input= $req->input()
+        ;     
         $cuti = $this->_get_index_filter($input);        
         $this->data["cuti"] = $cuti->get();        
         return view('cuti.index', $this->data);

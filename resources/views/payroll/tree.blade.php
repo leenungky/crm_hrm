@@ -11,7 +11,7 @@
 			<li><a href="#" id="root" class="right-click">root</a>								
 				<ul>
 					@foreach ($payrollDB as $key => $value)				
-						<li><a href="#" id="{{$value->id}}" class="right-click">{{$value->name}}</a>	
+						<li><a href="javascript:void(0)" id="{{$value->id}}" class="right-click">{{$value->name}}</a>	
 						<?php 					
 							$helper->getDbTreeDepartment($ctrl, $value);										
 						?>				
