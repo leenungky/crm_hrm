@@ -29,7 +29,7 @@
 				</div>					
 				<div class="form-group">
 				    <label for="email">Checked By</label>
-					 <input type="text" class="form-control" id="checked_by" name="checked_by" placeholder="input long day" value="{{ old('checked_by') }}" required>
+					 <input type="text" class="form-control employ" id="checked_by" name="checked_by" placeholder="input long day" value="{{ old('checked_by') }}" required>
 				</div>					
 				<div class="form-group">
 				    <label for="email">Checked Date</label>
@@ -37,7 +37,7 @@
 				</div>						
 				<div class="form-group">				
 				    <label for="email">Approved By</label>
-					 <input type="text" class="form-control" id="approved_by" name="approved_by" placeholder="input approved by" value="{{ old('approved_by') }}" required>
+					 <input type="text" class="form-control employ" id="approved_by" name="approved_by" placeholder="input approved by" value="{{ old('approved_by') }}" required>
 				</div>					
 				<div class="form-group">
 				    <label for="email">Approved Date</label>
@@ -59,64 +59,91 @@
   </div>
 </div>
 <div class="row">
-	<div class="col-md-12"
->		<button class="btn btn-add-permition-leave">Add</button>
+	<div class="col-md-12">		
+		<button class="btn btn-add-permition-leave">Add</button>
 	</div>
 </div>
 <div class="row">	
 	<div class="col-md-12">		
 						<table class="table tbl-permition-leave">
 							<thead>
-								<th>porpose</th
->								<th>reason</th>
+								<th>porpose</th>
+								<th>reason</th>
 								<th>From</th>
 								<th>To</th>
 								<th>Day</th>
 								<th>Checked By</th>
-								<th style="display: none;">Checked Date</th>
+								<th>Checked Date</th>
 								<th>Approved By</th>
-								<th style="display: none;">Approved Date</th>
+								<th>Approved Date</th>
 								<th>Description</th>
 								<th>Action</th>
 							</thead>
 							<tbody class="body-permition-leave">
-								@foreach ($dbemploy_permition as $key => $value)
-									<tr class="permition-leave_{{$key}}">
-									<td>{{$value->propose}}</td>
-									<td>{{$value->reason}}</td>
-									<td>{{$value->dari}}</td>
-									<td>{{$value->sampai}}</td>
-									<td>{{$value->day}}</td>
-									<td>{{$value->checked_by}}</td>
-									<td style="display: none;">{{$value->checked_date}}</td>
-									<td>{{$value->approved_by}}</td>
-									<td style="display: none;">{{$value->approved_date}}</td>
-									<td>{{$value->description}}</td>
-									<td>
-										<a href="javascript:void(0)">
-										<span class="f_edit" attr-id="{{$key}}"> 
-					    					<span class="glyphicon glyphicon-pencil"  rel="tooltip" title="edit"></span>
-					    				</span>
-				    				</a> | 
-				    				<a href="javascript:void(0)">
-					    				<span class="f_delete" attr-id="{{$key}}">
-				    						<span class="glyphicon glyphicon-remove"  rel="tooltip" title="delete"></span>
-				    					</span>
-				    				</a> 
-									</td>
-								</tr>									
-								@endforeach
 								
 								
 							</tbody>
 						</table>
 </div>
 </div>	
-					
+
+<div class="row">				
+			<div class="col-md-12">		
+				<button type="button" class="btn btn-editleave btn-primary">Submit</button>
+				<a href="/empermition/list" class="btn btn-primary">Back</a>
+			</div>
+		</div
+>					
 <script type="text/javascript">
 	$(document).ready(function(){		
 		var arrFamily = [[]];
-		$(document).on("click", ".f_delete", function(){
+		var availableTags = [
+		      @foreach ($employes as $key => $value)
+		      		{value: "{{$value->nik}} - {{$value->name}}",label: "{{$value->nik}} - {{$value->name}}"},
+		      @endforeach		      
+		];
+		
+		$(".employ").autocomplete({
+		    source: availableTags,
+		    minLength: 2,
+		    change: function(event,ui){
+			    console.log(ui);
+			    if (ui.item == null){                    
+			       	$(this).val("");
+			        return false;
+			    }
+		    }
+		});
+
+		$(".btn-editleave").click(function(){
+			var arrPermitionLeave = [];			 			
+			$('.body-permition-leave tr').each(function(index, tr) {
+			    var lines = $('td', tr).map(function(index, td) {			    	
+			        return $(td).text();
+			    });	
+			    var arrData = [lines[0], lines[1], lines[2], lines[3], lines[4], lines[5], lines[6], lines[7], lines[8], lines[9]];
+			    arrPermitionLeave.push(arrData);			    
+			});
+			console.log(arrPermitionLeave);
+			var strPermitionLeave = JSON.stringify(arrPermitionLeave);
+			
+			var postdata = { 
+				_token : "{{ csrf_token() }}",				
+				nik: $("input[name='nik']").val(), 				
+				permition_leave: strPermitionLeave,				
+			}
+			var url =  base_url + "/empermition/update";				
+			$.post(url , postdata).done(function( data ) {
+				if (data.response.code==200){					
+					alert(data.response.message);
+				}else if (data.response.code==401){
+					alert(data.response.message);					
+				}
+		    	console.log(data)
+		  	});
+		})
+
+		$(document).on("click", ".p_delete", function(){
 			var conf = confirm('Are you sure?'); 
 			if (conf){
 				var val = $(this).attr("attr-id");			
@@ -124,7 +151,9 @@
 			}
 		});
 
-		$(document).on("click", ".f_edit" ,function(){
+
+
+		$(document).on("click", ".p_edit" ,function(){
 			console.log("edit");
 			$(".btn-permition-leave").addClass("btn-update-permition-leave");
 			$(".btn-permition-leave").removeClass("btn-new-permition-leave");			
@@ -210,9 +239,9 @@
 				strHtmlToTable = strHtmlToTable  + 	'<td>'+ $("input[name='sampai']").val() +'</td>';
 				strHtmlToTable = strHtmlToTable  + 	'<td>'+ $("input[name='day']").val() +'</td>';
 				strHtmlToTable = strHtmlToTable  + 	'<td>'+ $("input[name='checked_by']").val()+'</td>';
-				strHtmlToTable = strHtmlToTable  + 	'<td style="display: none;">'+ $("input[name='checked_date']").val()+'</td>';
+				strHtmlToTable = strHtmlToTable  + 	'<td>'+ $("input[name='checked_date']").val()+'</td>';
 				strHtmlToTable = strHtmlToTable  + 	'<td>'+ $("input[name='approved_by']").val() +'</td>';
-				strHtmlToTable = strHtmlToTable  + 	'<td style="display: none;">'+ $("input[name='approved_date']").val() +'</td>';
+				strHtmlToTable = strHtmlToTable  + 	'<td>'+ $("input[name='approved_date']").val() +'</td>';
 				strHtmlToTable = strHtmlToTable  + 	'<td>'+ $("textarea[name='description']").val() +'</td>';
 				strHtmlToTable = strHtmlToTable  + 	'<td><a href="javascript:void(0)">';
 				strHtmlToTable = strHtmlToTable  + 	'<span class="f_edit" attr-id="'+ rowCount +'">';

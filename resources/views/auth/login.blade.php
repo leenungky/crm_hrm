@@ -19,19 +19,7 @@
                     </div>
                 </div>                    
             @endif
-            @if (count($errors) > 0)
-                <div class="row">                              
-                    <div class="col-md-12">
-                        <div class="err-msg alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            @endif
+            
         <form method="post" action="{{ url('user/signin')}}" class="form-vertical box" id="fr">
             {{ csrf_field() }}                
                 <div class="row box-login">

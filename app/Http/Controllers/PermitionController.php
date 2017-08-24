@@ -23,6 +23,16 @@ class PermitionController extends Controller {
     }
 
 	public function getList(){  
+        //  $dbemploy_permition = DB::table("employee_permition")
+        // ->select(DB::raw("employee_permition.*, checked.nik as checked_nik, checked.name as checked_name, approved.nik as approved_nik, approved.name as approved_name"))
+        // ->join(DB::raw("employee as checked"),DB::raw("checked.id"),"=","employee_permition.checked_by")
+        // ->join(DB::raw("employee as approved"),DB::raw("approved.id"),"=","employee_permition.approved_by")
+        // ->where("employee_permition.company_id", $this->company_id)
+        // ->get();
+        // echo "<pre>";
+        // print_r($dbemploy_permition);
+        // die();
+
         $this->data["type"]= "emplyoee_list";      
 		$req = $this->data["req"];      
         $input= $req->input();     
@@ -54,9 +64,48 @@ class PermitionController extends Controller {
 		return view('permition.detail', $this->data);  
 	}
 
+    public function getDetail1($id){
+
+        $req = $this->data["req"];
+        $req->session()->put("id_employe_leave", $id);
+        $dbemploy = DB::table("employee")->where("employee.company_id", $this->company_id)->where("employee.id", $id)
+                    ->select(DB::raw("employee.*, department.name as department_name, branch.name as branch_name, jobtitle.name as jobtitle_name")) 
+                    ->join("department", "department.id", "=", "employee.department_id", "left")
+                    ->join("jobtitle", "jobtitle.id", "=", "employee.jobtitle_id", "left")
+                    ->join("branch", "branch.id", "=", "employee.branch_id", "left")
+                    ->first();        
+         $dbemploy_permition = DB::table("employee_permition")
+        ->select(DB::raw("employee_permition.*, checked.nik as checked_nik, checked.name as checked_name, approved.nik as approved_nik, approved.name as approved_name"))
+        ->join(DB::raw("employee as checked"),DB::raw("checked.id"),"=","employee_permition.checked_by", "left")
+        ->join(DB::raw("employee as approved"),DB::raw("approved.id"),"=","employee_permition.approved_by", "left")
+        ->where("employee_permition.company_id", $this->company_id)
+        ->where("employee_permition.employee_id", $id)->get();        
+        
+
+        // $this->data["employes"] = $dbemploy;
+        $this->data["dbemploy_permition"] = $dbemploy_permition;
+        $this->data["employ"] = $dbemploy;        
+
+        return response()->json(array("response"=> array('code' => '200', 'message' => 'Successfull created'), "data"=> $this->data));  
+        // return view('permition.detail', $this->data);  
+    }
+
     public function getDelete($id){
         $employ = DB::table("employee")->where("company_id", $this->company_id)->where("id", $id)->delete();       
         return redirect('/employ/list')->with('message', "Successfull delete");
+    }
+
+    public function getFind(){
+        $req = $this->data["req"];
+        $filter = $req->input("filter","");
+        $dbemploy = DB::table("employee")->where("company_id", $this->company_id)
+            ->where("name","like", "%".$filter."%")
+            ->orWhere("nik","like", "%".$filter."%")
+            ->get();        
+        $this->data["employ"] = $dbemploy;   
+
+        return response()->json(array("response"=> array('code' => '200', 'message' => 'Successfull created'), "data"=> $this->data));  
+
     }
 
 	public function postCreate(){	
@@ -74,7 +123,8 @@ class PermitionController extends Controller {
         ]);
 
         if ($validator->fails()) {                        
-            return $validator->messages()->toJson();            
+            return response()->json(array("response"=> array('code' => '401', 'message' => $validator->messages()->toJson()), "data"=> array()));  
+            // return $validator->messages()->toJson();            
         }                
         $arrInsert = $req->input();
         $employee = DB::table("employee")->where("company_id", $this->company_id)->where("nik", $arrInsert["nik"])->first();
@@ -96,23 +146,23 @@ class PermitionController extends Controller {
         return response()->json(array("response"=> array('code' => '200', 'message' => 'Successfull created'), "data"=> array()));	
 	}
 	
-	public function postUpdate($id){	
+	public function postUpdate(){	
+        $req = $this->data["req"];
+        $id = $req->session()->get("id_employe_leave", "");
 		$req = $this->data["req"];  
         $permition_leave = $req->input("permition_leave");
         $arrPermitionLeave = json_decode($permition_leave);        
         $validator = Validator::make($req->all(), [            
-            'id' => 'required',
             'nik' => 'required',
         ]);
  
        if ($validator->fails()) {                        
-            return $validator->messages()->toJson();            
+            return response()->json(array("response"=> array('code' => '401', 'message' => $validator->messages()->toJson()), "data"=> array()));  
         }                
         $arrUpdate = $req->input();        
 
         $arrUpdate["company_id"] = $this->company_id;
         $arrUpdate["created_at"] = date("Y-m-d h:i:s");
-
         unset($arrUpdate["permition_leave"]);                
         $this->insert_permition_leave($id, $arrPermitionLeave);        
 
@@ -124,6 +174,7 @@ class PermitionController extends Controller {
                     ->select(DB::raw("employee.*, department.name as department_name, branch.name as branch_name")) 
                     ->join("department", "department.id", "=", "employee.department_id", "left")
                     ->join("branch", "branch.id", "=", "employee.branch_id", "left");
+
         if (isset($filter["name"])){
             $dbemploy = $dbemploy->where("employee.name", "like", "%".$filter["name"]."%");
         }
@@ -141,13 +192,20 @@ class PermitionController extends Controller {
                 $insPermitionLeave[$key]["dari"] = $value[2];
                 $insPermitionLeave[$key]["sampai"] = $value[3];
                 $insPermitionLeave[$key]["day"] = $value[4];
-                $insPermitionLeave[$key]["checked_by"] =  $value[5];
+                $nik = explode("-", $value[5]);                
+                $idDB = DB::table("employee")->select("id")->where("company_id", $this->company_id)->where("nik", trim($nik[0]))->first();
+                $insPermitionLeave[$key]["checked_by"] =  isset($idDB->id) ? $idDB->id : null;
                 $insPermitionLeave[$key]["checked_date"] = $value[6];
-                $insPermitionLeave[$key]["approved_by"] = $value[7];
+                $nik = explode("-", $value[7]);
+                $idDB = DB::table("employee")->select("id")->where("company_id", $this->company_id)->where("nik", trim($nik[0]))->first();
+                $insPermitionLeave[$key]["approved_by"] = isset($idDB->id) ? $idDB->id : null;
                 $insPermitionLeave[$key]["approved_date"] = $value[8];
                 $insPermitionLeave[$key]["description"] = $value[9];
 
             }
+            // echo "<pre>";
+            // print_r($insPermitionLeave);
+            // die();
             DB::table("employee_permition")->where("company_id", $this->company_id)->where("employee_id", $id)->delete();
             if (count($insPermitionLeave)>0){
                 DB::table("employee_permition")->insert($insPermitionLeave);
