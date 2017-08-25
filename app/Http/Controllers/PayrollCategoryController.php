@@ -82,6 +82,24 @@ class PayrollCategoryController extends Controller {
         return view('paycat.edit', $this->data);        
     }
 
+
+    public function getEditemployee(){
+        $req= $this->data["req"];
+        $id = $req->input("id");
+        $catid = $req->input("catid");        
+        $paycat = DB::table("paycat")->where("company_id", $this->company_id)->where("id", $catid)->first();
+        $components = $this->getFormula($paycat);   
+        $columns_array = $this->getColumnsFormula();        
+        $employ_payroll = DB::table("employee_payroll")->where("company_id", $this->company_id)->where("employee_id", $id)->first();
+        $employee = DB::table("employee")->select("nik","name")->where("company_id", $this->company_id)->where("id", $id)->first();
+        
+        $this->data["payrolls"] = $employ_payroll;
+        $this->data["components"] = $components;
+        $this->data["paycat"] = $paycat;
+        $this->data["employee"] = $employee;
+        return view('paycat.editemployee', $this->data);          
+    }
+
     public function getDelete($id){
         $req = $this->data["req"];         
         DB::table("paycat_employe")->where("company_id", $this->company_id)->where("paycat_id", $id)->delete();       
@@ -122,6 +140,11 @@ class PayrollCategoryController extends Controller {
 
     }
 
+    public function _get_index_filter($filter = null){
+        $dbcust = DB::table("paycat")->where("company_id", $this->company_id);        
+        return $dbcust;
+    }
+
     public function postUpdate($id){
         $req = $this->data["req"];
         $req = $this->data["req"];
@@ -140,9 +163,30 @@ class PayrollCategoryController extends Controller {
         return redirect('/pcat/list')->with('message', "Successfull update");
     }
 
-    public function _get_index_filter($filter = null){
-        $dbcust = DB::table("paycat")->where("company_id", $this->company_id);        
-        return $dbcust;
+    public function getFormula($paycat){
+        $exploded = array();
+        if (isset($paycat)){
+            $explode_array = array("+","-","/","*",")","(");
+            $exploded = $this->data["helper"]->multiexplode($explode_array , $paycat->formula);
+        }
+        if (isset($exploded)){
+            foreach ($exploded as $key => $value) {
+                    $exploded[$key] = trim($value);
+                }    
+        }
+        $exploded = array_filter(array_unique($exploded));                
+        return $exploded;
+    }
+
+    public function getColumnsFormula(){
+        $columns = DB::select("SHOW COLUMNS FROM employee_payroll");        
+        $columns_array = array();
+        foreach ($columns as $key => $value) {
+            if ($key>2){
+                $columns_array[] = $value->Field;
+            }
+        }
+        return $columns_array;
     }
     
 }

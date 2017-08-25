@@ -10,12 +10,22 @@
 			}
      </style>
      <style type="text/css">
+     	.ui-accordion2-header{
+     		height: 50px;
+     	}
+
+     	.ui-accordion2-header .title{
+     		width: 75%;
+    		position: absolute;
+     	}
      	.ui-accordion2-header .tools{
 		    position: absolute;
 		    right: 10px;
 		    top: 10px;
 		    width: 20%;
 		}
+
+		
 		.ui-accordion2-header .tools a {
 		    width: auto;
 		    display: inline;
@@ -51,7 +61,9 @@
 				<div id="accordion"  class="ui-accordion2-group">
 					@foreach ($paycatDB as $key => $value)
 						<h3 class="ui-accordion2-header" data-sectionid="{{$value->id}}">
-		        			<a href="#"><strong>{{$value->name}}</strong> | {{$value->formula}}</a> 
+							<span class="title">		            				
+		        				<strong>{{$value->name}}</strong> | {{$value->formula}}
+		        			</span>
 		        			<div class="tools">		            				
 		            				<a href="#" class="edit">Edit</a> | 
 		            				<a href="#" class="delete">Delete</a> |
@@ -72,7 +84,7 @@
 												<td>{{$value1->nik}}</td>
 												<td>{{$value1->name}}</td>
 												<td>						
-													<a href="/pcat/editemployee/{{$value1->id}}">														
+													<a href="/pcat/editemployee?id={{$value1->employee_id}}&catid={{$value->id}}">						
 									    					<span class="glyphicon glyphicon-pencil"></span>
 								    				</a> |						
 								    				<a href="/pcat/deleteemployee/{{$value1->id}}" class="confirmation">

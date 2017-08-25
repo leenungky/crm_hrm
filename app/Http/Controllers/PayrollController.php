@@ -109,6 +109,8 @@ class PayrollController extends Controller {
         return redirect('/payroll/list')->with('message', "Successfull update");
     }
 
+
+
     public function _get_index_filter($filter = null){
         $dbcust = DB::table("payroll")->where("company_id", $this->company_id);        
         return $dbcust;
