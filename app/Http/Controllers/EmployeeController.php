@@ -70,12 +70,13 @@ class EmployeeController extends Controller {
         return redirect('/employ/list')->with('message', "Successfull delete");
     }
 
+     
 	public function postCreate(){	
 		$req = $this->data["req"];  
         $family = $req->input("family");
         $arrFamily = json_decode($family);
         $education = $req->input("education");
-        $arrEducation = josn_decode($education);         
+        $arrEducation = json_decode($education);         
 	 	$validator = Validator::make($req->all(), [            
             'nik' => 'required',
             'name' => 'required',

@@ -26,8 +26,24 @@ class PayrollCategoryController extends Controller {
 
     public function getList(){                                               
         $paycatDB = $this->_get_index_filter();
-        $paycatDB = $paycatDB->get();       
+        $paycatDB = $paycatDB->get();   
+        $paycat_employe = DB::table("paycat_employe")
+            ->select(DB::raw("paycat_employe.*, employee.nik, employee.name"))
+            ->join("employee","employee.id", "=", "paycat_employe.employee_id", "left")
+            ->where("paycat_employe.company_id", $this->company_id)
+            ->get();
+        $paycat_arr = array();
+        foreach ($paycatDB as $key => $value) {            
+            foreach ($paycat_employe as $key2 => $value2) {
+                if ($value2->paycat_id==$value->id){
+                    $paycat_arr[$value->id][] = $value2;  
+                    unset($paycat_employe[$key2]);                    
+                }
+                
+            }
+        }
         $this->data["paycatDB"] = $paycatDB;
+        $this->data["paycat_employe"] = $paycat_arr;        
         return view('paycat.index', $this->data);
     }
 
@@ -52,8 +68,6 @@ class PayrollCategoryController extends Controller {
         if (isset($existnameDB)){
             return Redirect::to(URL::previous())->withInput(Input::all())->withErrors("name ".$arrInsert["name"]." sudah digunakan");
         }
-
-        
         
         $arrInsert["created_at"] = date("Y-m-d h:i:s");
         $arrInsert["company_id"] = $this->company_id;
@@ -63,21 +77,49 @@ class PayrollCategoryController extends Controller {
     }
 
     public function getEdit($id){
-        $paycat = DB::table("paycat")->where("id", $id)->where("company_id", $this->company_id)->first();        
+        $paycat = DB::table("paycat")->where("id", $id)->where("company_id", $this->company_id)->first();                
         $this->data["paycat"] = $paycat;
         return view('paycat.edit', $this->data);        
     }
 
     public function getDelete($id){
         $req = $this->data["req"];         
-        DB::table("paycat")->where("id", $id)->where("company_id", $this->company_id)->delete();                    
+        DB::table("paycat_employe")->where("company_id", $this->company_id)->where("paycat_id", $id)->delete();       
+        DB::table("paycat")->where("id", $id)->where("company_id", $this->company_id)->delete();                            
         return redirect('/pcat/list')->with('message', "Successfull delete");
     }
 
-    public function getNew(){
+    public function getDeleteemployee($id){
+        DB::table("paycat_employe")->where("company_id", $this->company_id)->where("id", $id)->delete();       
+        return redirect('/pcat/list')->with('message', "Successfull delete");
+    }
+
+    public function getNewemployee(){
         $req= $this->data["req"];
-        $this->data["parent_id"] = $req->get("id");                
-        return view('payroll.new', $this->data);
+        $req->session()->put("pcat_id", $req->input("id"));
+        $employe_ids = DB::table("paycat_employe")->select("employee_id")->where("company_id", $this->company_id)->get();
+        $employe_array = array();
+        foreach ($employe_ids as $key => $value) {
+            $employe_array[] = $value->employee_id;
+        }
+        $employe = DB::table("employee")->select("nik","name")->where("company_id", $this->company_id)->whereNotIn("id", $employe_array)->get();        
+        $this->data["employee"] = $employe;             
+        return view('paycat.newemployee', $this->data);
+    }
+
+    public function postNewemployee(){
+        $req= $this->data["req"];
+        $paycat_id = $req->session()->get("pcat_id");
+        $name = $req->input("name","-");
+        $arrName = explode("-", $name);
+        $employee = DB::table("employee")->where("company_id", $this->company_id)->where("nik", trim($arrName[0]))->first();
+        $array_insert = array("company_id" => $this->company_id, 
+            "paycat_id" => $paycat_id, 
+            "employee_id" => $employee->id, 
+            "created_at" => date("Y-m-d"));
+        DB::table("paycat_employe")->insert($array_insert);
+        return redirect('/pcat/list')->with('message', "Successfull create");
+
     }
 
     public function postUpdate($id){

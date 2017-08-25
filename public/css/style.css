@@ -419,3 +419,15 @@ div.tab button.active {
 .ui-autocomplete > li.red {
     background-color: red;
 }
+
+.title-accord1{
+	float: left;padding-right: 20px;width: 10%;font-weight: bold;
+}
+
+.title-accord2{
+	float: left;padding-right: 20px;width: 70%;font-weight: bold
+}
+
+.title-accord3{
+	float: left;padding-right: 20px;font-weight: bold;
+}

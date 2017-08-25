@@ -10,8 +10,7 @@
 	
 		<div class="tab">
 		  <button class="tablinks active" onclick="openCity(event, 'Profile')">Profile</button>
-		  <button class="tablinks" onclick="openCity(event, 'Permition')">Leave Permition</button>
-		  <button class="tablinks" onclick="openCity(event, 'Education')">Pendidikan</button>
+		  <button class="tablinks" onclick="openCity(event, 'Permition')">Leave Permition</button>		  
 		</div>		
 
 		<div id="Profile" class="tabcontent" style="display: block;"/>						

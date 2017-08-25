@@ -9,6 +9,19 @@
   				body  { margin: 0px 6px; }   					  
 			}
      </style>
+     <style type="text/css">
+     	.ui-accordion2-header .tools{
+		    position: absolute;
+		    right: 10px;
+		    top: 10px;
+		    width: 20%;
+		}
+		.ui-accordion2-header .tools a {
+		    width: auto;
+		    display: inline;
+		}
+     </style>
+
 </head>
 <body >
     <?php use App\Http\Helpers\Helpdesk; ?>
@@ -16,20 +29,7 @@
  <div id="contents">
     <div class="container container-fluid">            	
 		@include('header')		
-		<br/>			
-		<div class="row">	
-			<form action="/pcat/list" method="get">
-				<div class="col-md-3">
-					Nama<br/>
-					<input type="text" name="name" class="form-control" value="{{isset($filter["name"]) ? $filter["name"] : ""}}">
-				</div>				
-				<div class="col-md-2">
-					<br/>
-					<input type="submit" value="find" class="btn">
-				</div>
-			</form>
-		</div>	
-		<br/>
+		<br/>					
 		<div class="row">	
 			<div class="col-md-12">
 			<a href="/pcat/add">Create</a>
@@ -45,49 +45,83 @@
                 </div>
             </div>
             <br/>
-        @endif  
-		<div class="row">	
-			<div class="col-md-12">
-				<table class="table">
-					<?php 
-						$str_parameter = "";
-						if (isset($order_by)){
-							if ($order_by=="asc"){
-								$str_parameter = "&order_by=desc";
-							}
-							else if ($order_by=="desc"){
-								$str_parameter = "&order_by=asc";
-							}	
-						}
-					?>
-					<thead>
-						<th>Name</th>
-			    		<th>Formula</th>			    		
-						<th>Action</th>
-					</thead>
-					<tbody>		
-						@foreach ($paycatDB as $key => $value)
-							<tr>
-								<td>{{$value->name}}</td><td>{{$value->formula}}</td>
-								<td>
-									<a href="/pcat/edit/{{$value->id}}">
-										<span class="edit"> 
-					    					<span class="glyphicon glyphicon-pencil"  rel="tooltip" title="delete"></span>
-					    				</span>
-				    				</a> | 
-				    				<a href="/pcat/delete/{{$value->id}}" class="confirmation">
-					    				<span class="delete">
-				    						<span class="glyphicon glyphicon-remove"  rel="tooltip" title="delete"></span>
-				    					</span>
-				    				</a> 
-								</td>
-							</tr>
-						@endforeach						
-					</tbody>
-				</table>
-			</div>
+        @endif  		        
+		<div class="row">
+			<div class="col-md-12">				
+				<div id="accordion"  class="ui-accordion2-group">
+					@foreach ($paycatDB as $key => $value)
+						<h3 class="ui-accordion2-header" data-sectionid="{{$value->id}}">
+		        			<a href="#"><strong>{{$value->name}}</strong> | {{$value->formula}}</a> 
+		        			<div class="tools">
+		            				<a href="#" class="newactivity">New Employee</a> |
+		            				<a href="#" class="edit">Edit</a> | 
+		            				<a href="#" class="delete">Delete</a>
+		        			</div>
+		    			</h3>							
+						<div>
+							<table class="table">
+								<thead>
+									<th>Nik</th>
+									<th>Name</th>
+									<th>Action</th>
+								</thead>
+								<tbody>		
+									@if (isset($paycat_employe[$value->id]))							
+										@foreach ($paycat_employe[$value->id] as $key1 => $value1)
+											<tr>
+												<td>{{$value1->nik}}</td>
+												<td>{{$value1->name}}</td>
+												<td>												
+								    				<a href="/pcat/deleteemployee/{{$value->id}}" class="confirmation">
+									    				<span class="delete">
+								    						<span class="glyphicon glyphicon-remove"  rel="tooltip" title="delete"></span>
+								    					</span>
+								    				</a> 
+												</td>
+											</tr>
+										@endforeach
+									@endif
+								</tbody>
+							</table>    
+						</div>
+					@endforeach
+
+				</div>
+	 		</div>	    	
 		</div>
-	 </div>	    	
+	</div>
 </div>
+@include("footer");
 </body>
 </html>
+<script type="text/javascript">
+	 $(function() {
+		$("#accordion").accordion({
+		    alwaysOpen: false,
+		    active: false,
+		    autoheight: false,
+		    clearStyle: true
+		}).find('.tools a').click(function(ev){
+		    ev.preventDefault();
+		    ev.stopPropagation();
+		    var $obj = $(this);
+		    var sectionid = $obj.closest('h3').attr('data-sectionid');
+		    if ($obj.hasClass('newactivity')){
+		    	$(".modal-body").load(base_url + "/pcat/newemployee?id=" + sectionid);
+				$('#myModal').modal('show'); 
+		    } else if ($obj.hasClass('edit')){
+		    	location.href = base_url + "/pcat/edit/" + sectionid;
+		    } else if ($obj.hasClass('delete')){
+		    	var confir =  confirm('Are you sure?'); 
+		    	if (confir){
+		    			location.href = base_url + "/pcat/delete/" + sectionid;	
+		    	}
+		        
+		    }
+		});
+	});
+
+</script>
+
+
+

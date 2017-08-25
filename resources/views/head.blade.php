@@ -30,8 +30,8 @@
 	<script type="text/javascript" src="{{ URL::asset('js/main.js') }}"></script>	
 	<!-- <script type="text/javascript" src="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.ui.position.min.js"></script>	 -->
  	<!-- <script src="https://swisnl.github.io/jQuery-contextMenu/js/main.js" type="text/javascript"></script> -->
-	<script type="text/javascript" src="{{ URL::asset('js/custom.js') }}"></script>	
 	<script type="text/javascript" src="{{ URL::asset('js/bootstrap-dialog.min.js') }}"></script>			
+	<script type="text/javascript" src="{{ URL::asset('js/custom.js') }}"></script>	
 	
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/js/bootstrap-dialog.min.js"></script> -->
 
