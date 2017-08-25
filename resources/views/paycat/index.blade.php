@@ -52,10 +52,10 @@
 					@foreach ($paycatDB as $key => $value)
 						<h3 class="ui-accordion2-header" data-sectionid="{{$value->id}}">
 		        			<a href="#"><strong>{{$value->name}}</strong> | {{$value->formula}}</a> 
-		        			<div class="tools">
-		            				<a href="#" class="newactivity">New Employee</a> |
+		        			<div class="tools">		            				
 		            				<a href="#" class="edit">Edit</a> | 
-		            				<a href="#" class="delete">Delete</a>
+		            				<a href="#" class="delete">Delete</a> |
+		            				<a href="#" class="newactivity">New Employee</a> 
 		        			</div>
 		    			</h3>							
 						<div>
