@@ -71,11 +71,12 @@
 											<tr>
 												<td>{{$value1->nik}}</td>
 												<td>{{$value1->name}}</td>
-												<td>												
-								    				<a href="/pcat/deleteemployee/{{$value->id}}" class="confirmation">
-									    				<span class="delete">
-								    						<span class="glyphicon glyphicon-remove"  rel="tooltip" title="delete"></span>
-								    					</span>
+												<td>						
+													<a href="/pcat/editemployee/{{$value1->id}}">														
+									    					<span class="glyphicon glyphicon-pencil"></span>
+								    				</a> |						
+								    				<a href="/pcat/deleteemployee/{{$value1->id}}" class="confirmation">
+									    				<span class="glyphicon glyphicon-remove"  rel="tooltip" title="delete"></span>
 								    				</a> 
 												</td>
 											</tr>

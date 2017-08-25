@@ -16,6 +16,16 @@
  <div id="contents">
     <div class="container container-fluid">            	
 		@include('header')		
+        @if(Session::has('message'))
+            <div class="row">               
+                <div class="col-md-12 alert alert-warning">      
+                    <ul>
+                        <li>{!! Session::get('message') !!}</li>                      
+                    </ul>
+                </div>
+            </div>
+            <br/>
+        @endif 
 		<div class="load-tree">						
 		</div>
 	 </div>	    	
@@ -41,11 +51,10 @@
 					$('#myModal').modal('show'); 
 				}				
 				else  if (key=="delete"){	
-					var conf = confirm('Are you sure?');
+					var conf = confirm('Are you sure?');                    
 					if (conf){
-                        var url = base_url + "/payroll/delete/" + $(this).attr("id");                                    
-						$.get(url);
-						location.reload();
+                        location.href = base_url + "/payroll/delete/" + $(this).attr("id");
+						
 					}
 				}				
             },

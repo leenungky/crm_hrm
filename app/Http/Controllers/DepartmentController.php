@@ -77,7 +77,7 @@ class DepartmentController extends Controller {
                 ->where("id","<>", $id)
                 ->get();            
             if (empty($department_child)){                
-                DB::table("department")->where("company_id", $this->company_id)->where("id", $department->parent_id)->update(array("is_group"=>0));              
+                DB::table("department")->where("company_id", $this->company_id)->where("id", $department->parent_id)->update(array("is_group"=>0));
             }
             DB::table("department")->where("parent_id", $id)->where("company_id", $this->company_id)->delete();                
             DB::table("department")->where("id", $id)->where("company_id", $this->company_id)->delete();                    

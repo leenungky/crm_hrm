@@ -52,11 +52,19 @@ class PayrollController extends Controller {
         $arrInsert["created_at"] = date("Y-m-d h:i:s");
         $arrInsert["company_id"] = $this->company_id;
         unset($arrInsert["_token"]);        
-        DB::table("payroll")->insert($arrInsert); 
-        if ($id!="root"){
-            DB::table("payroll")->where("id", $id)->update(array("is_group" =>1));       
+        $payroll = DB::table("payroll")->where("company_id", $this->company_id)->where("name", $arrInsert["name"])->first();        
+        if (isset($payroll)){
+            return redirect('/payroll/list')->with('message', $arrInsert["name"]." sudah digunakan");            
+        }else{
+            DB::table("payroll")->insert($arrInsert); 
+            DB::statement("ALTER TABLE employee_payroll ADD ".  str_replace(' ', '_', strtolower($arrInsert["name"]))." VARCHAR(60)");
+            if ($id!="root"){
+                DB::table("payroll")->where("id", $id)->update(array("is_group" =>1));       
+            }    
+            return redirect('/payroll/list')->with('message', "Successfull create");
         }
-        return redirect('/payroll/list')->with('message', "Successfull create");
+        
+        
     }
 
     public function getEdit($id){
@@ -69,7 +77,7 @@ class PayrollController extends Controller {
         $req = $this->data["req"]; 
         if ($id=="root"){
             DB::table("payroll")->where("company_id", $this->company_id)->delete();                
-        }else{            
+        }else{
             $department = DB::table("payroll")->where("company_id", $this->company_id)->where("id", $id)->first();
             $department_child = DB::table("payroll")
                 ->where("company_id", $this->company_id)
@@ -77,10 +85,12 @@ class PayrollController extends Controller {
                 ->where("id","<>", $id)
                 ->get();            
             if (empty($department_child)){                
-                DB::table("payroll")->where("company_id", $this->company_id)->where("id", $department->parent_id)->update(array("is_group"=>0));              
+                DB::table("payroll")->where("company_id", $this->company_id)->where("id", $department->parent_id)->update(array("is_group"=>0));
             }
+
+            $this->dropField($id);            
             DB::table("payroll")->where("parent_id", $id)->where("company_id", $this->company_id)->delete();                
-            DB::table("payroll")->where("id", $id)->where("company_id", $this->company_id)->delete();                    
+            DB::table("payroll")->where("id", $id)->where("company_id", $this->company_id)->delete(); 
         }        
         return redirect('/payroll/list')->with('message', "Successfull delete");
     }
@@ -102,6 +112,19 @@ class PayrollController extends Controller {
     public function _get_index_filter($filter = null){
         $dbcust = DB::table("payroll")->where("company_id", $this->company_id);        
         return $dbcust;
+    }
+
+    private function dropField($id){
+        $payrolls = DB::table("payroll")->select("name")->where("parent_id", $id)->where("company_id", $this->company_id)->get();                
+        if (isset($payrolls)){
+            foreach ($payrolls as $key => $value) {
+                DB::statement("ALTER TABLE employee_payroll drop ".  str_replace(' ', '_', strtolower($value->name)));
+            }
+        }
+        $payroll = DB::table("payroll")->select("name")->where("id", $id)->where("company_id", $this->company_id)->first(); 
+        if (isset($payroll)){
+            DB::statement("ALTER TABLE employee_payroll drop ".  str_replace(' ', '_', strtolower($payroll->name)));
+        }
     }
 
     
