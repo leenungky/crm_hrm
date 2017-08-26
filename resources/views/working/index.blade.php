@@ -81,7 +81,34 @@
 </html> 
 
 <script>
+	var arr_date = [];
 	$(document).ready(function(){
+		var currentYear = new Date().getFullYear();
+	    $('.calendar').calendar({
+			 clickDay: function(e) { 			 	
+			 	onPost(e);
+			 },
+			customDayRenderer: function(element, date) {
+				var dt = $.datepicker.formatDate('yy-mm-dd', date);				
+				if(arr_date[dt]=="present"){								
+					$(element).addClass('dategreen');			        
+				}else if(arr_date[dt]=="present_late"){								
+					$(element).addClass('datered');			        
+				}	            
+	        },
+	        disabledDays: [	        	
+	            new Date(currentYear,1,2),
+	            new Date(currentYear,1,3),
+	            new Date(currentYear,1,8),
+	            new Date(currentYear,1,9),
+	            new Date(currentYear,1,10),
+	            new Date(currentYear,1,11),
+	            new Date(currentYear,1,13),
+	            new Date(currentYear,1,14),
+	            new Date(currentYear,1,15)
+	        ]
+		});
+
 		$(".btn-find-employee").click(function(){
 			var val = $("input[name='find_name']").val();
 			$.get( domain + "/empermition/find?filter=" + val, function( result ) {								
@@ -101,81 +128,56 @@
 			$(this).addClass("active");
 			var val = $(this).attr("id");
 
-			$.get( domain + "/empermition/detail1/" + val, function( result ) {				
-				console.log(result);
-				if (result.response.code == 200){	
-					$(".body-permition-leave").empty();
-					$.each(result.data.dbemploy_permition, function( i, data ) {
-						setPermition(i, data);
-					});
-					setEmployee(result.data.employ);
-
+			$.get( domain + "/working/detail/" + val, function( result ) {						
+				if (result.response.code == 200){											
+					arr_date = [];
+					$.each(result.data.emp_working, function( i, data ) {
+						arr_date[data.date] = data.type;	    		
+					});					
+					console.log(arr_date);
 				}
 			});
 		})
 	})
 
-	function setAllEmploy(i, data){
-		var strHtmlToTable ='<tr class="employe_list" id="' + data.id + '">';
-		strHtmlToTable  = strHtmlToTable  + '<td>' + data.nik + '</td>';
-		strHtmlToTable  = strHtmlToTable  + '<td>' + data.name +'</td>';
-		strHtmlToTable  = strHtmlToTable  + '</tr>';
-		return strHtmlToTable;							
-							
-	}
-
-	function setEmployee(employ){
-		$("input[name='id']").val(employ.id);
-		$("input[name='nik']").val(employ.nik);
-		$("input[name='name_karyawan']").val(employ.name);
-		$("input[name='birth_place']").val(employ.birth_place);
-		$("input[name='birth_date']").val(employ.birth_date);
-		$("input[name='phone']").val(employ.phone);
-		$("textarea[name='address']").val(employ.name);
-		$("input[name='email']").val(employ.email);		
-		$("input[name='department']").val(employ.department_name);
-		var sex = "";
-		if (employ.sex="L"){
-			sex = "Laki-Laki";
+	
+	function onPost(e){
+		if ($("input[name='type']").is(':checked')) {			 		
+			var valchk = $('input[name=type]:checked').val();
+			var dt = $.datepicker.formatDate('yy-mm-dd', e.date);
+			var data_post = 
+				{ 
+					_token : "{{ csrf_token() }}",				
+					date    : dt,					
+				  	type 	 : valchk};		
+			
+			$.post( "/working/create",data_post, function(result) {			
+				console.log(result);
+				console.log(arr_date);
+				if (result.response.code==200){						 
+					if (result.data.type=="present"){
+						$(e.element).removeClass('datered');
+						$(e.element).removeClass('dategreen');
+						if (result.data.action=="delete"){							
+						}else{
+							$(e.element).addClass('dategreen');						
+					    }
+					}else{
+						$(e.element).removeClass('datered');
+						$(e.element).removeClass('dategreen');
+						if (result.data.action=="delete"){							
+						}else{							
+							$(e.element).addClass('datered');							
+						}						
+					}
+				}else{
+					alert(result.response.message);
+				}
+			});				
 		}else{
-			sex = "perempuan";
+			alert("Pilih type absent")
 		}
-		$("input[name='sex']").val(sex);
-		$("input[name='job_title']").val(employ.jobtitle_name);
-		$("input[name='branch']").val(employ.branch_name);
-		$("input[name='nationality']").val(employ.nationality);
-	}
 
-	function setPermition(i, data){
-		var strHtmlToTable = '<tr class="permition-leave_' + i + '">';	
-		var strHtmlToTable = strHtmlToTable + onSetDbToTablePermition(i, data);	
-		var strHtmlToTable = strHtmlToTable + '</tr>';		
-		$('.tbl-permition-leave > tbody:last-child').append(strHtmlToTable);		
-	}
-
-	function onSetDbToTablePermition(rowCount, data){					
-		var strHtmlToTable ='<td>'+ data.propose +'</td>';		
-		strHtmlToTable = strHtmlToTable  + 	'<td>'+ data.reason +'</td>';
-		strHtmlToTable = strHtmlToTable  + 	'<td>'+ data.dari +'</td>';
-		strHtmlToTable = strHtmlToTable  + 	'<td>'+ data.sampai +'</td>';
-		strHtmlToTable = strHtmlToTable  + 	'<td>'+ data.day +'</td>';
-		strHtmlToTable = strHtmlToTable  + 	'<td>'+ data.checked_nik +'-' + data.checked_name + '</td>';
-		strHtmlToTable = strHtmlToTable  + 	'<td>'+ data.checked_date +'</td>';
-		strHtmlToTable = strHtmlToTable  + 	'<td>'+ data.approved_nik +'-' + data.approved_name + '</td>';
-		strHtmlToTable = strHtmlToTable  + 	'<td>'+ data.approved_date +'</td>';
-		strHtmlToTable = strHtmlToTable  + 	'<td>'+ data.description +'</td>';
-		strHtmlToTable = strHtmlToTable  + 	'<td><a href="javascript:void(0)">';
-		strHtmlToTable = strHtmlToTable  + 	'<span class="p_edit" attr-id="'+ rowCount +'">';
-		strHtmlToTable = strHtmlToTable  + 	'<span class="glyphicon glyphicon-pencil" rel="tooltip" title="edit"></span>';
-		strHtmlToTable = strHtmlToTable  + 	'</span>';
-		strHtmlToTable = strHtmlToTable  + 	'</a> | ';
-		strHtmlToTable = strHtmlToTable  + 	'<a href="javascript:void(0)" class="confirmation"> ';
-		strHtmlToTable = strHtmlToTable  + 	'<span class="p_delete" attr-id="'+ rowCount +'">';
-		strHtmlToTable = strHtmlToTable  + 	'<span class="glyphicon glyphicon-remove"  rel="tooltip" title="delete"></span>';
-		strHtmlToTable = strHtmlToTable  + 	'</span></a> </td>';
-				
-		return 	strHtmlToTable;		    				
-							
 	}
 
 </script>
