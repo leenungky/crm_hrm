@@ -84,6 +84,8 @@
 	var arr_date = [];
 	$(document).ready(function(){
 		var currentYear = new Date().getFullYear();
+		 arr_date["2017-02-01"] = "present";
+
 	    $('.calendar').calendar({
 			 clickDay: function(e) { 			 	
 			 	onPost(e);
@@ -133,12 +135,26 @@
 					arr_date = [];
 					$.each(result.data.emp_working, function( i, data ) {
 						arr_date[data.date] = data.type;	    		
-					});					
-					console.log(arr_date);
+					});						
+					onSetDate(arr_date);		
+					
 				}
 			});
 		})
 	})
+
+	function onSetDate(parr_date){
+		$('.calendar').calendar({			 
+			customDayRenderer: function(element, date) {
+				var dt = $.datepicker.formatDate('yy-mm-dd', date);				
+				if(parr_date[dt]=="present"){								
+					$(element).addClass('dategreen');			        
+				}else if(parr_date[dt]=="present_late"){								
+					$(element).addClass('datered');			        
+				}	            
+	        }
+	    });		
+	}
 
 	
 	function onPost(e){
