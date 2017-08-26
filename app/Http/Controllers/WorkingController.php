@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Redirect;
 use \URL;
 
 
-class DepartmentController extends Controller {
+class WorkingController extends Controller {
     
     var $data;
     var $company_id;
@@ -23,8 +23,13 @@ class DepartmentController extends Controller {
         $this->data["ctrl"] = $this;
     }
 
-	public function getList(){                                       
-        return view('department.index', $this->data);
+	public function getList(){          
+        $this->data["type"]= "Working_day";      
+        $req = $this->data["req"];      
+        $input= $req->input();     
+        $dbemploy = $this->_get_index_filter($input);        
+        $this->data["employes"] = $dbemploy->get();                                             
+        return view('working.index', $this->data);
     }
 
     public function getTree(){           
@@ -98,9 +103,16 @@ class DepartmentController extends Controller {
         return redirect('/department/list')->with('message', "Successfull update");
     }
 
-    public function _get_index_filter($filter = null){
-        $dbcust = DB::table("department")->where("company_id", $this->company_id);        
-        return $dbcust;
+    private function _get_index_filter($filter){
+        $dbemploy = DB::table("employee")->where("employee.company_id", $this->company_id)   
+                    ->select(DB::raw("employee.*, department.name as department_name, branch.name as branch_name")) 
+                    ->join("department", "department.id", "=", "employee.department_id", "left")
+                    ->join("branch", "branch.id", "=", "employee.branch_id", "left");
+
+        if (isset($filter["name"])){
+            $dbemploy = $dbemploy->where("employee.name", "like", "%".$filter["name"]."%");
+        }
+        return $dbemploy;
     }
 
     

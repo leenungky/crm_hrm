@@ -23,7 +23,17 @@
           <ul class="dropdown-menu">
             <li><a href="/employ/list">Data</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="/empermition/list">Permition</a></li>
+            <li class="dropdown-submenu">
+                <a tabindex="-1" href="#">Absence<i class="glyphicon glyphicon-chevron-right"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/working/list">Working Time</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="/empermition/list">Permition</a></li>
+                    
+                </ul>
+            </li>   
+            <li role="separator" class="divider"></li>
+            <li><a href="/employ/list">Payroll</a></li>            
           </ul>
         </li>
         <li class="dropdown">

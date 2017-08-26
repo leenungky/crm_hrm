@@ -54,7 +54,7 @@
 
 						</div>
 						<div class="col-md-5">
-							<form method="post" action="/pcat/update/{{$paycat->id}}" class="formsubmit">
+							<form method="post" action="/pcat/update/{{$paycat->id}}">
 							<input type="hidden" name="_token" value="{{ csrf_token() }}">					
 							<div class="form-group">
 							    <label for="email">Nama</label>
@@ -67,7 +67,7 @@
 							</div>										
 			
 							<br/>&nbsp;
-\
+
 							<button type="submit" class="btn btn-submit btn-primary">Submit</button>												
 							<a href="/pcat/list" class="btn btn-primary">Cancel</a>	
 						</div>
@@ -130,27 +130,6 @@
 			addDescription(data);			
 		});
 
-
-
-		$(".btn-submit").click(function(){
-			var data_post = { 
-				_token : "{{ csrf_token() }}",
-				name   	: $("input[name='name']").val() ,
-				formula : $("textarea[name='formula']").val()
-			};
-			$.post("/pcat/create",data_post, function(result) {		
-				if (data.response.code==200){
-					$(".info-notify-add-karyawan").html(data.response.message);
-					$(".info-notify-add-karyawan").show();
-					location.href="/employ/list";
-
-				}else{
-					$(".info-notify-add-karyawan").hide();
-					$(".error-notify-add-karyawan").html(data.response.message);
-					$(".error-notify-add-karyawan").show();
-				}
-			});
-		});
 	});
 
 	function addDescription(data){

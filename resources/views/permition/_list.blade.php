@@ -48,13 +48,11 @@
 					<textarea name="description" class="form-control" placeholder="input description" required>{{ old('f_description') }}</textarea>
 				</div>	
 				<div class="form-group">
-					<button class="btn btn-permition-leave">Save</button>
+					<button class="btn btn-primary btn-permition-leave">Save</button>
+					<button type="button"  class="btn btn-primary" data-dismiss="modal">Close</button>
 				</div>					
 			</div>		
-      	</div>
-      	<div class="modal-footer">        
-        	<button type="button"  class="btn" data-dismiss="modal">Close</button>
-      	</div>
+      	</div>      	
     </div>
   </div>
 </div>
