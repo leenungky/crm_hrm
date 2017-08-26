@@ -10,6 +10,18 @@
         .employe_list.active{            
             color: red;
         }
+    
+		.datered{
+			background-color :red;
+			color: white;
+			border-radius :30%;
+		}	
+		.dategreen{
+			background-color :green;
+			color: white;
+			border-radius :30%;
+		}	
+	
      </style>
 </head>
 <body >
@@ -81,23 +93,16 @@
 </html> 
 
 <script>
-	var arr_date = [];
+	
 	$(document).ready(function(){
-		var currentYear = new Date().getFullYear();
-		 arr_date["2017-02-01"] = "present";
+		var currentYear = new Date().getFullYear();		 	 
 
+		$('.calendar').calendar({
+	        clickDay: function(e) { 
+	        	onPost(e);
+	        }
+	    });
 	    $('.calendar').calendar({
-			 clickDay: function(e) { 			 	
-			 	onPost(e);
-			 },
-			customDayRenderer: function(element, date) {
-				var dt = $.datepicker.formatDate('yy-mm-dd', date);				
-				if(arr_date[dt]=="present"){								
-					$(element).addClass('dategreen');			        
-				}else if(arr_date[dt]=="present_late"){								
-					$(element).addClass('datered');			        
-				}	            
-	        },
 	        disabledDays: [	        	
 	            new Date(currentYear,1,2),
 	            new Date(currentYear,1,3),
@@ -132,7 +137,8 @@
 
 			$.get( domain + "/working/detail/" + val, function( result ) {						
 				if (result.response.code == 200){											
-					arr_date = [];
+					var arr_date = [];
+					arr_date["2017-02-01"] = "present";	
 					$.each(result.data.emp_working, function( i, data ) {
 						arr_date[data.date] = data.type;	    		
 					});						
@@ -144,7 +150,7 @@
 	})
 
 	function onSetDate(parr_date){
-		$('.calendar').calendar({			 
+		$('.calendar').calendar({			 			
 			customDayRenderer: function(element, date) {
 				var dt = $.datepicker.formatDate('yy-mm-dd', date);				
 				if(parr_date[dt]=="present"){								
@@ -161,28 +167,24 @@
 		if ($("input[name='type']").is(':checked')) {			 		
 			var valchk = $('input[name=type]:checked').val();
 			var dt = $.datepicker.formatDate('yy-mm-dd', e.date);
+			console.log(dt);
 			var data_post = 
 				{ 
 					_token : "{{ csrf_token() }}",				
 					date    : dt,					
 				  	type 	 : valchk};		
 			
-			$.post( "/working/create",data_post, function(result) {			
-				console.log(result);
-				console.log(arr_date);
+			$.post( "/working/create",data_post, function(result) {							
+				
 				if (result.response.code==200){						 
-					if (result.data.type=="present"){
-						$(e.element).removeClass('datered');
-						$(e.element).removeClass('dategreen');
-						if (result.data.action=="delete"){							
-						}else{
+					$(e.element).removeClass('datered');
+					$(e.element).removeClass('dategreen');
+					if (result.data.type=="present"){						
+						if (result.data.action!="delete"){														
 							$(e.element).addClass('dategreen');						
 					    }
-					}else{
-						$(e.element).removeClass('datered');
-						$(e.element).removeClass('dategreen');
-						if (result.data.action=="delete"){							
-						}else{							
+					}else{						
+						if (result.data.action!="delete"){													
 							$(e.element).addClass('datered');							
 						}						
 					}

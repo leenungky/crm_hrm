@@ -2,18 +2,7 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"> 
 <head> 
-	<style type="text/css">
-		.datered{
-			background-color :red;
-			color: white;
-			border-radius :30%;
-		}	
-		.dategreen{
-			background-color :green;
-			color: white;
-			border-radius :30%;
-		}	
-	</style>
+	
 	
 </head>
 <body >
