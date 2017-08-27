@@ -154,9 +154,9 @@
 			customDayRenderer: function(element, date) {
 				var dt = $.datepicker.formatDate('yy-mm-dd', date);				
 				if(parr_date[dt]=="present"){								
-					$(element).addClass('dategreen');			        
+					$(element).parent().addClass('dategreen');			        
 				}else if(parr_date[dt]=="present_late"){								
-					$(element).addClass('datered');			        
+					$(element).parent().addClass('datered');			        
 				}	            
 	        }
 	    });		
