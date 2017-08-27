@@ -17,13 +17,19 @@
 
 		<div id="Profile" class="tabcontent" style="display: block;"/>						
 		  <div class="row">
-		  	<div class="col-md-12">
-		  		<label>
-		  			<input type="radio" name="type" value="present">present not late
-		  		</label>
-		  		<label>
-		  			<input type="radio" name="type" value="present_late">present late
-		  		</label>
+		  	<div class="col-md-12 title-type">
+		  		<div class="radio">
+				  <label>
+				    <input type="radio" name="type" value="present" checked>
+				    <span class="dategreen" style="border-radius: 3px;">present not late</span>
+				  </label>
+				</div>
+				<div class="radio">
+				  <label>
+				    <input type="radio" name="type" value="present_late">
+				    <span class="datered" style="border-radius: 3px;">present late</span>				    
+				  </label>
+				</div>		  		
 		  	</div>
 		  </div>
 		  <br/>

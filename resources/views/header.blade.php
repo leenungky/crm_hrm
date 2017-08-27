@@ -33,7 +33,7 @@
                 </ul>
             </li>   
             <li role="separator" class="divider"></li>
-            <li><a href="/employ/list">Payroll</a></li>            
+            <li><a href="/payrollemploy/list">Payroll</a></li>            
           </ul>
         </li>
         <li class="dropdown">
@@ -51,7 +51,7 @@
                         <li role="separator" class="divider"></li>
                         <li><a href="/education/list">Education</a></li>   
                         <li role="separator" class="divider"></li>
-                        <li><a href="/branch/list">Cabang</a></li>                                    
+                        <li><a href="/branch/list">Cabang</a></li>
                     </ul>
                 </li>                         
                 <li role="separator" class="divider"></li>  

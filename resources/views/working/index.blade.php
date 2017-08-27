@@ -21,6 +21,14 @@
 			color: white;
 			border-radius :30%;
 		}	
+
+		.title-type{
+			border: 1px solid #bfbebe;
+		    margin: 11px;
+		    width: 27%;
+		    background: #f5f5f5;
+		    border-radius: 14px;
+		}
 	
      </style>
 </head>
