@@ -20,14 +20,24 @@
 		<div class="row">	
 			<form action="/payrollemploy/list" method="get">
 				<div class="col-md-3">
-					Year 
+					Year :
 					<select class="form-control" name="year">
 						<?php
 							for ($x = $year["from"]; $x <= $year["to"]; $x++) {
-								if ($x==$year["to"])
-									echo "<option selected>".$x."</option>";
-								else
-									echo "<option>".$x."</option>";
+								if (isset($input["year"])){
+									if ($x==$input["year"]){
+										echo "<option selected>".$x."</option>";
+									}else{
+										echo "<option>".$x."</option>";										
+									}	
+								}else{
+									if ($x==date("Y"))
+										echo "<option selected>".$x."</option>";
+									else
+										echo "<option>".$x."</option>";
+									
+								}
+								
 							}
 						?>
 					</select>
@@ -36,7 +46,20 @@
 					Month 
 					<select class="form-control" name="month">
 						@foreach ($month as $key => $value)
-							<option value="{{$key}}">{{$value}}</option>
+							@if (isset($input["month"]))
+								@if ($input["month"]==$key)
+									<option value="{{$key}}" selected>{{$value}}</option>
+								@else
+									<option value="{{$key}}">{{$value}}</option>
+								@endif
+							@else								
+								@if ($key==date("m"))
+									<option value="{{$key}}" selected>{{$value}}</option>
+								@else
+									<option value="{{$key}}">{{$value}}</option>
+								@endif
+							@endif
+							
 						@endforeach
 					</select>
 				</div>
@@ -92,12 +115,10 @@
 								@endforeach						
 								<td></td>		
 								<td>
-									<a href="/employ/edit/{{$value["emp_id"]}}">
-										<span class="edit"> 
-					    					<span class="glyphicon glyphicon-pencil"  rel="tooltip" title="delete"></span>
-					    				</span>
+									<a href="javascript:void(0)" class="link-edit" val-id="{{$value["emp_id"]}}">										
+					    				<span class="glyphicon glyphicon-pencil"  rel="tooltip" title="edit"></span>
 				    				</a> | 
-				    				<a href="/employ/delete/{{$value["emp_id"]}}" class="confirmation">
+				    				<a href="/employ/delete/" val-id="{{$value["emp_id"]}}" class="confirmation">
 					    				<span class="delete">
 				    						<span class="glyphicon glyphicon-remove"  rel="tooltip" title="delete"></span>
 				    					</span>
@@ -118,3 +139,13 @@
 </div>
 </body>
 </html>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(".link-edit").click(function(){
+			var val = $(this).attr("val-id");
+			var year = $("select[name='year']").val();
+			var month = $("select[name='month']").val();			
+			location.href="/payrollemploy/editemployee/" + val + "?month=" + month + "&year=" + year;
+		})
+	})
+</script>

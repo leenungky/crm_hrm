@@ -22,7 +22,7 @@ class EducationController extends Controller {
         $req = $this->data["req"];
         $input = $req->input();        
         $eduDB = $this->_get_index_filter($input);              
-        $eduDB = $eduDB->paginate(20);        
+        $eduDB = $eduDB->paginate(20); 
         $this->data["education"] = $eduDB;
         $this->data["filter"] = $input;        
         return view('education.index', $this->data);
@@ -64,8 +64,8 @@ class EducationController extends Controller {
 
     public function postUpdate($id){
         $req = $this->data["req"];
-        $validator = Validator::make($req->all(), [            
-            'name' => 'required',           
+        $validator = Validator::make($req->all(), [
+            'name' => 'required',
         ]);
 
         if ($validator->fails()) {            

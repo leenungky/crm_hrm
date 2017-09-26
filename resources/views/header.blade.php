@@ -58,7 +58,9 @@
                 <li class="dropdown-submenu">
                     <a tabindex="-1" href="#">Payroll<i class="glyphicon glyphicon-chevron-right"></i></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/payroll/list">Payroll Component</a></li>                                                          
+                        <li><a href="/payroll/list">Payroll Component</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/masteremploy/list">Payroll Employee</a></li>                        
                     </ul>
                 </li>   
           </ul>

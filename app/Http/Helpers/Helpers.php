@@ -29,5 +29,27 @@
 		    $launch = explode($delimiters[0], $ready);
 		    return  $launch;
 		}		
+
+		public static function getColumnsFormula(){
+	        $columns = DB::select("SHOW COLUMNS FROM employee_payroll");        
+	        $columns_array = array();
+	        foreach ($columns as $key => $value) {
+	            if ($key>6){
+	                $columns_array[] = $value->Field;
+	            }
+	        }
+	        return $columns_array;
+	    }
+
+	    public static function getColumnsFormulaMaster(){
+	        $columns = DB::select("SHOW COLUMNS FROM employee_payroll_master");             
+	        $columns_array = array();
+	        foreach ($columns as $key => $value) {
+	            if ($key>2){
+	                $columns_array[] = $value->Field;
+	            }
+	        }
+	        return $columns_array;
+	    }
 	}
 ?>

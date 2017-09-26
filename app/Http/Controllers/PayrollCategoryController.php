@@ -76,8 +76,8 @@ class PayrollCategoryController extends Controller {
         return redirect('/pcat/list')->with('message', "Successfull create");
     }
 
-    public function getEdit($id){
-        $paycat = DB::table("paycat")->where("id", $id)->where("company_id", $this->company_id)->first();                
+    public function getEdit($id){        
+        $paycat = DB::table("paycat")->where("id", $id)->where("company_id", $this->company_id)->first();
         $this->data["paycat"] = $paycat;
         return view('paycat.edit', $this->data);        
     }
@@ -88,8 +88,10 @@ class PayrollCategoryController extends Controller {
         $id = $req->input("id");
         $catid = $req->input("catid");        
         $paycat = DB::table("paycat")->where("company_id", $this->company_id)->where("id", $catid)->first();
-        $components = $this->getFormula($paycat);   
-        $columns_array = $this->getColumnsFormula();        
+        $components = $this->getFormula($paycat);
+        print_r($components);
+        die();
+        $columns_array = $this->getColumnsFormula();
         $employ_payroll = DB::table("employee_payroll")->where("company_id", $this->company_id)->where("employee_id", $id)->first();
         $employee = DB::table("employee")->select("nik","name")->where("company_id", $this->company_id)->where("id", $id)->first();
         

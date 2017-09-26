@@ -37,6 +37,8 @@ Route::group(['middleware' => 'logic'], function(){
 	Route::controller('/empermition', 'PermitionController');	
 	Route::controller('/working', 'WorkingController');	
 	Route::controller('/payrollemploy', 'PayrollemployeeController');	
+	Route::controller('/masteremploy', 'MasteremployeeController');	
+	
 	
 });
 

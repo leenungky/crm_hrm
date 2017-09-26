@@ -213,8 +213,8 @@ class UserController extends Controller {
 		}
 	}
 
-	public function getLogin() {
-	
+	public function getLogin() {	
+
 		if(\Auth::check()){			
 			return Redirect::to('/employ/list')->with('message','Youre already login');
 		} else {			
@@ -235,52 +235,25 @@ class UserController extends Controller {
 
 			$remember = (!is_null($request->get('remember')) ? 'true' : 'false' );				
 			if (\Auth::attempt(array('email'=>$request->input('email'), 'password'=> $request->input('password') ), $remember )) {	
-
-				if(\Auth::check()){	
-					$row = User::find(\Auth::user()->id); 
-					if($row->active =='0'){
-						// inactive 
-						if($request->ajax() == true ){
-							return response()->json(['status' => 'error', 'message' => 'Your Account is not active']);
-						} else {
-							\Auth::logout();
-							return Redirect::to('user/login')->with('message', SiteHelpers::alert('error','Your Account is not active'));
-						}
-						
-					} else if($row->active=='2'){
-						if($request->ajax() == true ){
-							return response()->json(['status' => 'error', 'message' => 'Your Account is BLocked']);
-						} else {
-							// BLocked users
-							\Auth::logout();
-							return Redirect::to('user/login')->with('message', SiteHelpers::alert('error','Your Account is BLocked'));
-						}
-					} else {
-
-						\DB::table('tb_users')->where('id', '=',$row->id )->update(array('last_login' => date("Y-m-d H:i:s")));
-						\Session::put('uid', $row->id);
-						\Session::put('gid', $row->group_id);
-						\Session::put('eid', $row->email);
-						\Session::put('ll', $row->last_login);
-						\Session::put('fid', $row->first_name.' '. $row->last_name);		
-						$role = DB::table("tb_role")->where("id", $row->role_id)->first();
-						\Session::put('role', $role->name);
-
-						if($request->ajax() == true ){							
-							return response()->json(['status' => 'success', 'url' => url('')]);
-						} else {							
-							if ($role->name == "staff"){
-								return Redirect::to('/employ/list');
-							}else{
-								return Redirect::to('/employ/list');
-							}
-						}					
-					}		
-					
+				if(\Auth::check()){						
+					$row = User::find(\Auth::user()->id);				
+					\DB::table('tb_users')->where('id', '=',$row->id )->update(array('last_login' => date("Y-m-d H:i:s")));
+					\Session::put('uid', $row->id);
+					\Session::put('gid', $row->group_id);
+					\Session::put('eid', $row->email);
+					\Session::put('ll', $row->last_login);
+					\Session::put('fid', $row->first_name.' '. $row->last_name);		
+					$role = DB::table("tb_role")->where("id", $row->role_id)->first();
+					\Session::put('role', $role->name);
+					if ($role->name == "staff"){
+						return Redirect::to('/employ/list');
+					}else{						
+						return Redirect::to('/employ/list');
+					}
 				}						
 			} else {
-
-				if($request->ajax() == true ){
+	
+			if($request->ajax() == true ){
 					return response()->json(['status' => 'error', 'message' => 'Your username/password combination was incorrect']);
 				} else {
 					return Redirect::to('')

@@ -40,6 +40,14 @@ class EmployeeController extends Controller {
 		return view('employ.add', $this->data);  
 	}
 
+    public function getDetail($id){
+        
+        $this->data["dbemploy_permition"] = $dbemploy_permition;
+        $this->data["employ"] = $dbemploy;        
+
+        return response()->json(array("response"=> array('code' => '200', 'message' => 'Successfull created'), "data"=> $this->data));  
+    }
+
    	public function getEdit($id){
 		$employ = DB::table("employee")
             ->select(DB::raw("employee.*, department.id as department_id, department.name as department_name")) 

@@ -32,7 +32,7 @@
 		<div class="row">				
 			<div class="col-md-12">		
 				<form method="post" action="/family/create" class="formsubmit">
-					<input type="hidden" name="_token" value="{{ csrf_token() }}">					
+					<input type="hidden" name="_token" value="{{ csrf_token() }}">				
 					<div class="form-group">
 					    <label for="email">Name</label>
 						 <input type="text" class="form-control" id="name" name="name" placeholder="input name" value="{{ old('name') }}" required>

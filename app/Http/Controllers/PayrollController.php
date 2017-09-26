@@ -11,11 +11,13 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 use \URL;
 use \PHPExcel_IOFactory, \PHPExcel_Style_Fill, \PHPExcel_Cell, \PHPExcel_Cell_DataType, \SiteHelpers;
+use \Schema;
+    
 
 class PayrollController extends Controller {
     
     var $data;
-    var $company_id;
+    var $company_id;    
     public function __construct(Request $req){
         $this->data["type"]= "master_payroll";  
         $this->data["req"] = $req;              
@@ -45,32 +47,41 @@ class PayrollController extends Controller {
         if ($validator->fails()) {            
             return Redirect::to(URL::previous())->withInput(Input::all())->withErrors($validator);            
         }
-        $arrInsert = $req->input();
+        $arrInsert = $req->input();        
         if ($id!="root"){
             $arrInsert["parent_id"] = $id;    
         }        
         $arrInsert["created_at"] = date("Y-m-d h:i:s");
-        $arrInsert["company_id"] = $this->company_id;
-        unset($arrInsert["_token"]);        
-        $payroll = DB::table("payroll")->where("company_id", $this->company_id)->where("name", $arrInsert["name"])->first();        
+        $arrInsert["company_id"] = $this->company_id;        
+        unset($arrInsert["_token"]);
+        $payroll = DB::table("payroll_component")->where("company_id", $this->company_id)->where("name", $arrInsert["name"])->first();        
         if (isset($payroll)){
             return redirect('/payroll/list')->with('message', $arrInsert["name"]." sudah digunakan");            
         }else{
-            DB::table("payroll")->insert($arrInsert); 
-            DB::statement("ALTER TABLE employee_payroll ADD ".  str_replace(' ', '_', strtolower($arrInsert["name"]))." VARCHAR(60)");
+            $field_name = str_replace(' ', '_', strtolower($arrInsert["name"]));
+            if (isset($arrInsert["is_master"])){
+                if(!Schema::hasColumn('employee_payroll_master', $field_name)) { 
+                    DB::statement("ALTER TABLE employee_payroll_master ADD ". $field_name  ." VARCHAR(60)");
+                }
+                $arrInsert["is_master"] = 1;
+            }
+            $arrInsert["field"] = $field_name;
+            DB::table("payroll_component")->insert($arrInsert);
+            if(!Schema::hasColumn('employee_payroll', $field_name)) { 
+                    DB::statement("ALTER TABLE employee_payroll ADD ". $field_name." VARCHAR(60)");
+            }
             if ($id!="root"){
-                DB::table("payroll")->where("id", $id)->update(array("is_group" =>1));       
+                DB::table("payroll_component")->where("id", $id)->update(array("is_group" =>1));       
             }    
+
             return redirect('/payroll/list')->with('message', "Successfull create");
         }
-        
-        
+    
     }
-
+    
     public function getEdit($id){
-        $payroll = DB::table("payroll")->where("id", $id)->where("company_id", $this->company_id)->first();        
-        $this->data["payroll"] = $payroll;
-        return view('payroll.edit', $this->data);        
+        $payroll = DB::table("payroll_component")->where("id", $id)->where("company_id", $this->company_id)->first();        
+        return response()->json(array("response"=> array('code' => '200', 'message' => 'Successfull created'), "data"=> $payroll));          
     }
 
     public function getDelete($id){
@@ -78,19 +89,18 @@ class PayrollController extends Controller {
         if ($id=="root"){
             DB::table("payroll")->where("company_id", $this->company_id)->delete();                
         }else{
-            $department = DB::table("payroll")->where("company_id", $this->company_id)->where("id", $id)->first();
-            $department_child = DB::table("payroll")
+            $department = DB::table("payroll_component")->where("company_id", $this->company_id)->where("id", $id)->first();
+            $department_child = DB::table("payroll_component")
                 ->where("company_id", $this->company_id)
                 ->where("parent_id", $department->parent_id)
                 ->where("id","<>", $id)
                 ->get();            
             if (empty($department_child)){                
-                DB::table("payroll")->where("company_id", $this->company_id)->where("id", $department->parent_id)->update(array("is_group"=>0));
-            }
-
+                DB::table("payroll_component")->where("company_id", $this->company_id)->where("id", $department->parent_id)->update(array("is_group"=>0))
+;            }
             $this->dropField($id);            
-            DB::table("payroll")->where("parent_id", $id)->where("company_id", $this->company_id)->delete();                
-            DB::table("payroll")->where("id", $id)->where("company_id", $this->company_id)->delete(); 
+            DB::table("payroll_component")->where("parent_id", $id)->where("company_id", $this->company_id)->delete();                
+            DB::table("payroll_component")->where("id", $id)->where("company_id", $this->company_id)->delete(); 
         }        
         return redirect('/payroll/list')->with('message', "Successfull delete");
     }
@@ -98,34 +108,65 @@ class PayrollController extends Controller {
     public function getNew(){
         $req= $this->data["req"];
         $this->data["parent_id"] = $req->get("id");                
-        return view('payroll.new', $this->data);
+        return response()->json(array("response"=> array('code' => '200', 'message' => 'Successfull created'), "data"=> $this->data["parent_id"]));          
     }
 
     public function postUpdate($id){
         $req = $this->data["req"];
         $arrInsert = $req->input();        
-        unset($arrInsert["_token"]);        
-        $customer = DB::table("payroll")->where("id", $id)->update($arrInsert);        
+        $payroll = DB::table("payroll_component")->where("company_id", $this->company_id)->where("id", $id)->first();
+        unset($arrInsert["_token"]);                 
+        if (isset($arrInsert["is_master"])){
+            unset($arrInsert["is_master"]);                                
+            $arrInsert["is_master"] = 1;         
+            if(!Schema::hasColumn('employee_payroll_master', $payroll->field)) {         
+                DB::statement("ALTER TABLE employee_payroll_master ADD ". $payroll->field  ." VARCHAR(60)");
+            }
+        }else{            
+            if(Schema::hasColumn('employee_payroll_master', $payroll->field)) {         
+                DB::statement("ALTER TABLE employee_payroll_master drop ".  $payroll->field);           
+            }            
+            $arrInsert["is_master"] = 0;
+        }     
+        DB::table("payroll_component")->where("id", $id)->where("company_id", $this->company_id)->update($arrInsert);        
         return redirect('/payroll/list')->with('message', "Successfull update");
     }
 
 
 
     public function _get_index_filter($filter = null){
-        $dbcust = DB::table("payroll")->where("company_id", $this->company_id);        
-        return $dbcust;
+        $dbcust = DB::table("payroll_component")->where("company_id", $this->company_id);        
+        return $dbcust;    
     }
 
     private function dropField($id){
-        $payrolls = DB::table("payroll")->select("name")->where("parent_id", $id)->where("company_id", $this->company_id)->get();                
+        $payrolls = DB::table("payroll_component")->select("is_master","name")->where("parent_id", $id)->where("company_id", $this->company_id)->get();                
         if (isset($payrolls)){
             foreach ($payrolls as $key => $value) {
-                DB::statement("ALTER TABLE employee_payroll drop ".  str_replace(' ', '_', strtolower($value->name)));
+                $field_name = str_replace(' ', '_', strtolower($value->name));
+                if(Schema::hasColumn('employee_payroll', $field_name)) { 
+                    DB::statement("ALTER TABLE employee_payroll drop ".  $field_name);
+                }
+                
+                if ($value->is_master==1){                    
+                    if(Schema::hasColumn('employee_payroll', $field_name)) { 
+                        DB::statement("ALTER TABLE employee_payroll drop ".  $field_name);    
+                    }
+                }
+                
             }
         }
-        $payroll = DB::table("payroll")->select("name")->where("id", $id)->where("company_id", $this->company_id)->first(); 
+        $payroll = DB::table("payroll_component")->select("name","is_master")->where("id", $id)->where("company_id", $this->company_id)->first(); 
         if (isset($payroll)){
-            DB::statement("ALTER TABLE employee_payroll drop ".  str_replace(' ', '_', strtolower($payroll->name)));
+            $field_name = str_replace(' ', '_', strtolower($payroll->name));
+            if(Schema::hasColumn('employee_payroll', $field_name)) { 
+                    DB::statement("ALTER TABLE employee_payroll drop ".  $field_name); 
+            }
+            if ($payroll->is_master==1){
+                if(Schema::hasColumn('employee_payroll_master', $field_name)) { 
+                        DB::statement("ALTER TABLE employee_payroll_master drop ".  $field_name);
+                }
+            }
         }
     }
 
